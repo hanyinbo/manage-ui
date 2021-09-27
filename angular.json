@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/theme.less",
               "src/styles.css"
             ],
             "scripts": []
@@ -124,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "manage-ui"
+  "defaultProject": "manage-ui",
+  "cli": {
+    "analytics": "35dbe24a-a23d-45c4-b585-ba3143247879"
+  }
 }

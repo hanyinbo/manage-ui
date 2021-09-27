@@ -1,0 +1,16 @@
+.lay-login{
+    height: 100%;
+    background-color: rgb(161, 243, 212);
+    padding: 30px;
+}
+.lay-form{
+    width: 800px;
+    height: 400px;
+    
+    position: absolute;
+
+    left:50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
