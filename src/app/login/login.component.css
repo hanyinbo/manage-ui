@@ -1,16 +1,44 @@
 .lay-login{
     height: 100%;
-    background-color: rgb(161, 243, 212);
+    /* background-color: rgb(161, 243, 212); */
     padding: 30px;
+    background-image: url('../../assets/static/img/bg/梅西.jpg');
+}
+.ant-card{
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.lay-pic-form{
+  border-color: crimson;
+  border-color: 35px;
+  border-bottom-right-radius: 20px;
+
 }
 .lay-form{
     width: 800px;
     height: 400px;
-    
     position: absolute;
-
     left:50%;
     top: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
 }
+
+.login-form {
+    max-width: 300px;
+  }
+
+  .login-form-margin {
+    margin-bottom: 16px;
+  }
+
+  .login-form-forgot {
+    float: right;
+  }
+
+  .login-form-button {
+    width: 100%;
+  }
