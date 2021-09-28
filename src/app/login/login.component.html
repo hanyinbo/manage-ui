@@ -1,34 +1,37 @@
-<div  class="lay-login">
-  <div class="lay-pic-form">
-    <nz-card    class="lay-form">
+<div class="login-weaper">
+    <nz-card class="login-card">
+      <div class="login-left">
         <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-            <nz-form-item>
-              <nz-form-control nzErrorTip="请输入用户名!">
-                <nz-input-group nzPrefixIcon="user">
-                  <input type="text" nz-input formControlName="userName" placeholder="Username" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-control nzErrorTip="请输入密码!">
-                <nz-input-group nzPrefixIcon="lock">
-                  <input type="password" nz-input formControlName="password" placeholder="Password" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <div nz-row class="login-form-margin">
-              <div nz-col [nzSpan]="12">
-                <label nz-checkbox formControlName="remember">
-                  <span>记住密码</span>
-                </label>
-              </div>
-              <div nz-col [nzSpan]="12">
-                <a class="login-form-forgot">忘记密码</a>
-              </div>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="请输入用户名!">
+              <nz-input-group nzPrefixIcon="user">
+                <input type="text" nz-input formControlName="userName" placeholder="Username" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="请输入密码!">
+              <nz-input-group nzPrefixIcon="lock">
+                <input type="password" nz-input formControlName="password" placeholder="Password" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <div nz-row class="login-form-margin">
+            <div nz-col [nzSpan]="12">
+              <label nz-checkbox formControlName="remember">
+                <span>记住密码</span>
+              </label>
             </div>
-            <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">立即登录</button>
-            <!-- Or <a> register now! </a> -->
-          </form>
+            <div nz-col [nzSpan]="12">
+              <a class="login-form-forgot">忘记密码</a>
+            </div>
+          </div>
+          <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">立即登录</button>
+          <!-- Or <a> register now! </a> -->
+        </form>
+      </div>
+      <div class="login-right">
+        <img src="../../assets/static/img/bg/梅西.jpg" class="login-image">
+      </div>
     </nz-card>
-  </div>
   </div>
