@@ -1,18 +1,22 @@
 <div class="login-weaper">
     <nz-card class="login-card">
+
       <div class="login-left">
+        <div class="login-logo">
+          <img src="../../assets/static/img/bg/logo.jpg">
+      </div>
         <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
           <nz-form-item>
             <nz-form-control nzErrorTip="请输入用户名!">
               <nz-input-group nzPrefixIcon="user">
-                <input type="text" nz-input formControlName="userName" placeholder="Username" />
+                <input type="text" nz-input formControlName="userName" placeholder="请输入用户名" />
               </nz-input-group>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
             <nz-form-control nzErrorTip="请输入密码!">
               <nz-input-group nzPrefixIcon="lock">
-                <input type="password" nz-input formControlName="password" placeholder="Password" />
+                <input type="password" nz-input formControlName="password" placeholder="请输入密码" />
               </nz-input-group>
             </nz-form-control>
           </nz-form-item>
