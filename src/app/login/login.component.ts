@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { LoginService } from './login.service';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Result } from '../share/result';
 
 @Component({
   selector: 'app-login',
@@ -33,23 +34,29 @@ export class LoginComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    debugger;
+ 
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
       const api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${password}`;
       console.log("api地址" + api);
-      this.loginService.axiosLogin(api).then(response => {
-        console.log("响应规定response：" + response.code);
-        if (response.code == 200) {
-          alert("登录成功")
-        }
-      })
-      //内置http请求
-      // this.http.get(api).subscribe((response: any)=>{
-      //   console.log(response);
-      //   alert(response);
+      // this.loginService.axiosLogin(api).then(response => {
+      //   debugger;
+      //   console.log("响应规定response：" + response.code);
+      //   if (response.code == 200) {
+      //     alert("登录成功")
+      //   }else{
+      //     alert("登录失败，"+response.code)
+      //   }
       // })
-
+      //内置http请求
+      // this.http.get<Result>(api).subscribe((response: Result)=>{
+      //   console.log(response.code);
+      //   // alert(response);
+      // })
+// this.loginService.get(api).
+      // this.http.get<Result>(api).subscribe((reponse=>{
+      //   console.log("code:"+reponse.code); 
+      // }))
     }
   }
 

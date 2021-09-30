@@ -28,11 +28,20 @@ export class LoginService {
     return new Promise<Result>((resolve, reject) => {
       axios.get(api).then(function (res) {
         resolve(res.data);
-      }, (err) => {
-        reject(err);
+      }, (err: Result) => {
+        resolve(err);
       })
+    }).catch(function (err){
+      
+      return(err)
     })
+    
   }
+  // login(api: string) {
+  //   this.http.get<Result>(api).subscribe((repose: Result) => {
+        
+  //   });
+  // }
 
   //封装了一个post请求 
   //  public ajaxPost(url:String, json:Object) {
@@ -48,4 +57,7 @@ export class LoginService {
   //     })
   //   })
   // }
+  public get(url: string){
+     this.http.get( url);
+  }
 }
