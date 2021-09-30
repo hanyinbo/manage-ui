@@ -3,6 +3,8 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import axios from 'axios';
+
 import { Login } from './login';
 import { Router } from '@angular/router';
 import { Result } from '../share/result';
@@ -22,23 +24,28 @@ export class LoginService {
     private router: Router) {
 
   }
-  // login(userName: string, password: string): Observable<Login> {
-  //   // const url = `${this.configUrl}/${id}`
-  //   const params = new HttpParams({
-  //     fromString: 'userName=' + userName
-  //   });
-  //   // return this.http.post<Login>(this.configUrl,)
-  // }
-  login(userName: string, password: string): Observable<Result> {
-    // const   d = new URLSearchParams();
-    // d.append('use',   'value' );
-    // d.append('para1',   'value' );
-
-    //  this.http.post(AUTH_API,params).subscribe(res=>{
-    //   this.router.navigateByUrl("/login");
-    // });
-    const s = AUTH_API + `?userName=${userName}&password=${password}`;
-    console.log(s);
-    this.http.get<Result>(AUTH_API + `?userName=${userName}&password=${password}`, httpOptions)
+  axiosLogin(api: string) {
+    return new Promise<Result>((resolve, reject) => {
+      axios.get(api).then(function (res) {
+        resolve(res.data);
+      }, (err) => {
+        reject(err);
+      })
+    })
   }
+
+  //封装了一个post请求 
+  //  public ajaxPost(url:String, json:Object) {
+  //   const httpoptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
+  //   };
+  //   var api = this.config.domain + url;
+  //   return new Promise((resove, reject) => {
+  //     this.http.post(api, json, httpoptions).subscribe((response) => {
+  //       resove(response);
+  //     }, (error) => {
+  //       reject(error);
+  //     })
+  //   })
+  // }
 }
