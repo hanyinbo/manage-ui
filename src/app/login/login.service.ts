@@ -32,7 +32,6 @@ export class LoginService {
         resolve(err);
       })
     }).catch(function (err){
-      
       return(err)
     })
     

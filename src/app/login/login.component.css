@@ -3,8 +3,12 @@
     height: 100%;
     background-image: url('../../assets/static/img/bg/meixi5.jpg');
     width: 100%;
-    background-size: cover;
+    background-size: 100% 100%; 
   
+}
+/*修改card外边距*/
+::ng-deep .ant-card-body{ 
+  padding: 0px;
 }
 /*设置card圆角弧度*/
 .ant-card{
@@ -13,16 +17,12 @@
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
-/*修改card外边距*/
-::ng-deep .ant-card-body{ 
-  padding: 0px;
-}
 /*设置登录card样式*/
 .login-card{
     width: 640px;
-    height: 400px;
-    left:64%;
-    top: 58%;
+    height:440px;
+    left:62%;
+    top: 56%;
     transform: translate(-50%,-50%);
     border: 0px;
 }
@@ -51,7 +51,7 @@
 .login-form-forgot {
     float: right;
     color: #f33636;
-    padding-bottom: 13px;
+    padding-bottom: 20px;
   }
 /*设置登录按钮样式*/
 .login-form-button {
@@ -63,17 +63,14 @@
 .login-right{
   width: 50%;
   float: right;
+
 }
-.login-right, .login-border {
-  position: relative;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  display: flex;
-}
+
 /*设置左边登录img样式*/
 .login-image{
- max-height: 400px;
+ position: absolute;
+ height: 100%;
  border-top-right-radius: 20px;
  border-bottom-right-radius: 20px;
 }
+
