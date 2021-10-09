@@ -9,6 +9,6 @@ export class AppComponent implements OnInit {
   title = 'manage-ui';
 
   ngOnInit() {
-    alert(JSON.stringify(environment));
+
   }
 }

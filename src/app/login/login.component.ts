@@ -11,11 +11,11 @@ import { Result } from '../share/result';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-
-  validateForm!: FormGroup;
   public list: any[] = [];
 
+  validateForm!: FormGroup;
+  // public list: any[] = [];
+  public result :Result;
   constructor(private fb: FormBuilder,
     private message: NzMessageService,
     private loginService: LoginService,
@@ -34,31 +34,21 @@ export class LoginComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
- 
+
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
-      const api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${password}`;
+      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${password}`;
       console.log("api地址" + api);
-      this.loginService.axiosLogin(api).then(response => {
-        debugger;
-        console.log("响应规定response：" + response.code);
-        if (response.code == 200) {
-          alert("登录成功")
-        }else{
-          alert("登录失败，"+response.code)
-        }
+      this.loginService.axiosLogin(api).then((res) => {
+         console.log('aixos请求' + res);
+ 
+        //  this.result=res;
+        //  if(res.code == 200){
+        //     alert('ok')
+        //  }
+      }).catch((e) => {
+        console.log("发生异常")
       })
-      //内置http请求
-      // this.http.get<Result>(api).subscribe((response: Result)=>{
-      //   console.log(response.code);
-      //   // alert(response);
-      // })
-// this.loginService.get(api).
-      // this.http.get<Result>(api).subscribe((reponse=>{
-      //   console.log("code:"+reponse.code); 
-      // }))
     }
   }
-
-
 }

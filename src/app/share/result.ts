@@ -1,4 +1,4 @@
-export interface Result {
+export class Result {
     code: number;
     data: string;
     msg: string;
