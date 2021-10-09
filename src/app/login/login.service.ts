@@ -27,10 +27,10 @@ export class LoginService {
   axiosLogin(api: string) {
     return new Promise((resolve, reject) => {
       axios.get(api).then((res) => {
-        resolve(JSON.stringify(res.data));
+        resolve(res.data);
       }, (err) => {
         // resolve(err);
-        resolve(JSON.stringify(err.response.data))
+        resolve(err.response.data)
       //  console.log('解析后：'+JSON.stringify(err.response.data))
       //   return Promise.reject(JSON.stringify(err.response.data));
       })
