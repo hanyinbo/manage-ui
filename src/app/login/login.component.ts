@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { RouterModule } from '@angular/router';
+import { AES, mode, pad, enc } from 'crypto-js';
 
 import { LoginService } from './login.service';
 import { Result } from '../share/result';
@@ -40,7 +40,10 @@ export class LoginComponent implements OnInit {
 
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
-      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${password}`;
+      //密码加密
+      let encPassword = this.encryptByEnAES(password)
+      console.log("加密后的密码："+encPassword);
+      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
         console.log("返回值"+JSON.stringify(res))
@@ -57,5 +60,14 @@ export class LoginComponent implements OnInit {
         console.log("发生异常")
       })
     }
+  }
+  //aes加密
+  encryptByEnAES(data: string): string {
+    let Key = "aisonsyyds";
+    let tmpAES = AES.encrypt(data, Key, {
+      mode: mode.CBC,
+      padding: pad.Pkcs7
+    });
+    return tmpAES.toString();
   }
 }
