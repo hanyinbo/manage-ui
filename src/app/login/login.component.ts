@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
   //aes加密
   encryptByEnAES(data: string): string {
-    let Key = "aisonsyyds";
+    let Key = "aisonnsyydszxdlo";
     let tmpAES = AES.encrypt(data, Key, {
       mode: mode.CBC,
       padding: pad.Pkcs7
