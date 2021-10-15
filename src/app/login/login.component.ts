@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+
 import * as CryptoJS from 'crypto-js';
+
 
 import { LoginService } from './login.service';
 import { Result } from '../share/result';
@@ -42,7 +44,6 @@ export class LoginComponent implements OnInit {
       let { userName, password } = this.validateForm.value;
       //密码加密
       let encPassword = this.encryptByEnAES(password)
-      console.log("加密后的密码：" + encPassword);
       let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
       })
     }
   }
+
   //DES加密
   encryptByEnAES(password: string): string {
 
