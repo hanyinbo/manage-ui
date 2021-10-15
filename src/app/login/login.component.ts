@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
 import * as CryptoJS from 'crypto-js';
-
-
 import { LoginService } from './login.service';
 import { Result } from '../share/result';
 import { Router } from '@angular/router';
-
-
 
 @Component({
   selector: 'app-login',
