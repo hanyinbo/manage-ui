@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { RouterModule } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
 
 import { LoginService } from './login.service';
 import { Result } from '../share/result';
@@ -40,16 +40,18 @@ export class LoginComponent implements OnInit {
 
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
-      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${password}`;
+      //密码加密
+      let encPassword = this.encryptByEnAES(password)
+      console.log("加密后的密码：" + encPassword);
+      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
-        console.log("返回值"+JSON.stringify(res))
         var data = JSON.parse(JSON.stringify(res));
-        console.log("解析返回值："+data)
         console.log("获取返回code的值：" + data.code)
         if (data.code == 200) {
           //路由到首页
           //this.router.navigateByUrl('');
+          this.message.success(data.msg);
         } else {
           this.message.warning(data.msg);
         }
@@ -57,5 +59,14 @@ export class LoginComponent implements OnInit {
         console.log("发生异常")
       })
     }
+  }
+  //DES加密
+  encryptByEnAES(password: string): string {
+
+    var key = CryptoJS.enc.Utf8.parse("a5h*jos&fj18oico");
+
+    var encrypted = CryptoJS.DES.encrypt(password, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+
+    return encrypted.ciphertext.toString();
   }
 }
