@@ -46,8 +46,9 @@ export class LoginComponent implements OnInit {
         console.log("获取返回code的值：" + data.code)
         if (data.code == 200) {
           //路由到首页
-          //this.router.navigateByUrl('');
           this.message.success(data.msg);
+          this.router.navigateByUrl('index');
+         
         } else {
           this.message.warning(data.msg);
         }
