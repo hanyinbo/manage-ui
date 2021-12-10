@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-
+import { LoggerService} from '../system/log/logger.service';
 import axios from 'axios';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, retry, tap, delay } from 'rxjs/operators';
+import { HttpErrorHandler } from '../system/error/http-error-handler.service';
+import { Result } from '../system/result/result';
+import {Upload } from './upload';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -12,7 +17,11 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class LoginService {
-  constructor() {
+  constructor(
+    private http: HttpClient,
+    private httpError: HttpErrorHandler,
+    private logger: LoggerService
+  ) {
   }
   axiosLogin(api: string) {
     return new Promise((resolve, reject) => {
@@ -25,7 +34,21 @@ export class LoginService {
       console.log(response.code)
     })
   }
+  doLogin(body: any): Observable<any> {
+    const produceName = "submitForm";
+    const url ='/auth/login';
+  
+    this.logger.debugRequest(JSON.stringify('service层的请求Body:'+body),produceName);
+    this.logger.info(JSON.stringify('service层的请求Body:'+body),produceName);
 
+      
+      return this.http.post<Result<Upload>>(url, httpOptions)
+      .pipe(
+        retry(1),
+        tap(data => this.logger.debugResponse(JSON.stringify(data), produceName)),
+        catchError(this.httpError.handleError(this.logger.title + '.' + produceName))
+      );  
+  }
   //封装了一个post请求 
   //  public ajaxPost(url:String, json:Object) {
   //   const httpoptions = {
@@ -40,4 +63,17 @@ export class LoginService {
   //     })
   //   })
   // }
+
+  // dologin(json:Object){
+  //   const httpoptions = {
+  //         headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=UTF-8'})
+  //       };
+
+  //       return new Promise(()=>{
+  //        axios.post(`http://localhost:8080/auth/login?`,json,httpoptions).then(res =>{
+  //         console.log('res=>',res);    
+  //        })
+  //       })
+  //   }
+   
 }

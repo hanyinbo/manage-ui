@@ -38,7 +38,12 @@ export class LoginComponent implements OnInit {
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
       //密码加密
-      let encPassword = this.encryptByEnAES(password)
+      let encPassword = this.encryptByEnAES(password);
+      const body={
+        'username':userName,
+        'password':password
+      }
+
       let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
@@ -55,7 +60,8 @@ export class LoginComponent implements OnInit {
       }).catch((e) => {
         console.log("发生异常")
       })
-    }
+
+     }
   }
 
   //DES加密
