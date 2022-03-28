@@ -48,8 +48,9 @@ export class LoginComponent implements OnInit {
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
         var data = JSON.parse(JSON.stringify(res));
-        console.log("获取返回code的值：" + data.code)
+        console.log("获取返回code的值：" + JSON.stringify(data.data.token))
         if (data.code == 200) {
+          localStorage.setItem('itcast-token',data.data.token)
           //路由到首页
           this.message.success(data.msg);
           this.router.navigateByUrl('index');

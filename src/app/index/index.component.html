@@ -1,0 +1,78 @@
+<nz-layout class="home-wrapper">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <div class="logo">
+         <img src="../../../assets/static/logo/logo.png" alt="后台管理系统"/>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline">
+        <li nz-submenu nzTitle="侠客管理" nzIcon="user" nzOpen>
+            <ul>
+                <li nz-menu-item routerLink='/index/list'>侠客江湖</li>
+                <li nz-menu-item routerLink='/index/settings'>江湖规矩</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="帮派管理" nzIcon="bank">
+            <ul>
+              <li nz-menu-item>帮派名单</li>
+              <!-- <li nz-menu-item>公司轮播图</li> -->
+              
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="入会管理" nzIcon="highlight">
+            <ul>
+              <li nz-menu-item>报备列表</li>
+              <!-- <li nz-menu-item>Option 12</li>
+              <li nz-menu-item>Option 13</li> -->
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="轮播图管理" nzIcon="file-image">
+            <ul>
+              <li nz-menu-item>首页轮播图</li>
+              <li nz-menu-item>公司轮播图</li> 
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="资讯管理" nzIcon="message">
+            <ul>
+              <li nz-menu-item>资讯列表</li>
+              <li nz-menu-item>公司轮播图</li> 
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="客户管理" nzIcon="team">
+            <ul>
+              <li nz-menu-item>客户列表</li>
+              <!-- <li nz-menu-item>公司轮播图</li>  -->
+            </ul>
+          </li>
+      </ul>
+
+    </nz-sider>
+    <nz-layout>
+      <nz-header >
+        <!-- <i
+          class="trigger"
+          nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"
+        ></i> -->
+        <div nz-row nzJustify="end">
+          <div nz-col nzSpan="4">
+            <nz-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar> 
+          
+            <a href="#" class="logout" nz-popconfirm
+            nzPopconfirmTitle="是否确定退出?"
+            (nzOnConfirm)="logout()" nzPopconfirmPlacement="bottom" > <i nz-icon nzType="logout" nzTheme="outline"></i>&nbsp;退出</a>
+          </div>
+        </div>
+    
+      </nz-header>
+      <nz-content>
+        <nz-breadcrumb> 
+          <!-- <nz-breadcrumb-item>User</nz-breadcrumb-item>
+          <nz-breadcrumb-item>Bill</nz-breadcrumb-item> -->
+        </nz-breadcrumb>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+      <nz-footer>吉维恩 ©2022 备案</nz-footer>
+    </nz-layout>
+  </nz-layout>
