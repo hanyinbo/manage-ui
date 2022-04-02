@@ -7,15 +7,17 @@ import { NZ_I18N, zh_CN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule ,HTTP_INTERCEPTORS} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {LoginComponent} from './login/login.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgZorroAntdModule } from './ng-zorro-antd.module';
 import { IndexComponent } from './index/index.component';
+
+import { AuthInterceptors } from './http-interceptors/auth.interceptors';
 registerLocaleData(zh);
 
 const antDesignIcons = AllIcons as {
@@ -42,7 +44,11 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
   exports: [
    
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: NZ_ICONS, useValue: icons }],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: NZ_ICONS, useValue: icons },{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptors,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
