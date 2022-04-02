@@ -3,17 +3,18 @@ import { KnightErrant } from '../knight-errant-type';
 import { KnightErrantService } from '../knight-errant.service';
 
 
-interface ItemData {
-  id: number;
-  nickName: string;
-  age: number;
-  gender: string;
-  phone: string;
-  identity: string;
-  activaCode: string;
-  creatime: string;
-  address: string;
-}
+// interface ItemData {
+//   id: number;
+//   nickName: string;
+//   age: number;
+//   gender: string;
+//   phone: string;
+//   identity: string;
+//   activaCode: string;
+//   creatime: string;
+//   address: string;
+// }
+// ItemData: KnightErrant
 
 @Component({
   selector: 'app-knight-errant-list',
@@ -21,7 +22,6 @@ interface ItemData {
   styleUrls: ['./knight-errant-list.component.css']
 })
 export class KnightErrantListComponent implements OnInit {
-  wxUserList:any;
   // listOfSelection = [
   //   {
   //     text: 'Select All Row',
@@ -46,7 +46,7 @@ export class KnightErrantListComponent implements OnInit {
   // ];
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly ItemData[] = [];
+  listOfCurrentPageData: readonly KnightErrant[] = [];
   listOfData: Array<KnightErrant>;
   setOfCheckedId = new Set<number>();
 
@@ -68,7 +68,7 @@ export class KnightErrantListComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly ItemData[]): void {
+  onCurrentPageDataChange($event: readonly KnightErrant[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }

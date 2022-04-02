@@ -1,20 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CompanyService } from '../company.service';
-import { Company } from '../company-type';
+import { SwiperImgService } from '../swiper-img.service';
+import { SwiperImg } from '../swiper-img-type';
 @Component({
-  selector: 'app-company-list',
-  templateUrl: './company-list.component.html',
-  styleUrls: ['./company-list.component.css']
+  selector: 'app-home-swiper',
+  templateUrl: './home-swiper.component.html',
+  styleUrls: ['./home-swiper.component.css']
 })
-export class CompanyListComponent implements OnInit {
+export class HomeSwiperComponent implements OnInit {
 
-  constructor(private companyService : CompanyService) { }
+  constructor(private swiperImgService: SwiperImgService) { }
+
+  ngOnInit(): void {
+    this.swiperImgService.getSwiperImgList().subscribe(res=>{
+      this.listOfData =  res.data
+    })
+  }
 
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly Company[] = [];
-  listOfData: Array<Company>;
+  listOfCurrentPageData: readonly SwiperImg[] = [];
+  listOfData: Array<SwiperImg>;
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -35,7 +41,7 @@ export class CompanyListComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly Company[]): void {
+  onCurrentPageDataChange($event: readonly SwiperImg[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -44,14 +50,5 @@ export class CompanyListComponent implements OnInit {
     this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
-  ngOnInit(): void {
 
-      this.companyService.getCompanyList().subscribe(res=>{
-       this.listOfData =  res.data;
-        console.log(res)
-      })
-    
-  }
-
-  
 }

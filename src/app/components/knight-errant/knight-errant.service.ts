@@ -13,7 +13,7 @@ export class KnightErrantService {
 
   
   }
-    //分页获取侍卫信息
+    //获取侍卫信息
     getWxUerList(){
       const token = localStorage.getItem('itcast-token')
 

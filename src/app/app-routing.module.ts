@@ -5,6 +5,7 @@ import { IndexComponent } from './index/index.component';
 import { AuthGuard } from './auth.guard';
 import { KnightErrantModule } from './components/knight-errant/knight-errant.module';
 import { CompanyModule } from './components/company/company.module';
+import { SwiperImgModule} from './components/swiper-img/swiper-img.module';
 
 const routes: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,6 +24,10 @@ const routes: Routes = [
    {
     path: 'company',
     loadChildren: './components/company/company.module#CompanyModule',
+  },
+  {
+    path: 'swiper',
+    loadChildren: './components/swiper-img/swiper-img.module#SwiperImgModule',
   }
   ],
     //路由守卫

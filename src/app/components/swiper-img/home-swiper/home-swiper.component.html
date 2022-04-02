@@ -9,12 +9,8 @@
         (nzCheckedChange)="onAllChecked($event)"
       ></th>
       <th nzWidth="70px">序号</th>
-        <th nzWidth="200px">公司名称</th>
-        <th nzWidth="100px">所属行业</th>
-        <th nzWidth="140px">所在区域</th>
-        <th nzWidth="120px">佣金(元)</th>
-        <th nzWidth="120px">招聘人数</th>
-        <th nzWidth="120px">创建时间</th>
+       <th >图片名称</th>
+       <th >图片</th>
         <th>操作</th>
       </tr>
     </thead>
@@ -22,11 +18,9 @@
       <tr *ngFor="let data of basicTable.data ">
         <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
         <td>{{ data.id }}</td>
-        <td nzEllipsis>{{ data.companyName }}</td>
-        <td>{{ data.industry }}</td>
-        <td nzEllipsis>{{ data.region}}</td>
-        <td>{{ data.money }}</td>
-        <td>{{ data.number }}</td>
+        <td>{{ data.imgName}}</td>
+        <td nzEllipsis>{{ data.imgUrl }}</td>
+        
         <!-- <td>{{ data.companyImgUrl }}</td> -->
         <td nzEllipsis>{{ data.creatime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
         <td>

@@ -1,0 +1,6 @@
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    background: #e2e5e7;
+}
+/* .ant-table-tbody > tr > td{
+    height: 1px;
+} */
