@@ -8,22 +8,30 @@
         [nzIndeterminate]="indeterminate"
         (nzCheckedChange)="onAllChecked($event)"
       ></th>
-       <th nzWidth="70px">序号</th>
-       <th >图片名称</th>
-       <th >图片</th>
-       <th>创建时间</th>
-       <th>操作</th>
+      <th nzWidth="70px">序号</th>
+        <th nzWidth="120px">客户名称</th>
+        <th nzWidth="120px">手机号</th>
+        <th nzWidth="70px">性别</th>
+        <th nzWidth="200px">意向公司</th>
+        <th nzWidth="160px">面试时间</th>
+        <th nzWidth="100px">客户状态</th>
+        <th nzWidth="120px">推荐人</th>
+        <th nzWidth="120px">备注</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of basicTable.data ">
         <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
         <td>{{ data.id }}</td>
-        <td>{{ data.imgName}}</td>
-        <!-- <td nzEllipsis>{{ data.imgUrl }}</td> -->
-        <td nzEllipsis class="swiper-img-td"><img  class="swiper-img" src="{{data.imgUrl}}" /></td>
-        <!-- <td>{{ data.companyImgUrl }}</td> -->
+        <td nzEllipsis>{{ data.customName }}</td>
+        <td>{{ data.telephone }}</td>
+        <td nzEllipsis>{{ data.gender}}</td>
+        <td nzEllipsis>{{ data.intentionCompany }}</td>
         <td nzEllipsis>{{ data.creatime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.recommendName }}</td>
+        <td nzEllipsis>{{ data.remark }}</td>
         <td>
           <a>删除</a>
           <nz-divider nzType="vertical"></nz-divider>

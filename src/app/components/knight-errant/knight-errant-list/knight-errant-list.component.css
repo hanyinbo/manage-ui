@@ -1,3 +1,18 @@
 .ant-table-tbody > tr.ant-table-row-selected td{
     background-color: #6eb2d1;
-    }
+}
+tr:nth-child(2n){
+    background:#fafafa;
+}
+
+::ng-deep  td{
+    text-align: center;
+}
+::ng-deep .ant-table-thead > tr > th {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+/* .ant-table-cell{
+    font-size: 10px;
+} */

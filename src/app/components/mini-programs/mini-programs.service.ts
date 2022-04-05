@@ -3,19 +3,16 @@ import { HttpClient } from '@angular/common/http';
 
 import { URL} from '../../config';
 import { Result } from '../../system/result/result';
-import { Company } from './company-type';
+import { NavigationImg } from './mini-type';
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyService {
+export class MiniProgramsService {
 
   constructor(private http:HttpClient) { }
 
-  getCompanyList(){
-    return this.http.get<Result<Company[]>>(`${URL}/mini/getAllCompanyList`)
+  getNavigationList(){
+    return this.http.get<Result<NavigationImg[]>>(`${URL}/mini/getNavigationImgList`)
   }
 
-  delCompanyById(id:number){
-    return this.http.delete(`${URL}/mini/delCompanyById/${id}`)
-  }
 }

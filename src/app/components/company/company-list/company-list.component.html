@@ -1,3 +1,11 @@
+<div>
+  <button nz-button nzType="primary"    class="reflesh-button">
+  <i nz-icon nzType="sync"></i> 
+</button>
+  <button nz-button nzType="primary" class="add-button">新增</button>
+</div>
+
+
 <nz-table #basicTable [nzData]="listOfData" [nzBordered]=true 
    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
     <thead>
@@ -14,14 +22,14 @@
         <th nzWidth="140px">所在区域</th>
         <th nzWidth="120px">佣金(元)</th>
         <th nzWidth="120px">招聘人数</th>
-        <th nzWidth="120px">创建时间</th>
+        <th nzWidth="160px">创建时间</th>
         <th>操作</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data ">
+      <tr *ngFor="let data of basicTable.data ; let i = index ;  trackBy: trackByCompanyId">
         <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-        <td>{{ data.id }}</td>
+        <td>{{ i }}</td>
         <td nzEllipsis>{{ data.companyName }}</td>
         <td>{{ data.industry }}</td>
         <td nzEllipsis>{{ data.region}}</td>
@@ -30,10 +38,24 @@
         <!-- <td>{{ data.companyImgUrl }}</td> -->
         <td nzEllipsis>{{ data.creatime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
         <td>
-          <a>删除</a>
+          <a (click)="showModal()">修改</a>
           <nz-divider nzType="vertical"></nz-divider>
-          <a>修改</a>
+          <a  nz-popconfirm
+          nzPopconfirmTitle="是否确认删除?"
+          (nzOnConfirm)="delConfirm(data.id)"
+          (nzOnCancel)="delCancel()"
+          nzPopconfirmPlacement="bottomRight">删除</a> 
         </td>
       </tr>
     </tbody>
-  </nz-table>
+</nz-table>
+<!-- 编辑公司信息 -->
+<nz-modal [(nzVisible)]="isShowCompanyModel" nzTitle="编辑公司" (nzOnCancel)="handleEditCompanyCancel()" (nzOnOk)="handleEditCompanyOk()">
+  <ng-container *nzModalContent>
+    <!-- 公司名称 -->
+   <nz-form-item>
+      <nz-form-label [nzSpan]="5"> 客户名称</nz-form-label>
+      <nz-form-control  [nzSpan]="10"></nz-form-control>
+   </nz-form-item>
+  </ng-container>
+</nz-modal>

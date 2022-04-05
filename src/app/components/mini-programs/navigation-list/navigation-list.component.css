@@ -3,6 +3,10 @@
     height: 60px; 
 }
 
+tr:nth-child(2n){
+    background:#fafafa;
+}
+
 ::ng-deep .ant-table-thead > tr > th {
     font-size: 15px;
     font-weight: bold;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { CompanyService } from '../company.service';
 import { Company } from '../company-type';
@@ -9,8 +10,11 @@ import { Company } from '../company-type';
 })
 export class CompanyListComponent implements OnInit {
 
-  constructor(private companyService : CompanyService) { }
+  constructor(private companyService : CompanyService,
+              private nzMessageService: NzMessageService) { }
 
+  //控制公司对话框
+  isShowCompanyModel = false;
   checked = false;
   indeterminate = false;
   listOfCurrentPageData: readonly Company[] = [];
@@ -53,5 +57,32 @@ export class CompanyListComponent implements OnInit {
     
   }
 
-  
+  showModal(): void {
+    this.isShowCompanyModel = true;
+  }
+
+  handleEditCompanyOk(): void {
+    console.log('Button ok clicked!');
+    this.isShowCompanyModel = false;
+  }
+
+  handleEditCompanyCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isShowCompanyModel = false;
+  }
+  // 删除公司
+  delConfirm(id:number){
+    console.log('删除ID:'+id)
+    this.companyService.delCompanyById(id).subscribe(res=>{
+      console.log('删除调用接口返回:'+res)
+    })
+    this.nzMessageService.info('确认删除');
+  }
+  delCancel(){
+    this.nzMessageService.info('取消删除',{nzDuration: 1000});
+  }
+  //列表追踪
+  trackByCompanyId(index: number,company:Company){
+    return company.id
+  }
 }

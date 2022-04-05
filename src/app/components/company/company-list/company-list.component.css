@@ -1,6 +1,19 @@
 .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
     background: #e2e5e7;
 }
-/* .ant-table-tbody > tr > td{
-    height: 1px;
+
+::ng-deep .ant-table-thead > tr > th {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+/* 
+.reflesh-button{
+    margin-right: 30px;
+}
+.add-button{
+    padding-right: 100px;
+} */
+/* .ng-star-inserted{
+    margin-left: 100px;
 } */
