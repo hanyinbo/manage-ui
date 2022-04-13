@@ -1,4 +1,4 @@
-export interface Company{
+export interface Recruit{
   id: number;
   companyName: string;
   address: string;
@@ -16,4 +16,19 @@ export interface Company{
   updatime: Date;
   updator: string;
 
+}
+
+export interface Company{
+  id: bigint;
+  companyName: string;
+  companyCode: string;
+  introduce: string;
+  address: string;
+  industry: string;
+  region: string;
+  delFlag: number;
+  creatime: Date;
+  creator: string;
+  updatime: Date;
+  updator: string;
 }

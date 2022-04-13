@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 import { NgZorroAntdModule } from '../../ng-zorro-antd.module';
 import { KnightErrantRoutingModule } from './knight-errant-routing.module';
@@ -12,6 +13,7 @@ import { KnightErrantSettingsComponent } from './knight-errant-settings/knight-e
   imports: [
     CommonModule,
     NgZorroAntdModule,
+    ReactiveFormsModule,
     KnightErrantRoutingModule
   ]
 })

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { URL} from '../../config';
 import { Result } from '../../system/result/result';
-import { Company } from './company-type';
+import { Recruit ,Company } from './company-type';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,11 +11,24 @@ export class CompanyService {
 
   constructor(private http:HttpClient) { }
 
-  getCompanyList(){
-    return this.http.get<Result<Company[]>>(`${URL}/mini/getAllCompanyList`)
+  getRecruitList(){
+    return this.http.get<Result<Recruit[]>>(`${URL}/mini/getAllRecruitList`)
   }
 
-  delCompanyById(id:number){
-    return this.http.delete(`${URL}/mini/delCompanyById/${id}`)
+  delRecruitById(id:number){
+    return this.http.delete<Result<Boolean>>(`${URL}/mini/delRecruitById/${id}`)
+  }
+
+  // 获取公司列表
+  getCompanyList(){
+    return this.http.get<Result<Company[]>>(`${URL}/mini/getCompanyList`)
+  }
+  // 删除公司
+  delCompanyById(id:bigint){
+    return this.http.delete<Result<Boolean>>(`${URL}/mini/delCompanyById/${id}`)   
+  }
+  // 添加公司
+  addCompany(company: Company){
+    return this.http.post<Result<Boolean>>(`${URL}/mini/addCompany`,company)
   }
 }

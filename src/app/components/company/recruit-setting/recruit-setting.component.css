@@ -19,7 +19,3 @@
 button {
     margin-left: 8px;
 }
-/* 偶数列样式 */
-tr:nth-child(2n){
-    background:#fafafa;
-}

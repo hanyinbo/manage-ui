@@ -1,0 +1,149 @@
+
+  <button nz-button nzType="primary"   class="reflesh-button" >
+    <i nz-icon nzType="sync"></i> 
+  </button>
+  
+  
+    <button nz-button nzType="primary" class="add-button">新增</button>
+  
+  
+  
+  <nz-table #basicTable [nzData]="listOfData" [nzBordered]=true 
+     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
+      <thead>
+        <tr>
+          <th
+          nzWidth="50px"
+          [(nzChecked)]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"
+        ></th>
+        <th nzWidth="70px">序号</th>
+          <th nzWidth="200px">公司名称</th>
+          <th nzWidth="100px">所属行业</th>
+          <th nzWidth="140px">所在区域</th>
+          <th nzWidth="120px">佣金(元)</th>
+          <th nzWidth="120px">招聘人数</th>
+          <th nzWidth="160px">创建时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data ; let i = index ;  trackBy: trackByCompanyId">
+          <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+          <td>{{ i }}</td>
+          <td nzEllipsis>{{ data.companyName }}</td>
+          <td>{{ data.industry }}</td>
+          <td nzEllipsis>{{ data.region}}</td>
+          <td>{{ data.money }}</td>
+          <td>{{ data.number }}</td>
+          <!-- <td>{{ data.companyImgUrl }}</td> -->
+          <td nzEllipsis>{{ data.creatime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+          <td>
+            <a (click)="showModal()">修改</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a  nz-popconfirm
+            nzPopconfirmTitle="是否确认删除?"
+            (nzOnConfirm)="delConfirm(data.id)"
+            (nzOnCancel)="delCancel()"
+            nzPopconfirmPlacement="bottomRight">删除</a> 
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+  <!-- 编辑公司信息 -->
+  <nz-modal [(nzVisible)]="isShowCompanyModel" nzTitle="编辑公司" (nzOnCancel)="handleEditCompanyCancel()" (nzOnOk)="handleEditCompanyOk()">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>公司名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入公司名称" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>所属行业</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
+          <input nz-input formControlName="email" placeholder="请输入所属行业" type="email" />
+          <ng-template #emailErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please input your E-mail!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>所属区域</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入所属区域" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>公司地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入公司地址" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>面试地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入面试地址" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>招聘岗位</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入招聘岗位" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>佣金(元)</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入佣金" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+     
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>招聘人数</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="userName" placeholder="请输入招聘人数" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>公司简介</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
+          <textarea formControlName="comment" nz-input rows="2" placeholder="请输入公司简介"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>福利待遇</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
+          <textarea formControlName="comment" nz-input rows="2" placeholder="请输入福利待遇"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+          <button nz-button nzType="primary" [disabled]="!validateForm.valid">Submit</button>
+          </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-modal>
+  

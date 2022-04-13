@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { IndexComponent } from './index/index.component';
 import { AuthGuard } from './auth.guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KnightErrantModule } from './components/knight-errant/knight-errant.module';
 import { CompanyModule } from './components/company/company.module';
 import { SwiperImgModule} from './components/swiper-img/swiper-img.module';
