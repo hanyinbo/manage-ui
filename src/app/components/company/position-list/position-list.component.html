@@ -1,0 +1,145 @@
+<div class="form-wrapper">
+    <form nz-form [formGroup]="positionSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+        <div nz-row [nzGutter]="24" class="row-control">
+            <div nz-col [nzSpan]="6">
+                <nz-form-item class="search-form-item">
+                    <nz-form-label>职位名称</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入职位名称!">
+                        <input type="text" nz-input formControlName="positionName" placeholder="请输入职位名称" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+                <nz-form-item>
+                    <nz-form-label>职位编码</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入职位编码!">
+                        <input type="text" nz-input formControlName="positionCode" placeholder="请输入职位编码" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="24" class="search-area">
+                <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+                <button nz-button (click)="resetForm()">清空</button>
+                <a class="collapse" (click)="isCollapse=!isCollapse">
+                    {{isCollapse ? '收起' : '展开'}}
+                    <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+                </a>
+            </div>
+
+        </div>
+    </form>
+</div>
+<button nz-button nzType="primary" class="reflesh-button">
+    <i nz-icon nzType="sync"></i></button>
+<button nz-button nzType="primary" class="add-button" (click)='showAddModal()'>新增</button>
+<!-- 职位列表 -->
+<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
+    <thead>
+        <tr>
+            <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)"></th>
+            <th nzWidth="70px">序号</th>
+            <th>职位名称</th>
+            <th>职位编码</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data ; let i = index ;  ">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ i+1 }}</td>
+            <td>{{ data.positionName }}</td>
+            <td>{{ data.positionCode}}</td>
+            <td>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+            <td>
+                <a (click)="showInfoModal(data.id)">详情</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="showEditModal(data.id)">修改</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)"
+                    (nzOnCancel)="delCancel()" nzPopconfirmPlacement="bottomRight">删除</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<!-- 新增职位 -->
+<nz-modal [(nzVisible)]="isShowAddPositionModel" nzTitle="职位新增" (nzOnCancel)="handleAddPositionCancel()"
+    (nzOnOk)="handleAddPositionOk($event,positionAddForm.value)">
+    <form nz-form [formGroup]="positionAddForm">
+        <!-- 昵称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>职位名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="positionNameErrorTpl">
+                <input nz-input formControlName="positionName" />
+                <ng-template #positionNameErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 职位编码 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6">职位编码</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="positionCode" />
+            </nz-form-control>
+        </nz-form-item>
+
+    </form>
+</nz-modal>
+
+<!-- 职位详情 -->
+<nz-modal [(nzVisible)]="isShowInfoPositionModel" nzTitle="职位详情" [nzFooter]=null
+    (nzOnCancel)="handleInfoPositionCancel()">
+    <form nz-form [formGroup]="positionForm">
+        <!-- 昵称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>职位名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating...">
+                <input nz-input formControlName="positionName" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 职位编码 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6">职位编码</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="positionCode" />
+            </nz-form-control>
+        </nz-form-item>
+
+    </form>
+</nz-modal>
+
+<!--修改职位信息 -->
+<nz-modal [(nzVisible)]="isShowEditPositionModel" nzTitle="编辑职位" (nzOnCancel)="handleEditPositionCancel()"
+    (nzOnOk)="handleEditPositionOk($event,positionForm.value)">
+    <form nz-form [formGroup]="positionForm">
+        <!-- 昵称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>职位名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="positionNameErrorTpl">
+                <input nz-input formControlName="positionName" />
+                <ng-template #positionNameErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 职位编码 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6">职位编码</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="positionCode" />
+            </nz-form-control>
+        </nz-form-item>
+
+    </form>
+</nz-modal>

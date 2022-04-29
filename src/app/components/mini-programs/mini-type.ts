@@ -3,8 +3,8 @@ export interface NavigationImg{
     imgName: string;
     imgUrl: string;
     navigationUrl: string;
-    creatime: Date;
+    createTime: Date;
     creator: string;
-    updatime: Date;
+    updateTime: Date;
     updator: string;
 }

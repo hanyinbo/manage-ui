@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { Observable, Observer } from 'rxjs';
 
 import { CompanyService } from '../company.service';
-import { Recruit } from '../company-type';
+import { Recruit, Company } from '../company-type';
 @Component({
   selector: 'app-recruit-setting',
   templateUrl: './recruit-setting.component.html',
@@ -17,18 +17,18 @@ export class RecruitSettingComponent implements OnInit {
   constructor(private companyService: CompanyService,
     private nzMessageService: NzMessageService,
     private fb: FormBuilder) {
-   
+
   }
- 
-  //控制公司对话框
-  isShowCompanyModel = false;
+
+  //控制新增招聘对话框
+  isShowAddRecruitModel = false;
   checked = false;
   indeterminate = false;
   listOfCurrentPageData: readonly Recruit[] = [];
   listOfData: Array<Recruit>;
-  setOfCheckedId = new Set<number>();
-
-  updateCheckedSet(id: number, checked: boolean): void {
+  setOfCheckedId = new Set<bigint>();
+  optionList: Array<Company>;
+  updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
     } else {
@@ -36,7 +36,7 @@ export class RecruitSettingComponent implements OnInit {
     }
   }
 
-  onItemChecked(id: number, checked: boolean): void {
+  onItemChecked(id: bigint, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
   }
@@ -56,34 +56,54 @@ export class RecruitSettingComponent implements OnInit {
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
   ngOnInit(): void {
+    this.validateForm = this.fb.group({
+      companyName: ['', [Validators.required]],
+      industry: ['', [Validators.required]],
+      region: ['', [Validators.required]],
+      money: ['', [Validators.required]],
+      number: ['', [Validators.required]],
+      position: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      companyIntroduce: [''],
+      welfare: ['', [Validators.required]],
+      jobRequire: ['', [Validators.required]],
+    });
+
+    this.fetchRecruitData();
+
+    this.fetchCompanyData();
+  }
+
+  //  获取招聘信息
+  fetchRecruitData() {
     this.companyService.getRecruitList().subscribe(res => {
-      this.listOfData = res.data;
+      if(res.code==200){
+        this.listOfData = res.data;
+      }
       console.log(res)
     });
-    
-    this.validateForm = this.fb.group({
-      userName: ['', [Validators.required]],
-      email: ['',  [Validators.required]],
-      password: ['', [Validators.required]],
-      confirm: ['',[Validators.required]],
-      comment: ['', [Validators.required]]
-    });
-  
+  }
+  // 获取公司列表
+  fetchCompanyData(){
+    this.companyService.getCompanyList().subscribe(res =>{
+      if(res.code==200){
+         this.optionList= res.data
+      }
+      console.log("公司列表："+JSON.stringify(this.optionList))
+    })
+  }
+  showAddModal(): void {
+    this.isShowAddRecruitModel = true;
   }
 
-
-  showModal(): void {
-    this.isShowCompanyModel = true;
-  }
-
-  handleEditCompanyOk(): void {
+  handleAddRecruitOk(): void {
     console.log('Button ok clicked!');
-    this.isShowCompanyModel = false;
+    this.isShowAddRecruitModel = false;
   }
 
-  handleEditCompanyCancel(): void {
+  handleAddRecruitCancel(): void {
     console.log('Button cancel clicked!');
-    this.isShowCompanyModel = false;
+    this.isShowAddRecruitModel = false;
   }
   // 删除公司
   delConfirm(id: number) {

@@ -6,9 +6,10 @@ import { NgZorroAntdModule } from '../../ng-zorro-antd.module';
 import { CompanyRoutingModule } from './company-routing.module';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { RecruitSettingComponent } from './recruit-setting/recruit-setting.component';
+import { PositionListComponent } from './position-list/position-list.component';
 
 @NgModule({
-  declarations: [CompanyListComponent, RecruitSettingComponent],
+  declarations: [CompanyListComponent, RecruitSettingComponent, PositionListComponent],
   imports: [
     CommonModule,
     NgZorroAntdModule,

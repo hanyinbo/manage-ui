@@ -1,19 +1,13 @@
-.ant-table-tbody > tr.ant-table-row-selected td{
-    background-color: #6eb2d1;
+/* 鼠标滑动td的样式 */
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    background: #e2e5e7;
 }
-tr:nth-child(2n){
-    background:#fafafa;
-}
-
-::ng-deep  td{
-    text-align: center;
-}
+/* 表头 */
 ::ng-deep .ant-table-thead > tr > th {
     font-size: 15px;
     font-weight: bold;
     text-align: center;
 }
-
 /* 刷新 新增按钮样式 */
 .reflesh-button{
     margin-right: 5px;
@@ -24,6 +18,10 @@ tr:nth-child(2n){
 }
 button {
     margin-left: 8px;
+}
+/* 偶数列样式 */
+tr:nth-child(2n){
+    background:#fafafa;
 }
 
 
@@ -40,8 +38,12 @@ button {
     overflow: visible;
   }
 
+  button {
+    margin-left: 8px;
+  }
+
   .collapse {
-    margin-left: 5px;
+    margin-left: 8px;
     font-size: 12px;
   }
 

@@ -10,8 +10,8 @@ export interface Recomment{
     recommendName: string;
     recommendId: number;
     remark: string;
-    creatime: Date;
+    createTime: Date;
     creator: string;
-    updatime: Date;
+    updateTime: Date;
     updator: string;
 }

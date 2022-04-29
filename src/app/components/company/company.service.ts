@@ -1,34 +1,79 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { URL} from '../../config';
+import { URL } from '../../config';
 import { Result } from '../../system/result/result';
-import { Recruit ,Company } from './company-type';
+import { Recruit, Company, Position } from './company-type';
+
+const params = new HttpParams()
+
+const headers = new HttpHeaders()
+  .set('content-Type', 'application/json;charset=UTF-8"')
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
 
-  constructor(private http:HttpClient) { }
 
-  getRecruitList(){
+  constructor(private http: HttpClient) { }
+
+  getRecruitList() {
     return this.http.get<Result<Recruit[]>>(`${URL}/mini/getAllRecruitList`)
   }
 
-  delRecruitById(id:number){
+  delRecruitById(id: number) {
     return this.http.delete<Result<Boolean>>(`${URL}/mini/delRecruitById/${id}`)
   }
 
   // 获取公司列表
-  getCompanyList(){
+  getCompanyList() {
     return this.http.get<Result<Company[]>>(`${URL}/mini/getCompanyList`)
   }
   // 删除公司
-  delCompanyById(id:bigint){
-    return this.http.delete<Result<Boolean>>(`${URL}/mini/delCompanyById/${id}`)   
+  delCompanyById(id: bigint) {
+    return this.http.delete<Result<Boolean>>(`${URL}/mini/delCompanyById/${id}`)
   }
   // 添加公司
-  addCompany(company: Company){
-    return this.http.post<Result<Boolean>>(`${URL}/mini/addCompany`,company)
+  addCompany(company: Company) {
+    return this.http.post<Result<Boolean>>(`${URL}/mini/addCompany`, company)
+  }
+  // 获取公司信息
+  getCompanyInfo(id: bigint) {
+    return this.http.get<Result<Company[]>>(`${URL}/mini/getCompanyInfo/${id}`)
+  }
+  // 修改公司信息
+  updateCompany(param: Company) {
+    return this.http.put<Result<Boolean>>(`${URL}/mini/updateCompany`, param)
+  }
+  // 分页获取公司
+  getPageOfCompany(body: any) {
+    return this.http.get<Result<Company[]>>(`${URL}/mini/getPageOfCompany`, { params: body, headers: headers })
+  }
+  // 获取职位信息
+  getPositionInfo(id: bigint) {
+    return this.http.get<Result<Position>>(`${URL}/mini/getPositionInfo/${id}`)
+  }
+  // 获取职位列表
+  getPositionList() {
+    return this.http.get<Result<Position[]>>(`${URL}/mini/getPositionList`)
+  }
+  // 删除职位
+  delPositionById(id: bigint) {
+    return this.http.delete<Result<Boolean>>(`${URL}/mini/delPositionById/${id}`)
+  }
+  // 添加职位
+  addPosition(position: Position) {
+    return this.http.post<Result<Boolean>>(`${URL}/mini/addPosition`, position)
+  }
+  // 修改职位信息
+  updatePosition(param: Position) {
+    return this.http.put<Result<Boolean>>(`${URL}/mini/updatePosition`, param)
+  }
+  // 分页获取职位
+  getPageOfPosition(body: any) {
+    return this.http.get<Result<Position[]>>(`${URL}/mini/getWxPositionPage`, { params: body, headers: headers })
   }
 }

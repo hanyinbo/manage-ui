@@ -1,5 +1,5 @@
 export interface KnightErrant{
-    id: number;
+    id: bigint;
     nickName: string;
     age: number;
     gender: number;
@@ -13,8 +13,8 @@ export interface KnightErrant{
     activeCode: string;
     identity: string;
     delFlag: number;
-    creatime: Date;
+    createTime: Date;
     creator: string;
-    updatime: Date;
+    updateTime: Date;
     updator: string;
 }

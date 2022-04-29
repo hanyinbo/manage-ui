@@ -1,5 +1,5 @@
 export interface Recruit{
-  id: number;
+  id: bigint;
   companyName: string;
   address: string;
   industry: string;
@@ -11,9 +11,9 @@ export interface Recruit{
   welfare: string;
   jobRequire: string;
   companyImgUrl: string;
-  creatime: Date;
+  createTime: Date;
   creator: string;
-  updatime: Date;
+  updateTime: Date;
   updator: string;
 
 }
@@ -27,8 +27,18 @@ export interface Company{
   industry: string;
   region: string;
   delFlag: number;
-  creatime: Date;
+  createTime: Date;
   creator: string;
-  updatime: Date;
+  updateTime: Date;
+  updator: string;
+}
+export interface Position{
+  id: bigint;
+  positionName: string;
+  positionCode: string;
+  delFlag: number;
+  createTime: Date;
+  creator: string;
+  updateTime: Date;
   updator: string;
 }
