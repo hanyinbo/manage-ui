@@ -195,8 +195,8 @@ export class PositionListComponent implements OnInit {
       positionCode: ['']
     });
   }
-  // 查询
-  search() {
+   // 查询
+   search() {
     for (const i in this.positionSearchForm.controls) {
       this.positionSearchForm.controls[i].markAsDirty();
       this.positionSearchForm.controls[i].updateValueAndValidity();

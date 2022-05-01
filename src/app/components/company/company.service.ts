@@ -24,10 +24,13 @@ export class CompanyService {
     return this.http.get<Result<Recruit[]>>(`${URL}/mini/getAllRecruitList`)
   }
 
-  delRecruitById(id: number) {
-    return this.http.delete<Result<Boolean>>(`${URL}/mini/delRecruitById/${id}`)
+  delRecruit(id: bigint) {
+    return this.http.delete<Result<Boolean>>(`${URL}/mini/delRecruit/${id}`)
   }
-
+  //添加招聘
+  addRecruitInfo(param:Recruit){
+     return this.http.post<Result<Boolean>>(`${URL}/mini/addRecruitInfo`,param)
+  }
   // 获取公司列表
   getCompanyList() {
     return this.http.get<Result<Company[]>>(`${URL}/mini/getCompanyList`)

@@ -2,6 +2,7 @@ export interface Recruit{
   id: bigint;
   companyName: string;
   address: string;
+  interviewAddress: string;
   industry: string;
   region: string;
   position: string;

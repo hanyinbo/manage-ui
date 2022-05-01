@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { Observable, Observer } from 'rxjs';
 
 import { CompanyService } from '../company.service';
-import { Recruit, Company } from '../company-type';
+import { Recruit, Company, Position } from '../company-type';
 @Component({
   selector: 'app-recruit-setting',
   templateUrl: './recruit-setting.component.html',
@@ -13,13 +13,30 @@ import { Recruit, Company } from '../company-type';
 export class RecruitSettingComponent implements OnInit {
 
   validateForm: FormGroup;
+  recruitAddForm: FormGroup;
 
   constructor(private companyService: CompanyService,
     private nzMessageService: NzMessageService,
     private fb: FormBuilder) {
 
-  }
+    this.recruitAddForm = this.fb.group({
+      companyName: ['', [Validators.required]],
+      interviewAddress: ['', [Validators.required]],
+      industry: ['', [Validators.required]],
+      region: ['', [Validators.required]],
+      money: ['', [Validators.required]],
+      number: ['', [Validators.required]],
+      position: [null, [Validators.required]],
+      workPositionList: [null, [Validators.required]],
+      address: ['', [Validators.required]],
+      companyIntroduce: [''],
+      welfare: ['', [Validators.required]],
+      jobRequire: ['', [Validators.required]],
+    });
 
+  }
+  // listOfSelectedValue
+  listOfSelectedValue = ['开发测试', '221'];
   //控制新增招聘对话框
   isShowAddRecruitModel = false;
   checked = false;
@@ -27,7 +44,13 @@ export class RecruitSettingComponent implements OnInit {
   listOfCurrentPageData: readonly Recruit[] = [];
   listOfData: Array<Recruit>;
   setOfCheckedId = new Set<bigint>();
-  optionList: Array<Company>;
+  companyList: Array<Company>;
+  positionList: Array<Position>;
+  listOfOption: Array<{ label: string; value: string }> = [];
+  position: Position;
+  positionNameList: Array<string>;
+  companyIdList: Array<bigint>;
+  addParam: any;
   updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
@@ -56,63 +79,104 @@ export class RecruitSettingComponent implements OnInit {
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
   ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      companyName: ['', [Validators.required]],
-      industry: ['', [Validators.required]],
-      region: ['', [Validators.required]],
-      money: ['', [Validators.required]],
-      number: ['', [Validators.required]],
-      position: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      companyIntroduce: [''],
-      welfare: ['', [Validators.required]],
-      jobRequire: ['', [Validators.required]],
-    });
+
 
     this.fetchRecruitData();
 
     this.fetchCompanyData();
+
+    this.fetchPositionData();
+
   }
 
   //  获取招聘信息
   fetchRecruitData() {
     this.companyService.getRecruitList().subscribe(res => {
-      if(res.code==200){
+      if (res.code == 200) {
         this.listOfData = res.data;
       }
-      console.log(res)
     });
   }
   // 获取公司列表
-  fetchCompanyData(){
-    this.companyService.getCompanyList().subscribe(res =>{
-      if(res.code==200){
-         this.optionList= res.data
+  fetchCompanyData() {
+    this.companyService.getCompanyList().subscribe(res => {
+      if (res.code == 200) {
+        this.companyList = res.data
       }
-      console.log("公司列表："+JSON.stringify(this.optionList))
+      console.log("公司列表：" + JSON.stringify(this.companyList))
     })
   }
+  // 获取岗位列表
+  fetchPositionData() {
+    this.companyService.getPositionList().subscribe(res => {
+      if (res.code == 200) {
+        this.positionList = res.data
+        // this.positionList.forEach(p=>{
+        //   this.listOfOption.push({
+        //     label: p.positionName,
+        //     value: p.positionCode
+        //   })
+        // })
+      }
+      console.log('初始化岗位列表：' + JSON.stringify(this.listOfOption))
+    })
+  }
+  // 控制新增窗口
   showAddModal(): void {
     this.isShowAddRecruitModel = true;
   }
+  // 新增招聘
+  handleAddRecruitOk(e: Event, value: FormGroup): void {
+    Object.keys(this.recruitAddForm.controls).forEach(key => {
+      this.recruitAddForm.controls[key].markAsDirty()
+      this.recruitAddForm.controls[key].updateValueAndValidity()
+    })
+    let { workPositionList, companyName } = this.recruitAddForm.value;
 
-  handleAddRecruitOk(): void {
-    console.log('Button ok clicked!');
-    this.isShowAddRecruitModel = false;
+    // 公司
+    this.companyList.filter(company => {
+      if (company.id == companyName) {
+        this.addParam = { ...this.recruitAddForm.value, companyName: company.companyName, companyId: company.id }
+      }
+    })
+    console.log('公司列表重新赋值1：' + JSON.stringify(this.addParam))
+    // 招聘岗位
+    this.positionNameList = workPositionList;
+    // this.positionIdList.forEach(p => {
+    //   const pstr = "";
+    //   this.positionList.filter(pos => {
+    //     if (p == pos.id) {
+    //       pstr+pos.positionName
+    //       console.log('过滤匹配岗位：' + JSON.stringify(pos));
+    //       //this.addParam = {...this.recruitAddForm.value,pos:company.companyName}
+    //       // const param = {...this.recruitAddForm.value,:this.position.} 
+    //     }
+    //   })
+    // })
+    // this.isShowAddRecruitModel = false;
+    this.companyService.addRecruitInfo(this.addParam).subscribe(res => {
+      if (res.code == 200) {
+        console.log('新增招聘成功')
+      }
+    });
   }
-
+  // 取消新增招聘
   handleAddRecruitCancel(): void {
     console.log('Button cancel clicked!');
     this.isShowAddRecruitModel = false;
   }
-  // 删除公司
-  delConfirm(id: number) {
-    console.log('删除ID:' + id)
-    this.companyService.delRecruitById(id).subscribe(res => {
-      console.log('删除调用接口返回:' + res)
+  // 删除公司招聘
+  delConfirm(id: bigint) {
+    this.companyService.delRecruit(id).subscribe(res => {
+      if (res.code == 200) {
+        this.listOfData = this.listOfData.filter(position => position.id != id)
+        this.nzMessageService.create('success', '删除公司招聘成功');
+      } else {
+        this.nzMessageService.create('error', res.msg);
+      }
     })
-    this.nzMessageService.info('确认删除');
   }
+  // 取消删除公司招聘
   delCancel() {
     this.nzMessageService.info('取消删除', { nzDuration: 1000 });
   }
