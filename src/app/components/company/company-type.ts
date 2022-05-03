@@ -16,7 +16,6 @@ export interface Recruit{
   creator: string;
   updateTime: Date;
   updator: string;
-
 }
 
 export interface Company{
@@ -42,4 +41,34 @@ export interface Position{
   creator: string;
   updateTime: Date;
   updator: string;
+}
+
+export interface RecruitDTO{
+  id: bigint;
+  companyName: string;
+  companyId: bigint;
+  interviewAddress: string;
+  money: number;
+  number: number;
+  welfare: string;
+  jobRequire: string;
+  company: Company;
+  wxPositionList: Array<Position>;
+}
+
+
+export interface RecruitInfoDTO{
+  id: bigint;
+  companyName: string;
+  companyId: bigint;
+  industry: string;
+  region: string;
+  address: string
+  interviewAddress: string;
+  money: number;
+  number: number;
+  wxPositionList: Array<string>;
+  welfare: string;
+  jobRequire: string;
+  createTime: Date;
 }

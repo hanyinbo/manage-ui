@@ -1,3 +1,76 @@
+<div class="form-wrapper">
+  <form nz-form [formGroup]="recruitSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24" class="row-control">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item class="search-form-item">
+          <nz-form-label>公司名称</nz-form-label>
+          <nz-form-control nzErrorTip="请输入公司名称!">
+            <input type="text" nz-input formControlName="companyName" placeholder="请输入公司名称" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item>
+          <nz-form-label>所属行业</nz-form-label>
+          <nz-form-control nzErrorTip="请输入所属行业!">
+            <input type="text" nz-input formControlName="industry" placeholder="请输入所属行业" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item>
+          <nz-form-label>所属区域</nz-form-label>
+          <nz-form-control nzErrorTip="请输入所属区域!">
+            <input type="text" nz-input formControlName="region" placeholder="请输入所属区域" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item>
+          <nz-form-label>公司地址</nz-form-label>
+          <nz-form-control nzErrorTip="请输入公司地址!">
+            <input type="text" nz-input formControlName="address" placeholder="请输入公司地址" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6" *ngIf="isCollapse">
+        <nz-form-item>
+            <nz-form-label>面试地址</nz-form-label>
+            <nz-form-control nzErrorTip="请输入面试地址!">
+                <input type="text" nz-input formControlName="interviewAddress" placeholder="请输入面试地址" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6" *ngIf="isCollapse">
+      <nz-form-item>
+          <nz-form-label>佣金(元)</nz-form-label>
+          <nz-form-control nzErrorTip="请输入佣金(元)!">
+              <input type="text" nz-input formControlName="money" placeholder="请输入佣金(元)" />
+          </nz-form-control>
+      </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" *ngIf="isCollapse">
+    <nz-form-item>
+        <nz-form-label>招聘人数</nz-form-label>
+        <nz-form-control nzErrorTip="请输入招聘人数!">
+            <input type="text" nz-input formControlName="number" placeholder="请输入招聘人数" />
+        </nz-form-control>
+    </nz-form-item>
+</div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+        <button nz-button (click)="resetForm()">清空</button>
+        <a class="collapse" (click)="isCollapse=!isCollapse">
+          {{isCollapse ? '收起' : '展开'}}
+          <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+        </a>
+      </div>
+
+    </div>
+  </form>
+</div>
 <button nz-button nzType="primary" class="reflesh-button">
   <i nz-icon nzType="sync"></i>
 </button>
@@ -22,7 +95,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data ; let i = index ;  trackBy: trackByCompanyId">
+    <tr *ngFor="let data of basicTable.data ; let i = index ; ">
       <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
       <td>{{ i + 1}}</td>
       <td nzEllipsis>{{ data.companyName }}</td>
@@ -34,73 +107,40 @@
       <td nzEllipsis>{{ data.interviewAddress }}</td>
       <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
       <td>
-        <a>详情</a>
+        <a (click)="showInfoModal(data.id)">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a>修改</a>
+        <a (click)="showEditModal(data.id)">修改</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" nzPopconfirmPlacement="bottomRight" (nzOnConfirm)="delConfirm(data.id)"
-        (nzOnCancel)="delCancel()" >删除</a>
+        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" nzPopconfirmPlacement="bottomRight"
+          (nzOnConfirm)="delConfirm(data.id)" (nzOnCancel)="delCancel()">删除</a>
       </td>
     </tr>
   </tbody>
 </nz-table>
 <!-- 新增招聘信息 -->
-<nz-modal [(nzVisible)]="isShowAddRecruitModel" nzTitle="新增招聘" 
-(nzOnCancel)="handleAddRecruitCancel()" 
-  (nzOnOk)="handleAddRecruitOk($event,recruitAddForm.value)">
-  <form nz-form [formGroup]="recruitAddForm" >
+<nz-modal [(nzVisible)]="isShowAddRecruitModel" nzTitle="新增招聘" (nzOnCancel)="handleAddRecruitCancel()"
+  (nzOnOk)="handleAddRecruitOk($event,recruitForm.value)">
+  <form nz-form [formGroup]="recruitForm">
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>公司名称</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="companyNameErrorTpl">
         <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="companyName">
-          <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName"></nz-option>
+          <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+          </nz-option>
         </nz-select>
         <ng-template #companyNameErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
         </ng-template>
       </nz-form-control>
     </nz-form-item>
-    <!-- <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>所属行业</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="industryErrorTpl">
-        <input nz-input formControlName="industry" placeholder="请输入所属行业" />
-        <ng-template #industryErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">所属行业不能为空!</ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>所属区域</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="regionErrorTpl">
-        <input nz-input formControlName="region" placeholder="请输入所属区域" />
-        <ng-template #regionErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">所属区域不能为空!</ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>公司地址</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="companyAddressErrorTpl">
-        <input nz-input formControlName="address" placeholder="请输入公司地址" />
-        <ng-template #companyAddressErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">公司地址不能为空!</ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>面试地址</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="addressErrorTpl">
-        <input nz-input formControlName="address" placeholder="请输入面试地址" />
-        <ng-template #addressErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">面试地址不能为空!</ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item> -->
+
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>招聘岗位</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="positionErrorTpl">
-        <nz-select nz-select [nzMaxTagCount]="8"  nzMode="multiple"  nzAllowClear nzShowSearch nzPlaceHolder="请选择招聘岗位" formControlName="workPositionList">
-          <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName"></nz-option>
+        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择招聘岗位"
+          formControlName="wxPositionList">
+          <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName">
+          </nz-option>
         </nz-select>
         <ng-template #positionErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">招聘岗位不能为空!</ng-container>
@@ -110,7 +150,7 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>佣金(元)</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="moneyErrorTpl">
-        <input nz-input  formControlName="money" placeholder="请输入佣金" />
+        <input nz-input formControlName="money" placeholder="请输入佣金" />
         <ng-template #moneyErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">佣金不能为空!</ng-container>
         </ng-template>
@@ -127,23 +167,172 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>面试地址</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="interviewAddressErrorTpl">
-        <input nz-input  formControlName="interviewAddress" placeholder="请输入面试地址" />
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+        [nzErrorTip]="interviewAddressErrorTpl">
+        <input nz-input formControlName="interviewAddress" placeholder="请输入面试地址" />
         <ng-template #interviewAddressErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">面试地址不能为空!</ng-container>
         </ng-template>
       </nz-form-control>
     </nz-form-item>
-    <!-- <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>公司简介</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzHasFeedback nzValidatingTip="Validating..."
-        [nzErrorTip]="companyIntroduceErrorTpl">
-        <textarea formControlName="companyIntroduce" nz-input rows="6" placeholder="请输入公司简介"></textarea>
-        <ng-template #companyIntroduceErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">公司简介不能为空!</ng-container>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>福利待遇</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="welfareErrorTpl">
+        <textarea formControlName="welfare" nz-input rows="6" placeholder="请输入福利待遇"></textarea>
+        <ng-template #welfareErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">福利待遇不能为空!</ng-container>
         </ng-template>
       </nz-form-control>
-    </nz-form-item> -->
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>招聘要求</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="jobRequireErrorTpl">
+        <textarea formControlName="jobRequire" nz-input rows="6" placeholder="请输入福利待遇"></textarea>
+        <ng-template #jobRequireErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">招聘要求不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<!-- 公司招聘详情 -->
+<nz-modal [(nzVisible)]="isShowInfoRecruitModel" nzTitle="招聘详情" [nzFooter]=null
+  (nzOnCancel)="handleInfoRecruitCancel()">
+  <form nz-form [formGroup]="recruitInfoForm">
+    <!-- 公司名称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>公司名称</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback formGroupName="wxCompany">
+        <input nz-input formControlName="companyName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 所属行业 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>所属行业</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback formGroupName="wxCompany">
+        <input nz-input formControlName="industry" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 所属地区 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>所属地区</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback formGroupName="wxCompany">
+        <input nz-input formControlName="region" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 公司地址 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>公司地址</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback formGroupName="wxCompany">
+        <input nz-input formControlName="address" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 面试地址 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>面试地址</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <input nz-input formControlName="interviewAddress" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>招聘岗位</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" formControlName="wxPositionList">
+          <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 佣金(元) -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>佣金(元)</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="money" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 人数 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>人数</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="number" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 福利待遇 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>福利待遇</nz-form-label>
+      <nz-form-control [nzSpan]="16">
+        <textarea formControlName="welfare" nz-input rows="5"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 招聘要求 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>招聘要求</nz-form-label>
+      <nz-form-control [nzSpan]="16">
+        <textarea formControlName="jobRequire" nz-input rows="5"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<!-- 编辑公司招聘 -->
+<nz-modal [(nzVisible)]="isShowEditRecruitModel" nzTitle="编辑招聘" (nzOnCancel)="handleEditRecruitCancel()"
+  (nzOnOk)="handleEditRecruitOk($event,recruitForm.value)">
+  <form nz-form [formGroup]="recruitForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>公司名称</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="companyNameErrorTpl">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="companyId" (ngModelChange)="handleCompanyChange($event)">
+          <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+          </nz-option>
+        </nz-select>
+        <ng-template #companyNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>招聘岗位</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="positionErrorTpl">
+        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择招聘岗位"
+          formControlName="wxPositionList">
+          <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName">
+          </nz-option>
+        </nz-select>
+        <ng-template #positionErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">招聘岗位不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>佣金(元)</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="moneyErrorTpl">
+        <input nz-input formControlName="money" placeholder="请输入佣金" />
+        <ng-template #moneyErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">佣金不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>招聘人数</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="numberErrorTpl">
+        <input nz-input formControlName="number" placeholder="请输入招聘人数" />
+        <ng-template #numberErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">招聘人数不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>面试地址</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+        [nzErrorTip]="interviewAddressErrorTpl">
+        <input nz-input formControlName="interviewAddress" placeholder="请输入面试地址" />
+        <ng-template #interviewAddressErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">面试地址不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>福利待遇</nz-form-label>
       <nz-form-control [nzSpan]="16" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="welfareErrorTpl">

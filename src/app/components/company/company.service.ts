@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { URL } from '../../config';
 import { Result } from '../../system/result/result';
-import { Recruit, Company, Position } from './company-type';
+import { Recruit, Company, Position,RecruitDTO,RecruitInfoDTO } from './company-type';
 
 const params = new HttpParams()
 
@@ -30,6 +30,18 @@ export class CompanyService {
   //添加招聘
   addRecruitInfo(param:Recruit){
      return this.http.post<Result<Boolean>>(`${URL}/mini/addRecruitInfo`,param)
+  }
+  // 获取招聘详情
+  getRecruitData(id:bigint){
+    return this.http.get<Result<RecruitDTO>>(`${URL}/mini/getRecruitData/${id}`)
+  }
+   // 分页获取招聘
+   getRecruitOfPage(body: any) {
+    return this.http.get<Result<RecruitInfoDTO[]>>(`${URL}/mini/getRecruitOfPage`, { params: body, headers: headers })
+  }
+  // 修改招聘信息
+  updateRecruitInfo(param: RecruitInfoDTO){
+    return this.http.put<Result<Boolean>>(`${URL}/mini/updateRecruitInfo`,param)
   }
   // 获取公司列表
   getCompanyList() {

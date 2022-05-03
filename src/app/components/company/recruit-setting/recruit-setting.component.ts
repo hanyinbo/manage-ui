@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { Observable, Observer } from 'rxjs';
 
 import { CompanyService } from '../company.service';
-import { Recruit, Company, Position } from '../company-type';
+import { Recruit, Company, Position,RecruitInfoDTO } from '../company-type';
 @Component({
   selector: 'app-recruit-setting',
   templateUrl: './recruit-setting.component.html',
@@ -12,37 +12,76 @@ import { Recruit, Company, Position } from '../company-type';
 })
 export class RecruitSettingComponent implements OnInit {
 
-  validateForm: FormGroup;
-  recruitAddForm: FormGroup;
-
+  recruitSearchForm: FormGroup;
+  recruitForm: FormGroup;
+  recruitInfoForm: FormGroup;
   constructor(private companyService: CompanyService,
     private nzMessageService: NzMessageService,
     private fb: FormBuilder) {
-
-    this.recruitAddForm = this.fb.group({
+    // 新增 编辑
+    this.recruitForm = this.fb.group({
+      id: [''],
       companyName: ['', [Validators.required]],
+      companyId: [''],
       interviewAddress: ['', [Validators.required]],
-      industry: ['', [Validators.required]],
-      region: ['', [Validators.required]],
       money: ['', [Validators.required]],
       number: ['', [Validators.required]],
       position: [null, [Validators.required]],
-      workPositionList: [null, [Validators.required]],
-      address: ['', [Validators.required]],
-      companyIntroduce: [''],
+      wxPositionList: [null, [Validators.required]],
       welfare: ['', [Validators.required]],
       jobRequire: ['', [Validators.required]],
     });
+    // 详情
+    this.recruitInfoForm = this.fb.group({
+      id: [''],
+      companyName: ['', [Validators.required]],
+      companyId: [''],
+      industry: ['', [Validators.required]],
+      region: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      interviewAddress: [''],
+      wxCompany: this.fb.group({
+        companyName: ['', [Validators.required]],
+        industry: ['', [Validators.required]],
+        region: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+        id: [null]
+      }),
+      wxPositionList: [null, [Validators.required]],
+      money: ['', [Validators.required]],
+      number: ['', [Validators.required]],
+      welfare: ['', [Validators.required]],
+      jobRequire: ['', [Validators.required]],
 
+    });
+    // 搜索
+    this.recruitSearchForm = this.fb.group({
+      companyName: [''],
+      industry: [''],
+      region: [''],
+      address: [''],
+      interviewAddress: [''],
+      money: [''],
+      number: ['']
+    })
   }
-  // listOfSelectedValue
-  listOfSelectedValue = ['开发测试', '221'];
   //控制新增招聘对话框
   isShowAddRecruitModel = false;
+  // 控制招聘详情对话框
+  isShowInfoRecruitModel = false;
+  // 控制招聘编辑对话框
+  isShowEditRecruitModel = false;
+
+  editRecruitId: bigint;
+
+  isCollapse = false;
+
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly Recruit[] = [];
-  listOfData: Array<Recruit>;
+  // listOfCurrentPageData: readonly Recruit[] = [];
+  listOfCurrentPageData: readonly RecruitInfoDTO[] = [];
+  // listOfData: Array<Recruit>;
+  listOfData: Array<RecruitInfoDTO>;
   setOfCheckedId = new Set<bigint>();
   companyList: Array<Company>;
   positionList: Array<Position>;
@@ -50,7 +89,11 @@ export class RecruitSettingComponent implements OnInit {
   position: Position;
   positionNameList: Array<string>;
   companyIdList: Array<bigint>;
+  companyId: bigint;
   addParam: any;
+  editParam: any;
+  selectCompanyValue: bigint;
+  selectCompanylabel: string;
   updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
@@ -69,7 +112,7 @@ export class RecruitSettingComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly Recruit[]): void {
+  onCurrentPageDataChange($event: readonly RecruitInfoDTO[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -91,11 +134,15 @@ export class RecruitSettingComponent implements OnInit {
 
   //  获取招聘信息
   fetchRecruitData() {
-    this.companyService.getRecruitList().subscribe(res => {
-      if (res.code == 200) {
-        this.listOfData = res.data;
+    const body ={
+      'size': 5,
+      'current': 1
+    }
+    this.companyService.getRecruitOfPage(body).subscribe(res=>{
+      if(res.code==200){
+       this.listOfData=res.data;
       }
-    });
+    })
   }
   // 获取公司列表
   fetchCompanyData() {
@@ -111,12 +158,6 @@ export class RecruitSettingComponent implements OnInit {
     this.companyService.getPositionList().subscribe(res => {
       if (res.code == 200) {
         this.positionList = res.data
-        // this.positionList.forEach(p=>{
-        //   this.listOfOption.push({
-        //     label: p.positionName,
-        //     value: p.positionCode
-        //   })
-        // })
       }
       console.log('初始化岗位列表：' + JSON.stringify(this.listOfOption))
     })
@@ -127,38 +168,27 @@ export class RecruitSettingComponent implements OnInit {
   }
   // 新增招聘
   handleAddRecruitOk(e: Event, value: FormGroup): void {
-    Object.keys(this.recruitAddForm.controls).forEach(key => {
-      this.recruitAddForm.controls[key].markAsDirty()
-      this.recruitAddForm.controls[key].updateValueAndValidity()
+    Object.keys(this.recruitForm.controls).forEach(key => {
+      this.recruitForm.controls[key].markAsDirty()
+      this.recruitForm.controls[key].updateValueAndValidity()
     })
-    let { workPositionList, companyName } = this.recruitAddForm.value;
-
+    let { companyName } = this.recruitForm.value;
     // 公司
     this.companyList.filter(company => {
       if (company.id == companyName) {
-        this.addParam = { ...this.recruitAddForm.value, companyName: company.companyName, companyId: company.id }
+        this.addParam = { ...this.recruitForm.value, companyName: company.companyName, companyId: company.id }
       }
     })
     console.log('公司列表重新赋值1：' + JSON.stringify(this.addParam))
-    // 招聘岗位
-    this.positionNameList = workPositionList;
-    // this.positionIdList.forEach(p => {
-    //   const pstr = "";
-    //   this.positionList.filter(pos => {
-    //     if (p == pos.id) {
-    //       pstr+pos.positionName
-    //       console.log('过滤匹配岗位：' + JSON.stringify(pos));
-    //       //this.addParam = {...this.recruitAddForm.value,pos:company.companyName}
-    //       // const param = {...this.recruitAddForm.value,:this.position.} 
-    //     }
-    //   })
-    // })
-    // this.isShowAddRecruitModel = false;
     this.companyService.addRecruitInfo(this.addParam).subscribe(res => {
       if (res.code == 200) {
-        console.log('新增招聘成功')
+        this.fetchRecruitData();
+        this.nzMessageService.create('success', '新增招聘成功');
+      } else {
+        this.nzMessageService.create('error', res.msg);
       }
     });
+    this.isShowAddRecruitModel = false;
   }
   // 取消新增招聘
   handleAddRecruitCancel(): void {
@@ -180,41 +210,117 @@ export class RecruitSettingComponent implements OnInit {
   delCancel() {
     this.nzMessageService.info('取消删除', { nzDuration: 1000 });
   }
-  //列表追踪
-  trackByCompanyId(index: number, recruit: Recruit) {
-    return recruit.id
+  // 点击详情按钮
+  showInfoModal(id: bigint): void {
+    this.isShowInfoRecruitModel = true;
+    this.companyService.getRecruitData(id).subscribe(res => {
+      if (res.code == 200) {
+        console.log('职位信息：' + JSON.stringify(res.data))
+        // this.recruitForm.s
+        // const data = { ...this.recruitAddForm.value, companyName: res.data.company.companyName, industry: res.data.company.industry, region: res.data.company.region }
+        this.recruitInfoForm.patchValue(res.data)
+      }
+      console.log("公司招聘详情：" + JSON.stringify(this.recruitInfoForm.value))
+    })
   }
-
-  submitForm(): void {
-    console.log('submit', this.validateForm.value);
+  // 点击详情取消按钮
+  handleInfoRecruitCancel() {
+    this.isShowInfoRecruitModel = false;
   }
-
-
-  validateConfirmPassword(): void {
-    setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
-  }
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  userNameAsyncValidator = (control: FormControl) =>
-    new Observable((observer: Observer<ValidationErrors | null>) => {
-      setTimeout(() => {
-        if (control.value === 'JasonWood') {
-          // you have to return `{error: true}` to mark it as an error event
-          observer.next({ error: true, duplicated: true });
-        } else {
-          observer.next(null);
-        }
-        observer.complete();
-      }, 1000);
+  // 点击修改按钮
+  showEditModal(id: bigint): void {
+    this.isShowEditRecruitModel = true;
+    this.editRecruitId = id;
+    this.companyService.getRecruitData(id).subscribe(res => {
+      if (res.code == 200) {
+        console.log('公司信息：' + JSON.stringify(res.data))
+        // this.recruitForm.patchValue(res.data)
+        this.recruitForm.reset();
+        this.recruitForm.patchValue(res.data);
+        this.fetchRecruitData();
+        // this.selectCompanyValue=res.data.companyId;
+        // this.selectCompanylabel=res.data.companyName;
+      }
+      console.log('点击修改按钮:' + JSON.stringify(this.recruitForm.value))
     });
-
-  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { error: true, required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
-      return { confirm: true, error: true };
+  }
+  // 点击编辑取消按钮
+  handleEditRecruitCancel() {
+    this.isShowEditRecruitModel = false;
+  }
+  // 点击编辑确认按钮
+  handleEditRecruitOk(e: Event, value: FormGroup): void {
+    Object.keys(this.recruitForm.controls).forEach(key => {
+      this.recruitForm.controls[key].markAsDirty()
+      this.recruitForm.controls[key].updateValueAndValidity()
+    })
+    let { companyName } = this.recruitForm.value;
+   console.log('修改公司名称：'+companyName)
+   console.log("公司ID:"+companyName)
+   // 公司
+     const params = {...this.recruitForm.value,companyId:this.selectCompanyValue,companyName:this.selectCompanylabel}
+     console.log('点击编辑职位：'+JSON.stringify(params));
+     this.companyService.updateRecruitInfo(params).subscribe(res=>{
+       if(res.code==200){
+        this.fetchRecruitData(); 
+        this.nzMessageService.create('success', '修改招聘成功');
+       }else{
+        this.nzMessageService.create('error', res.msg);
+       }
+     });
+    this.isShowEditRecruitModel = false;
+  }
+  // 切换公司
+  handleCompanyChange(value:any){
+    this.companyList.filter(company => {
+      if (company.id ==  value) {
+        this.addParam = { ...this.recruitForm.value, companyName: company.companyName, companyId: company.id }
+        this.selectCompanyValue=company.id;
+        this.selectCompanylabel=company.companyName;   
+      }
+    });
+    console.log('更换公司：'+JSON.stringify(this.addParam))
+    console.log('更换公司formgroup：'+JSON.stringify(this.addParam))
+  }
+  
+  // 重置查询表单
+  resetForm(): void {
+    this.recruitSearchForm.reset({
+      companyName: [null],
+      industry: [null],
+      region: [null],
+      address: [null],
+      interviewAddress: [null],
+      money: [null],
+      number: [null]
+    });
+  }
+  // 查询
+  search() {
+    for (const i in this.recruitSearchForm.controls) {
+      this.recruitSearchForm.controls[i].markAsDirty();
+      this.recruitSearchForm.controls[i].updateValueAndValidity();
     }
-    return {};
-  };
-
+    let { companyName, industry,region,address ,interviewAddress,money,number} = this.recruitSearchForm.value;
+    const body = {
+      'companyName': companyName,
+      'industry': industry,
+      'region': region,
+      'address': address,
+      'interviewAddress': interviewAddress,
+      'money': money,
+      'number': number,
+      'size': 5,
+      'current': 1
+    }
+    this.companyService.getRecruitOfPage(body).subscribe(res => {
+      if (res.code == 200) {
+        this.listOfData = res.data
+      }
+    })
+  }
+  //列表追踪
+  // trackByCompanyId(index: number, recruit: Recruit) {
+  //   return recruit.id
+  // }
 }
