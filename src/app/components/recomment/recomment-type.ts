@@ -1,14 +1,14 @@
 export interface Recomment{
-    id: number;
+    id: bigint;
     customName: string;
     telephone: string;
-    gender: string;
+    gender: number;
     intentionCompany: string;
-    intentionId: number;
+    companyId: bigint;
     interviewTime: Date;
-    status: string;
-    recommendName: string;
-    recommendId: number;
+    status: number;
+    recommentName: string;
+    recommentId: bigint;
     remark: string;
     createTime: Date;
     creator: string;

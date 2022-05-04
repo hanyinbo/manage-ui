@@ -1,42 +1,262 @@
-<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true 
-   (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
-    <thead>
-      <tr>
-        <th
-        nzWidth="50px"
-        [(nzChecked)]="checked"
-        [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="onAllChecked($event)"
-      ></th>
-      <th nzWidth="70px">序号</th>
-        <th nzWidth="120px">客户名称</th>
-        <th nzWidth="120px">手机号</th>
-        <th nzWidth="70px">性别</th>
-        <th nzWidth="200px">意向公司</th>
-        <th nzWidth="160px">面试时间</th>
-        <th nzWidth="100px">客户状态</th>
-        <th nzWidth="120px">推荐人</th>
-        <th nzWidth="120px">备注</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data ">
-        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-        <td>{{ data.id }}</td>
-        <td nzEllipsis>{{ data.customName }}</td>
-        <td>{{ data.telephone }}</td>
-        <td nzEllipsis>{{ data.gender}}</td>
-        <td nzEllipsis>{{ data.intentionCompany }}</td>
-        <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
-        <td>{{ data.status }}</td>
-        <td>{{ data.recommendName }}</td>
-        <td nzEllipsis>{{ data.remark }}</td>
-        <td>
-          <a>删除</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a>修改</a>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+<nz-tabset nzType="card">
+  <nz-tab nzTitle="全部">
+    <div class="form-wrapper">
+      <form nz-form [formGroup]="recommentSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+        <div nz-row [nzGutter]="24" class="row-control">
+          <div nz-col [nzSpan]="6">
+            <nz-form-item class="search-form-item">
+              <nz-form-label>客户名称</nz-form-label>
+              <nz-form-control nzErrorTip="请输入客户名称!">
+                <input type="text" nz-input formControlName="customName" placeholder="请输入客户名称" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- 性别 -->
+          <div nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-label>性别</nz-form-label>
+              <nz-form-control nzErrorTip="请输入性别!">
+                <nz-select formControlName="gender" nzAllowClear nzPlaceHolder="请选择性别">
+                  <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.label">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- 手机号 -->
+          <div nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-label>手机号</nz-form-label>
+              <nz-form-control nzErrorTip="请输入手机号!">
+                <input type="text" nz-input formControlName="telephone" placeholder="请输入手机号" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- 公司名称 -->
+          <div nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-label >公司名称</nz-form-label>
+              <nz-form-control>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="intentionCompany">
+                  <nz-option *ngFor="let company of companyList" [nzValue]="company.companyName"
+                    [nzLabel]="company.companyName">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- 状态 -->
+          <div nz-col [nzSpan]="6" *ngIf="isCollapse">
+            <nz-form-item>
+              <nz-form-label>客户状态</nz-form-label>
+              <nz-form-control>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择状态" formControlName="status">
+                  <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="6" *ngIf="isCollapse">
+            <nz-form-item>
+              <nz-form-label>推荐人</nz-form-label>
+              <nz-form-control nzErrorTip="请输入推荐人!">
+                <input type="text" nz-input formControlName="recommentName" placeholder="请输入推荐人" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+            <button nz-button (click)="resetForm()">清空</button>
+            <a class="collapse" (click)="isCollapse=!isCollapse">
+              {{isCollapse ? '收起' : '展开'}}
+              <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+            </a>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <nz-table #basicTable [nzData]="listOfData" [nzBordered]=true
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
+      [nzScroll]="{ x: '800px', y: '230px' }">
+      <thead>
+        <tr>
+          <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"></th>
+          <th nzWidth="70px">序号</th>
+          <th nzWidth="120px">客户名称</th>
+          <th nzWidth="120px">手机号</th>
+          <th nzWidth="70px">性别</th>
+          <th nzWidth="200px">意向公司</th>
+          <th nzWidth="100px">客户状态</th>
+          <th nzWidth="120px">推荐人</th>
+          <th nzWidth="180px">备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data ">
+          <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+          <td>{{ data.id }}</td>
+          <td nzEllipsis>{{ data.customName }}</td>
+          <td>{{ data.telephone }}</td>
+          <td>{{ data.gender==0 ? '男':'女' }}</td>
+          <td nzEllipsis>{{ data.intentionCompany }}</td>
+          <td>
+            <p *ngIf="data.status==0">待面试</p>
+            <p *ngIf="data.status==1">已面试</p>
+            <p *ngIf="data.status==2">已入职</p>
+            <p *ngIf="data.status==3">已离职</p>
+          </td>
+          <td>{{ data.recommentName }}</td>
+          <td nzEllipsis>{{ data.remark }}</td>
+          <td>
+            <a (click)="showInfoModal(data.id)">详情</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="showEditModal(data.id)">修改</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" nzPopconfirmPlacement="bottomRight"
+              (nzOnConfirm)="delConfirm(data.id)" (nzOnCancel)="delCancel()">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+  <nz-tab nzTitle="待面试">Content of Tab Pane 2</nz-tab>
+  <nz-tab nzTitle="已面试">Content of Tab Pane 3</nz-tab>
+  <nz-tab nzTitle="已入职">Content of Tab Pane 4</nz-tab>
+  <nz-tab nzTitle="已离职">Content of Tab Pane 4</nz-tab>
+</nz-tabset>
+
+
+<!-- 报备详情 -->
+<nz-modal [(nzVisible)]="isShowInfoRecommentModel" nzTitle="推荐详情" [nzFooter]=null
+  (nzOnCancel)="handleInfoRecommendCancel()">
+  <form nz-form [formGroup]="recommentForm">
+    <!-- 昵称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>客户名称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="customName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-radio-group formControlName="gender">
+          <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 手机号 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="telephone" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 意向公司 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">意向公司</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="intentionCompany" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>状态</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="status">
+          <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 推荐人 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">推荐人</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="recommentName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 备注  -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>备注</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <textarea formControlName="remark" nz-input rows="6"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<!-- 报备修改 -->
+<nz-modal [(nzVisible)]="isShowEditRecommentModel" nzTitle="推荐修改" (nzOnCancel)="handleEditRecommentCancel()"
+  (nzOnOk)="handleEditRecommentOk($event,recommentForm.value)">
+  <form nz-form [formGroup]="recommentForm">
+    <!-- 昵称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>客户名称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="customName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-radio-group formControlName="gender">
+          <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 手机号 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="telephone" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 意向公司 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>意向公司</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+        [nzErrorTip]="intentionCompanyErrorTpl">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="companyId">
+          <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+          </nz-option>
+        </nz-select>
+        <ng-template #intentionCompanyErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>状态</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择状态" formControlName="status">
+          <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 推荐人 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">推荐人</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="recommentName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 备注  -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>备注</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <textarea formControlName="remark" nz-input rows="6"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

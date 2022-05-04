@@ -1,6 +1,69 @@
+
+/* 鼠标滑动td的样式 */
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background: #e2e5e7;
+}
+/* 表头 */
+::ng-deep .ant-table-thead > tr > th {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+::ng-deep .ant-table{
+  line-height: 0;
+}
+/* 刷新 新增按钮样式 */
+.reflesh-button{
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+[nz-form] {
+  max-width: 600px;
+}
+button {
+  margin-left: 8px;
+}
+/* 偶数列样式 */
 tr:nth-child(2n){
   background:#fafafa;
 }
+
 /* th:active{
     background-color: red;
 } */
+
+::ng-deep .ant-tabs-tab{
+  margin: 0 40px 0 0;
+  padding: 15px 0;
+  font-size: 16px;
+}
+
+.form-wrapper{
+  width: 100%;
+}
+.ant-advanced-search-form {
+  display: inline;
+  padding: 24px;
+  border-radius: 6px;
+}
+
+[nz-form-label] {
+  overflow: visible;
+}
+
+button {
+  margin-left: 8px;
+}
+
+.collapse {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.search-area {
+  text-align: right;
+}
+.search-form-item{
+  margin-bottom: 15px;
+}
