@@ -13,13 +13,10 @@
         <nz-form-item>
           <nz-form-label>性别</nz-form-label>
           <nz-form-control nzErrorTip="请输入性别!">
-            <nz-select
-            formControlName="gender"
-            nzAllowClear
-            nzPlaceHolder="请选择性别"
-          >
-            <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          </nz-select>
+            <nz-select formControlName="gender" nzAllowClear nzPlaceHolder="请选择性别">
+              <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.label">
+              </nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -66,253 +63,249 @@
 <button nz-button nzType="primary" class="add-button" (click)='showAddModal()'>新增</button>
 
 <!-- 用户列表 -->
-<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
-    <thead>
-      <tr>
-        <th
-        [(nzChecked)]="checked"
-        [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="onAllChecked($event)"
-      ></th>
-        <th>昵称</th>
-        <th>性别</th>
-        <th>年龄</th>
-        <th>手机号</th>
-        <th>城市</th>
-        <th>地址</th>
-        <th>身份</th>
-        <th>激活码</th>
-        <th>创建时间</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data ">
-        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-        <td>{{ data.nickName }}</td>
-        <td>{{ data.gender==0 ? '男':'女' }}</td>
-        <td>{{ data.age }}</td>
-        <td>{{ data.phone}}</td>
-        <td>{{ data.city}}</td>
-        <td>{{ data.address }}</td>
-        <td>{{ data.identity }}</td>
-        <td>{{ data.activeCode }}</td>
-        <td>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
-        <td>
-          <a (click)="showInfoModal(data.id)">详情</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a (click)="showEditModal(data.id)">修改</a>
-        
-          <nz-divider nzType="vertical"></nz-divider>
-          <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)" (nzOnCancel)="delCancel()"
-            nzPopconfirmPlacement="bottomRight">删除</a>
-        </td>
-      </tr>
-    </tbody>
+<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true
+  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+  <thead>
+    <tr>
+      <th [(nzChecked)]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+      <th>昵称</th>
+      <th>性别</th>
+      <th>年龄</th>
+      <th>手机号</th>
+      <th>城市</th>
+      <th>地址</th>
+      <th>身份</th>
+      <th>激活码</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data ">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td>{{ data.nickName }}</td>
+      <td>{{ data.gender==0 ? '男':'女' }}</td>
+      <td>{{ data.age }}</td>
+      <td>{{ data.phone}}</td>
+      <td>{{ data.city}}</td>
+      <td>{{ data.address }}</td>
+      <td>{{ data.identity }}</td>
+      <td>{{ data.activeCode }}</td>
+      <td>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+      <td>
+        <a (click)="showInfoModal(data.id)">详情</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="showEditModal(data.id)">修改</a>
+
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)" (nzOnCancel)="delCancel()"
+          nzPopconfirmPlacement="bottomRight">删除</a>
+      </td>
+    </tr>
+  </tbody>
 </nz-table>
 
 <!-- 用户详情 -->
-<nz-modal [(nzVisible)]="isShowInfoUserModel" nzTitle="用户详情" [nzFooter]=null
-(nzOnCancel)="handleInfoUserCancel()">
-<form nz-form [formGroup]="userForm">
-  <!-- 昵称 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
-    <nz-form-control [nzSpan]="12"  >
-      <input nz-input formControlName="nickName"  />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 性别 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-radio-group formControlName="gender">
-        <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
-      </nz-radio-group>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 年龄 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <input nz-input formControlName="age" />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 手机号 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">手机号</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <input nz-input formControlName="phone" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>城市</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <input nz-input formControlName="city" />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 地址 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">地址</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="address"  />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 身份  -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="identity"  />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 激活码 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="activeCode" />
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<nz-modal [(nzVisible)]="isShowInfoUserModel" nzTitle="用户详情" [nzFooter]=null (nzOnCancel)="handleInfoUserCancel()">
+  <form nz-form [formGroup]="userForm">
+    <!-- 昵称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="nickName" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-radio-group formControlName="gender">
+          <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 年龄 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="age" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 手机号 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="phone" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>城市</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="city" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 地址 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">地址</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="address" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 身份  -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="identity" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 激活码 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="activeCode" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </nz-modal>
 <!-- 用户编辑 -->
-<nz-modal [(nzVisible)]="isShowEditUserModel" nzTitle="用户编辑" 
-(nzOnCancel)="handleEditUserCancel()"  (nzOnOk)="handleEditUserOk($event,userForm.value)">
-<form nz-form [formGroup]="userForm">
-  <!-- 昵称 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="nickNameErrorTpl" >
-      <input nz-input formControlName="nickName"  />
-      <ng-template #nickNameErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 性别 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="genderErrorTpl">
-      <nz-radio-group formControlName="gender">
-        <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
-      </nz-radio-group>
-      <ng-template #genderErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 年龄 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="ageErrorTpl">
-      <input nz-input formControlName="age" />
-      <ng-template #ageErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 手机号 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">手机号</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="phone" />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 地址 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">地址</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="address"  />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 身份  -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="identityErrorTpl">
-      <input nz-input formControlName="identity"  />
-      <ng-template #identityErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 激活码 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="activeCodeErrorTpl" >
-      <input nz-input formControlName="activeCode" />
-      <ng-template #activeCodeErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<nz-modal [(nzVisible)]="isShowEditUserModel" nzTitle="用户编辑" (nzOnCancel)="handleEditUserCancel()"
+  (nzOnOk)="handleEditUserOk($event,userForm.value)">
+  <form nz-form [formGroup]="userForm">
+    <!-- 昵称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="nickNameErrorTpl">
+        <input nz-input formControlName="nickName" />
+        <ng-template #nickNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="genderErrorTpl">
+        <nz-radio-group formControlName="gender">
+          <label nz-radio [nzValue]="o.value" *ngFor="let o of optionList">{{ o.label }}</label>
+        </nz-radio-group>
+        <ng-template #genderErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 年龄 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="ageErrorTpl">
+        <input nz-input formControlName="age" />
+        <ng-template #ageErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 手机号 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="phone" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 地址 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">地址</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="address" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 身份  -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="identityErrorTpl">
+        <input nz-input formControlName="identity" />
+        <ng-template #identityErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 激活码 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="activeCodeErrorTpl">
+        <input nz-input formControlName="activeCode" />
+        <ng-template #activeCodeErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </nz-modal>
 <!-- 用户新增 -->
-<nz-modal [(nzVisible)]="isShowAddUserModel" nzTitle="用户新增" 
-(nzOnCancel)="handleAddUserCancel()"  (nzOnOk)="handleAddUserOk($event,userAddForm.value)">
-<form nz-form [formGroup]="userAddForm">
-  <!-- 昵称 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="nickNameErrorTpl" >
-      <input nz-input formControlName="nickName"  />
-      <ng-template #nickNameErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 性别 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback>
-      <nz-radio-group formControlName="gender">
-        <label nz-radio nzValue="0">男</label>
-        <label nz-radio nzValue="1">女</label>
-      </nz-radio-group>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 年龄 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="ageErrorTpl">
-      <input nz-input formControlName="age" />
-      <ng-template #ageErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 手机号 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">手机号</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="phone" />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 地址 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6">地址</nz-form-label>
-    <nz-form-control [nzSpan]="12" >
-      <input nz-input formControlName="address"  />
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 身份  -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="identityErrorTpl">
-      <input nz-input formControlName="identity"  />
-      <ng-template #identityErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <!-- 激活码 -->
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="activeCodeErrorTpl" >
-      <input nz-input formControlName="activeCode" />
-      <ng-template #activeCodeErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<nz-modal [(nzVisible)]="isShowAddUserModel" nzTitle="用户新增" (nzOnCancel)="handleAddUserCancel()"
+  (nzOnOk)="handleAddUserOk($event,userAddForm.value)">
+  <form nz-form [formGroup]="userAddForm">
+    <!-- 昵称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>昵称</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="nickNameErrorTpl">
+        <input nz-input formControlName="nickName" />
+        <ng-template #nickNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-radio-group formControlName="gender">
+          <label nz-radio nzValue="0">男</label>
+          <label nz-radio nzValue="1">女</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 年龄 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="ageErrorTpl">
+        <input nz-input formControlName="age" />
+        <ng-template #ageErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 手机号 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="phone" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 地址 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">地址</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="address" />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 身份  -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>身份</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="identityErrorTpl">
+        <input nz-input formControlName="identity" />
+        <ng-template #identityErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 激活码 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>激活码</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="activeCodeErrorTpl">
+        <input nz-input formControlName="activeCode" />
+        <ng-template #activeCodeErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </nz-modal>

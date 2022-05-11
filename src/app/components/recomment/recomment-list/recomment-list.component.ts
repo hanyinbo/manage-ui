@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -13,7 +13,10 @@ import { Company } from '../../company/company-type';
 })
 export class RecommentListComponent implements OnInit {
 
-  constructor(private recommentService: RecommentService,
+  ngAfterViewChecked() {
+    this.changeDetectorRef.detectChanges();
+  }
+  constructor(private changeDetectorRef: ChangeDetectorRef, private recommentService: RecommentService,
     private nzMessageService: NzMessageService,
     private companyService: CompanyService,
     private fb: FormBuilder) {
@@ -62,11 +65,17 @@ export class RecommentListComponent implements OnInit {
   isCollapse = false;
   modelParam: any;
   companyList: Array<Company>;
-  checked = false;
+  //复选（表头的复选框控制表格内的复选框 相关变量）
+  checked = false;//当页是否全选
+
   indeterminate = false;
-  listOfCurrentPageData: readonly Recomment[] = [];
+  listOfCurrentPageData: readonly Recomment[] = [];//当页表格中的数据列表
   listOfData: Array<Recomment>;
-  setOfCheckedId = new Set<bigint>();
+  notInterviewListOfData: Array<Recomment>;
+  okInterviewListOfData: Array<Recomment>;
+  inductionListOfData: Array<Recomment>;
+  leaveOfficeListOfData: Array<Recomment>;
+  setOfCheckedId = new Set<bigint>(); // 选中的id集合
 
 
   updateCheckedSet(id: bigint, checked: boolean): void {
@@ -76,22 +85,22 @@ export class RecommentListComponent implements OnInit {
       this.setOfCheckedId.delete(id);
     }
   }
-
+  // 当表格内的单个复选框被选中时
   onItemChecked(id: bigint, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
   }
-
+  // 当表头的复选框被选中时
   onAllChecked(value: boolean): void {
     this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item.id, value));
     this.refreshCheckedStatus();
   }
-
+  // 当前页面展示数据改变的回调函数：event是当页表格的数据数组对象（有待验证？）
   onCurrentPageDataChange($event: readonly Recomment[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
-
+  // // 更新状态
   refreshCheckedStatus(): void {
     this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
@@ -104,7 +113,7 @@ export class RecommentListComponent implements OnInit {
         this.companyList = res.data
       }
       console.log("公司列表：" + JSON.stringify(this.companyList))
-    })
+    });
   }
   // 获取报备列表
   fetchRecommentData() {
@@ -112,12 +121,64 @@ export class RecommentListComponent implements OnInit {
       if (res.code == 200) {
         this.listOfData = res.data
       }
-    })
+    });
   }
-
+  // 获取未面试报备列表
+  fetchRecommentNotInterviewData() {
+    const body = {
+      'size': 5,
+      'current': 1
+    }
+    this.recommentService.getRecommentNotInterview(body).subscribe(res => {
+      if (res.code == 200) {
+        console.log('获取未面试报备列表:' + JSON.stringify(res.data))
+        this.notInterviewListOfData = res.data;
+      }
+    });
+  }
+  // 获取已面试报备列表
+  fetchRecommentOkInterviewData() {
+    const body = {
+      'size': 5,
+      'current': 1
+    }
+    this.recommentService.getRecommentOkInterview(body).subscribe(res => {
+      if (res.code == 200) {
+        this.okInterviewListOfData = res.data;
+      }
+    });
+  }
+  // 获取已入职报备列表
+  fetchRecommentInductionData() {
+    const body = {
+      'size': 5,
+      'current': 1
+    }
+    this.recommentService.getRecommentInduction(body).subscribe(res => {
+      if (res.code == 200) {
+        this.inductionListOfData = res.data;
+      }
+    });
+  }
+  // 获取已离职报备列表
+  fetchRecommentLeaveOfficeData() {
+    const body = {
+      'size': 5,
+      'current': 1
+    }
+    this.recommentService.getRecommentLeaveOffice(body).subscribe(res => {
+      if (res.code == 200) {
+        this.leaveOfficeListOfData = res.data;
+      }
+    });
+  }
   ngOnInit(): void {
     this.fetchRecommentData();
     this.fetchCompanyData();
+    this.fetchRecommentNotInterviewData();
+    this.fetchRecommentOkInterviewData();
+    this.fetchRecommentInductionData();
+    this.fetchRecommentLeaveOfficeData();
   }
 
   // 点击详情按钮
@@ -171,37 +232,36 @@ export class RecommentListComponent implements OnInit {
       this.recommentForm.controls[key].markAsDirty()
       this.recommentForm.controls[key].updateValueAndValidity()
     });
-    let {  companyId } = this.recommentForm.value;
+    let { companyId } = this.recommentForm.value;
     this.companyList.filter(company => {
       if (company.id == companyId) {
         console.log("公司过滤名称：" + company.companyName);
         const param = { ...this.recommentForm.value, intentionCompany: company.companyName }
         console.log("参数：" + JSON.stringify(param));
-        this.recommentService.updateRecomment(param).subscribe(res=>{
-          if(res.code==200){
-            this.fetchRecommentData(); 
+        this.recommentService.updateRecomment(param).subscribe(res => {
+          if (res.code == 200) {
+            this.fetchRecommentData();
             this.nzMessageService.create('success', '修改报备成功');
-           }else{
+          } else {
             this.nzMessageService.create('error', res.msg);
-           }
+          }
         })
       }
     });
     this.isShowEditRecommentModel = false;
   }
-
   // 查询
   search() {
     for (const i in this.recommentSearchForm.controls) {
       this.recommentSearchForm.controls[i].markAsDirty();
       this.recommentSearchForm.controls[i].updateValueAndValidity();
     }
-    console.log("查询参数："+JSON.stringify(this.recommentSearchForm.value))
-    let { customName, telephone, gender, intentionCompany, status ,recommentName} = this.recommentSearchForm.value;
+    console.log("查询参数：" + JSON.stringify(this.recommentSearchForm.value))
+    let { customName, telephone, gender, intentionCompany, status, recommentName } = this.recommentSearchForm.value;
     const body = {
       'customName': customName,
       'telephone': telephone,
-      'gender': gender==null?'':gender,
+      'gender': gender == null ? '' : gender,
       'intentionCompany': intentionCompany,
       'status': status,
       'recommentName': recommentName,
@@ -223,6 +283,59 @@ export class RecommentListComponent implements OnInit {
       intentionCompany: [''],
       status: [''],
       recommentName: ['']
+    });
+  }
+  // 面试
+  changeInterviewStatus() {
+    const param = new Array<bigint>();
+    this.setOfCheckedId.forEach(s => {
+      console.log('入职选中的' + s);
+      param.push(s);
+    });
+    this.recommentService.changeInterviewStatus(param).subscribe(res => {
+      if (res.code == 200) {
+        console.log('修改状态成功');
+        this.nzMessageService.create('success', '修改状态成功');
+        this.fetchRecommentNotInterviewData();
+        this.fetchRecommentOkInterviewData();
+      } else {
+        this.nzMessageService.create('error', res.msg);
+      }
+    });
+  }
+  // 入职
+  changeInductionStatus() {
+    const param = new Array<bigint>();
+    this.setOfCheckedId.forEach(s => {
+      console.log('入职选中的' + s);
+      param.push(s);
+    });
+    this.recommentService.changeInductionStatus(param).subscribe(res => {
+      if (res.code == 200) {
+        this.nzMessageService.create('success', '修改状态成功');
+        this.fetchRecommentOkInterviewData();
+        this.fetchRecommentInductionData();
+      } else {
+        this.nzMessageService.create('error', res.msg);
+      }
+    });
+    console.log('入职选中的长度' + this.setOfCheckedId.size)
+  }
+  // 离职
+  changeLeaveOfficeStatus() {
+    const param = new Array<bigint>();
+    this.setOfCheckedId.forEach(s => {
+      console.log('离职选中的' + s);
+      param.push(s);
+    });
+    this.recommentService.changeLeaveOfficeStatus(param).subscribe(res => {
+      if (res.code == 200) {
+        this.nzMessageService.create('success', '修改状态成功');
+        this.fetchRecommentInductionData();
+        this.fetchRecommentLeaveOfficeData();
+      } else {
+        this.nzMessageService.create('error', res.msg);
+      } 
     });
   }
 }

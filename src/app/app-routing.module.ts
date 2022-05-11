@@ -9,6 +9,8 @@ import { CompanyModule } from './components/company/company.module';
 import { SwiperImgModule} from './components/swiper-img/swiper-img.module';
 import { MiniProgramsModule } from './components/mini-programs/mini-programs.module';
 import { RecommentModule } from './components/recomment/recomment.module';
+import { CustomModule } from './components/custom/custom.module';
+import { FinanceModule } from './components/finance/finance.module';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
@@ -38,6 +40,14 @@ const routes: Routes = [
   {
     path: 'recomment',
     loadChildren: './components/recomment/recomment.module#RecommentModule',
+  },
+  {
+    path: 'custom',
+    loadChildren: './components/custom/custom.module#CustomModule'
+  },
+  {
+    path: 'finance',
+    loadChildren: './components/finance/finance.module#FinanceModule'
   }
   ],
     //路由守卫

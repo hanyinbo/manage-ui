@@ -40,7 +40,10 @@ export class KnightErrantService {
   }
   // 新增用户
   addUser(body:KnightErrant){
- 
     return this.http.post<Result<Boolean>>(`${URL}/mini/addUser`,body)
+  }
+  // 获取推荐人列表
+  getRecommentUserList(){
+    return this.http.get<Result<KnightErrant[]>>(`${URL}/mini/getRecommentUserList`)
   }
 }

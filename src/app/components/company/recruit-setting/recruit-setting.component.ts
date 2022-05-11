@@ -233,13 +233,11 @@ export class RecruitSettingComponent implements OnInit {
     this.editRecruitId = id;
     this.companyService.getRecruitData(id).subscribe(res => {
       if (res.code == 200) {
-        console.log('公司信息：' + JSON.stringify(res.data))
-        // this.recruitForm.patchValue(res.data)
+       
         this.recruitForm.reset();
         this.recruitForm.patchValue(res.data);
         this.fetchRecruitData();
-        // this.selectCompanyValue=res.data.companyId;
-        // this.selectCompanylabel=res.data.companyName;
+        
       }
       console.log('点击修改按钮:' + JSON.stringify(this.recruitForm.value))
     });

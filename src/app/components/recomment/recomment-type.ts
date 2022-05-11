@@ -5,7 +5,10 @@ export interface Recomment{
     gender: number;
     intentionCompany: string;
     companyId: bigint;
+    agreeInterviewTime: Date;
     interviewTime: Date;
+    inductionTime: Date;
+    leaveOfficeTime: Date;
     status: number;
     recommentName: string;
     recommentId: bigint;

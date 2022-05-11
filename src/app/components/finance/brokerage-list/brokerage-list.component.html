@@ -1,0 +1,524 @@
+<nz-tabset nzType="card">
+    <nz-tab nzTitle="全部">
+        <div class="form-wrapper">
+            <form nz-form [formGroup]="brokerageSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+              <div nz-row [nzGutter]="24" class="row-control">
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>客户名称</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入客户名称!">
+                      <!-- <input type="text" nz-input formControlName="nickName" placeholder="请输入昵称" /> -->
+                      <nz-select formControlName="cusId" nzShowSearch nzAllowClear nzPlaceHolder="请选择客户">
+                        <nz-option *ngFor="let custom of customList" [nzValue]="custom.id" [nzLabel]="custom.cusName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>公司名称</nz-form-label>
+                    <nz-form-control  nzErrorTip="请输入公司名称!">
+                      <!-- <input type="text" nz-input formControlName="nickName" placeholder="请输入昵称" /> -->
+                      <nz-select formControlName="companyId" nzShowSearch nzAllowClear nzPlaceHolder="请选择公司">
+                        <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item class="search-form-item">
+                      <nz-form-label>推荐人</nz-form-label>
+                      <nz-form-control  nzErrorTip="请输入推荐人!">
+                        <!-- <input type="text" nz-input formControlName="nickName" placeholder="请输入昵称" /> -->
+                        <nz-select formControlName="recommentId" nzShowSearch nzAllowClear nzPlaceHolder="请选择推荐人">
+                          <nz-option *ngFor="let recome of KnightErrantlist" [nzValue]="recome.id" [nzLabel]="recome.nickName">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" >客户状态</nz-form-label>
+                        <nz-form-control [nzSpan]="12" >
+                          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择状态" formControlName="status">
+                            <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                  </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="24" class="search-area">
+                  <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+                  <button nz-button (click)="resetForm()">清空</button>
+                  <a class="collapse" (click)="isCollapse=!isCollapse">
+                    {{isCollapse ? '收起' : '展开'}}
+                    <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+                  </a>
+                </div>
+          
+              </div>
+            </form>
+          </div>
+          <button nz-button nzType="primary" class="reflesh-button" (click)="refleshAllSettleData()">
+            <i nz-icon nzType="sync"></i></button>
+        <!-- 客户列表 -->
+        <nz-table #basicTable [nzData]="listOfData" [nzBordered]=true [nzPageSize]=5
+            (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
+            [nzScroll]="{ x: '1480px', y: '230px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+                        (nzCheckedChange)="onAllChecked($event)"></th>
+                    <th nzWidth="70px">序号</th>
+                    <th nzWidth="100px">客户名称</th>
+                    <th nzWidth="160px">公司名称</th>
+                    <th nzWidth="120px">总佣金(元)</th>
+                    <th nzWidth="100px">结佣状态</th>
+                    <th nzWidth="100px">推荐人</th>
+                    <th nzWidth="160px">面试时间</th>
+                    <th nzWidth="160px">入职时间</th>
+                    <th nzWidth="160px">离职时间</th>
+                    <th nzWidth="100px">客户状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data ; let i = index ;  ">
+                    <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                    </td>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ data.cusName }}</td>
+                    <td nzEllipsis>{{ data.companyName }}</td>
+                    <td>{{ data.brokerage }}</td>
+                    <td>{{ data.isSettle ? '已结佣':'未结佣' }}</td>
+                    <td>{{ data.recommentName }}</td>
+                    <td>{{ data.interviewTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.inductionTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.leaveOfficeTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>
+                        <p *ngIf="data.status==0">待面试</p>
+                        <p *ngIf="data.status==1">已面试</p>
+                        <p *ngIf="data.status==2">已入职</p>
+                        <p *ngIf="data.status==3">已离职</p>
+                    </td>
+                    <td>
+                        <a (click)="showInfoModal(data.id)">详情</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="showEditModal(data.id)">修改</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)"
+                            (nzOnCancel)="delCancel()" nzPopconfirmPlacement="bottomRight">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-tab>
+    <nz-tab nzTitle="未结佣">
+        <div class="form-wrapper">
+            <form nz-form [formGroup]="brokerageSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+              <div nz-row [nzGutter]="24" class="row-control">
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>客户名称</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入客户名称!">
+                      <nz-select formControlName="cusId" nzShowSearch nzAllowClear nzPlaceHolder="请选择客户">
+                        <nz-option *ngFor="let custom of customList" [nzValue]="custom.id" [nzLabel]="custom.cusName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>公司名称</nz-form-label>
+                    <nz-form-control  nzErrorTip="请输入公司名称!">
+                      <nz-select formControlName="companyId" nzShowSearch nzAllowClear nzPlaceHolder="请选择公司">
+                        <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item class="search-form-item">
+                      <nz-form-label>推荐人</nz-form-label>
+                      <nz-form-control  nzErrorTip="请输入推荐人!">
+                        <nz-select formControlName="recommentId" nzShowSearch nzAllowClear nzPlaceHolder="请选择推荐人">
+                          <nz-option *ngFor="let recome of KnightErrantlist" [nzValue]="recome.id" [nzLabel]="recome.nickName">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="24" class="search-area">
+                  <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+                  <button nz-button (click)="resetForm()">清空</button>
+                  <a class="collapse" (click)="isCollapse=!isCollapse">
+                    {{isCollapse ? '收起' : '展开'}}
+                    <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+                  </a>
+                </div>
+          
+              </div>
+            </form>
+        </div>
+        <button nz-button nzType="primary" class="reflesh-button" (click)="refleshNotSettleData()">
+            <i nz-icon nzType="sync"></i></button>
+          <button nz-button nzType="primary" class="add-button" (click)='settle()'>结佣</button>
+        <!-- 客户列表 -->
+        <nz-table #NotBrokerageTable [nzData]="notBrokerageData" [nzBordered]=true [nzPageSize]=5
+            (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
+            [nzScroll]="{ x: '1480px', y: '230px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+                        (nzCheckedChange)="onAllChecked($event)"></th>
+                    <th nzWidth="70px">序号</th>
+                    <th nzWidth="100px">客户名称</th>
+                    <th nzWidth="160px">公司名称</th>
+                    <th nzWidth="120px">总佣金(元)</th>
+                    <th nzWidth="100px">结佣状态</th>
+                    <th nzWidth="100px">推荐人</th>
+                    <th nzWidth="160px">面试时间</th>
+                    <th nzWidth="160px">入职时间</th>
+                    <th nzWidth="160px">离职时间</th>
+                    <th nzWidth="100px">客户状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of NotBrokerageTable.data ; let i = index ;  ">
+                    <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                    </td>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ data.cusName }}</td>
+                    <td nzEllipsis>{{ data.companyName }}</td>
+                    <td>{{ data.brokerage }}</td>
+                    <td>{{ data.isSettle ? '已结佣':'未结佣' }}</td>
+                    <td>{{ data.recommentName }}</td>
+                    <td>{{ data.interviewTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.inductionTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.leaveOfficeTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>
+                        <p *ngIf="data.status==0">待面试</p>
+                        <p *ngIf="data.status==1">已面试</p>
+                        <p *ngIf="data.status==2">已入职</p>
+                        <p *ngIf="data.status==3">已离职</p>
+                    </td>
+                    <td>
+                        <a (click)="showInfoModal(data.id)">详情</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="showEditModal(data.id)">修改</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)"
+                            (nzOnCancel)="delCancel()" nzPopconfirmPlacement="bottomRight">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-tab>
+    <nz-tab nzTitle="已结佣">
+        <div class="form-wrapper">
+            <form nz-form [formGroup]="brokerageSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
+              <div nz-row [nzGutter]="24" class="row-control">
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>客户名称</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入客户名称!">
+                      <nz-select formControlName="cusId" nzShowSearch nzAllowClear nzPlaceHolder="请选择客户">
+                        <nz-option *ngFor="let custom of customList" [nzValue]="custom.id" [nzLabel]="custom.cusName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <nz-form-item class="search-form-item">
+                    <nz-form-label>公司名称</nz-form-label>
+                    <nz-form-control  nzErrorTip="请输入公司名称!">
+                      <nz-select formControlName="companyId" nzShowSearch nzAllowClear nzPlaceHolder="请选择公司">
+                        <nz-option *ngFor="let company of companyList" [nzValue]="company.id" [nzLabel]="company.companyName">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item class="search-form-item">
+                      <nz-form-label>推荐人</nz-form-label>
+                      <nz-form-control  nzErrorTip="请输入推荐人!">
+                        <nz-select formControlName="recommentId" nzShowSearch nzAllowClear nzPlaceHolder="请选择推荐人">
+                          <nz-option *ngFor="let recome of KnightErrantlist" [nzValue]="recome.id" [nzLabel]="recome.nickName">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="24" class="search-area">
+                  <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+                  <button nz-button (click)="resetForm()">清空</button>
+                  <a class="collapse" (click)="isCollapse=!isCollapse">
+                    {{isCollapse ? '收起' : '展开'}}
+                    <i nz-icon [nzType]="isCollapse ? 'up' : 'down'"></i>
+                  </a>
+                </div>
+          
+              </div>
+            </form>
+        </div>
+        <button nz-button nzType="primary" class="reflesh-button" (click)="refleshOkSettleData()">
+            <i nz-icon nzType="sync"></i></button>
+        <!-- 客户列表 -->
+        <nz-table #okBrokerageTable [nzData]="okBrokerageData" [nzBordered]=true [nzPageSize]=5
+            (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
+            [nzScroll]="{ x: '1480px', y: '230px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+                        (nzCheckedChange)="onAllChecked($event)"></th>
+                    <th nzWidth="70px">序号</th>
+                    <th nzWidth="100px">客户名称</th>
+                    <th nzWidth="160px">公司名称</th>
+                    <th nzWidth="120px">总佣金(元)</th>
+                    <th nzWidth="100px">结佣状态</th>
+                    <th nzWidth="100px">推荐人</th>
+                    <th nzWidth="160px">面试时间</th>
+                    <th nzWidth="160px">入职时间</th>
+                    <th nzWidth="160px">离职时间</th>
+                    <th nzWidth="100px">客户状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of okBrokerageTable.data ; let i = index ;  ">
+                    <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                    </td>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ data.cusName }}</td>
+                    <td nzEllipsis>{{ data.companyName }}</td>
+                    <td>{{ data.brokerage }}</td>
+                    <td>{{ data.isSettle ? '已结佣':'未结佣' }}</td>
+                    <td>{{ data.recommentName }}</td>
+                    <td>{{ data.interviewTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.inductionTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>{{ data.leaveOfficeTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                    <td>
+                        <p *ngIf="data.status==0">待面试</p>
+                        <p *ngIf="data.status==1">已面试</p>
+                        <p *ngIf="data.status==2">已入职</p>
+                        <p *ngIf="data.status==3">已离职</p>
+                    </td>
+                    <td>
+                        <a (click)="showInfoModal(data.id)">详情</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="showEditModal(data.id)">修改</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" (nzOnConfirm)="delConfirm(data.id)"
+                            (nzOnCancel)="delCancel()" nzPopconfirmPlacement="bottomRight">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-tab>
+</nz-tabset>
+
+<!-- 佣金详情 -->
+<nz-modal [(nzVisible)]="isShowInfoBrokerageModel" nzTitle="佣金详情" [nzFooter]=null
+    (nzOnCancel)="handleInfoBrokerageCancel()">
+    <form nz-form [formGroup]="brokerageForm">
+        <!-- 客户名称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>客户名称</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="cusName" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 公司名称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>公司名称</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="companyName" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 佣金 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>佣金</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="brokerage" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 是否结佣 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>结佣状态</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <nz-radio-group formControlName="isSettle">
+                    <label nz-radio [nzValue]="o.value" *ngFor="let o of isSettleList">{{ o.label }}</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 推荐人 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>推荐人</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <input nz-input formControlName="recommentName" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 面试时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>面试时间</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <nz-date-picker formControlName="inductionTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 入职时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>入职时间</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <nz-date-picker formControlName="inductionTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 离职时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>离职时间</nz-form-label>
+            <nz-form-control [nzSpan]="12">
+                <nz-date-picker formControlName="leaveOfficeTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 状态 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>客户状态</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="status">
+                    <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isShowEditBrokerageModel" nzTitle="佣金修改" (nzOnCancel)="handleEditBrokerageCancel()"
+    (nzOnOk)="handleEditBrokerageOk($event,brokerageForm.value)">
+    <form nz-form [formGroup]="brokerageForm">
+        <!-- 客户名称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>客户名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="cusIdErrorTpl">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择客户" formControlName="cusId">
+                    <nz-option *ngFor="let custom of customList" [nzValue]="custom.id" [nzLabel]="custom.cusName">
+                    </nz-option>
+                </nz-select>
+                <ng-template #cusIdErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">客户名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 公司名称 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>公司名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="companyNameErrorTpl">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="companyId">
+                    <nz-option *ngFor="let company of companyList" [nzValue]="company.id"
+                        [nzLabel]="company.companyName">
+                    </nz-option>
+                </nz-select>
+                <ng-template #companyNameErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 佣金 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>佣金</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="brokerageErrorTpl">
+                <input nz-input formControlName="brokerage" />
+                <ng-template #brokerageErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 是否结佣 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>结佣状态</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="isSettleErrorTpl">
+                <nz-radio-group formControlName="isSettle">
+                    <label nz-radio [nzValue]="o.value" *ngFor="let o of isSettleList">{{ o.label }}</label>
+                </nz-radio-group>
+                <ng-template #isSettleErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 推荐人 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>推荐人</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="recommentNameErrorTpl">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择客户" formControlName="recommentId">
+                    <nz-option *ngFor="let recome of KnightErrantlist" [nzValue]="recome.id" [nzLabel]="recome.nickName">
+                    </nz-option>
+                </nz-select>
+                <ng-template #recommentNameErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">客户名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 面试时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>面试时间</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="interviewTimeErrorTpl">
+                <nz-date-picker formControlName="interviewTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+                <ng-template #interviewTimeErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 入职时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>入职时间</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="inductionTimeErrorTpl">
+                <nz-date-picker formControlName="inductionTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+                <ng-template #inductionTimeErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 离职时间 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>离职时间</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
+                [nzErrorTip]="leaveOfficeTimeErrorTpl">
+                <nz-date-picker formControlName="leaveOfficeTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
+                <ng-template #leaveOfficeTimeErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 状态 -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>客户状态</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="statusErrorTpl">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择公司" formControlName="status">
+                    <nz-option *ngFor="let status of statusList" [nzValue]="status.value" [nzLabel]="status.label">
+                    </nz-option>
+                </nz-select>
+                <ng-template #statusErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
