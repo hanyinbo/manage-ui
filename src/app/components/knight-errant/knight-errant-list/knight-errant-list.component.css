@@ -13,7 +13,9 @@ tr:nth-child(2n){
     font-weight: bold;
     text-align: center;
 }
-
+::ng-deep .ant-input-number{
+  width: 236px;
+}
 /* 刷新 新增按钮样式 */
 .reflesh-button{
     margin-right: 5px;

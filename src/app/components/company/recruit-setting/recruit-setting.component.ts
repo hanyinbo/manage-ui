@@ -277,8 +277,6 @@ export class RecruitSettingComponent implements OnInit {
         this.selectCompanylabel=company.companyName;   
       }
     });
-    console.log('更换公司：'+JSON.stringify(this.addParam))
-    console.log('更换公司formgroup：'+JSON.stringify(this.addParam))
   }
   
   // 重置查询表单

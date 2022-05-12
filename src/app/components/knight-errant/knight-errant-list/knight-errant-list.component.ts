@@ -32,6 +32,10 @@ export class KnightErrantListComponent implements OnInit {
     { label: '男', value: 0},
     { label: '女', value: 1}
   ];
+  identityList =[
+    {label: '游客',value: 0},
+    {label: '侍卫',value: 1}
+  ]
   compareFn = (o1: any, o2: any): boolean => (o1 && o2 ? o1.value === o2.value : o1 === o2);
   updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
@@ -192,13 +196,14 @@ export class KnightErrantListComponent implements OnInit {
       this.userSearchForm.controls[i].markAsDirty();
       this.userSearchForm.controls[i].updateValueAndValidity();
     }
-    let { nickName, gender, city, phone, activeCode } = this.userSearchForm.value;
+    let { nickName, gender, city, phone, activeCode,identity } = this.userSearchForm.value;
     const body = {
       'nickName': nickName,
       'gender': gender==null?'':gender,
       'city': city,
       'phone': phone,
       'activeCode': activeCode,
+      'identity':identity,
       'size': 5,
       'current': 1
     }

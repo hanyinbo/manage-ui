@@ -11,7 +11,7 @@ export interface KnightErrant{
     address: string;
     avatarUrl: string;
     activeCode: string;
-    identity: string;
+    identity: number;
     delFlag: number;
     createTime: Date;
     creator: string;

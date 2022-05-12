@@ -2,9 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+
 import { RecommentService } from '../recomment.service';
 import { CompanyService } from '../../company/company.service';
-import { Recomment } from '../recomment-type';
+import { KnightErrantService } from '../../knight-errant/knight-errant.service';
+import { KnightErrant } from '../../knight-errant/knight-errant-type';
+import { Recomment,RecuitPosition } from '../recomment-type';
 import { Company } from '../../company/company-type';
 @Component({
   selector: 'app-recomment-list',
@@ -18,6 +21,7 @@ export class RecommentListComponent implements OnInit {
   }
   constructor(private changeDetectorRef: ChangeDetectorRef, private recommentService: RecommentService,
     private nzMessageService: NzMessageService,
+    private knightErrantService: KnightErrantService,
     private companyService: CompanyService,
     private fb: FormBuilder) {
     // 详情 
@@ -25,12 +29,15 @@ export class RecommentListComponent implements OnInit {
       id: [''],
       customName: [null, [Validators.required]],
       telephone: [null, [Validators.required]],
-      gender: ['', [Validators.required]],
-      intentionCompany: [null, [Validators.required]],
+      gender: [0, [Validators.required]],
+      position: ['',[Validators.required]],
+      agreeInterviewTime: [null, [Validators.required]],
       companyId: [''],
-      status: ['', [Validators.required]],
+      positionId: [''],
+      status: [''],
       recommentName: ['', [Validators.required]],
       recommentId: [''],
+      recruitId:[''],
       remark: [null]
     });
     // 搜索
@@ -48,6 +55,7 @@ export class RecommentListComponent implements OnInit {
   recommentSearchForm: FormGroup;
   isShowInfoRecommentModel = false;
   isShowEditRecommentModel = false;
+  isShowAddRecommentModel = false;
 
   editRecommentId: bigint;
   // 性别
@@ -75,8 +83,13 @@ export class RecommentListComponent implements OnInit {
   okInterviewListOfData: Array<Recomment>;
   inductionListOfData: Array<Recomment>;
   leaveOfficeListOfData: Array<Recomment>;
+  KnightErrantlist: Array<KnightErrant>;
+  positionList: Array<RecuitPosition>;
   setOfCheckedId = new Set<bigint>(); // 选中的id集合
-
+  companyName: string;
+  recommentName: string;
+  position: string;
+  recruitId: bigint;
 
   updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
@@ -172,6 +185,14 @@ export class RecommentListComponent implements OnInit {
       }
     });
   }
+  // 获取推荐人列表 
+  fetchRecommentUserList() {
+    this.knightErrantService.getRecommentUserList().subscribe(res => {
+      if (res.code == 200) {
+        this.KnightErrantlist = res.data;
+      }
+    })
+  }
   ngOnInit(): void {
     this.fetchRecommentData();
     this.fetchCompanyData();
@@ -179,6 +200,7 @@ export class RecommentListComponent implements OnInit {
     this.fetchRecommentOkInterviewData();
     this.fetchRecommentInductionData();
     this.fetchRecommentLeaveOfficeData();
+    this.fetchRecommentUserList();
   }
 
   // 点击详情按钮
@@ -250,6 +272,60 @@ export class RecommentListComponent implements OnInit {
     });
     this.isShowEditRecommentModel = false;
   }
+  // 切换公司
+  handleCompanyChange(value: any) {
+      console.log("切换公司："+value);
+      if(value !=null){
+      this.recommentService.getRecruitPositionByCompanyId(value).subscribe(res=>{
+        if(res.code == 200){
+          console.log('公司招聘岗位：'+JSON.stringify(res.data))
+          this.positionList = res.data;
+        }
+      });
+    }
+  }
+  // 新增取消
+  handleAddRecommentCancel() {
+    this.isShowAddRecommentModel = false;
+  }
+  // 新增确认
+  handleAddRecommentOk(e: Event, value: FormGroup) {
+    Object.keys(this.recommentForm.controls).forEach(key => {
+      this.recommentForm.controls[key].markAsDirty()
+      this.recommentForm.controls[key].updateValueAndValidity()
+    });
+    let { companyId, recommentId, positionId} = this.recommentForm.value;
+
+    this.companyList.filter(company => {
+      if (company.id == companyId) {
+        this.companyName = company.companyName;
+      }
+    });
+    this.KnightErrantlist.filter(recome => {
+      if (recome.id == recommentId) {
+        this.recommentName = recome.nickName;
+      }
+    });
+    this.positionList.filter(position =>{
+      if(position.id == positionId){
+          this.position = position.positionName;
+          this.recruitId = position.recruitId;
+      }
+    })
+    const param = { ...this.recommentForm.value, intentionCompany: this.companyName, 
+      recommentName: this.recommentName ,position: this.position,recruitId:this.recruitId}
+    console.log("参数：" + JSON.stringify(param));
+    this.recommentService.addRecomment(param).subscribe(res => {
+      if (res.code == 200) {
+        this.fetchRecommentData();
+        this.fetchRecommentNotInterviewData();
+        this.nzMessageService.create('success', '新增报备成功');
+      } else {
+        this.nzMessageService.create('error', res.msg);
+      }
+    })
+    this.isShowAddRecommentModel = false;
+  }
   // 查询
   search() {
     for (const i in this.recommentSearchForm.controls) {
@@ -273,6 +349,14 @@ export class RecommentListComponent implements OnInit {
         this.listOfData = res.data
       }
     })
+  }
+  refleshData() {
+    this.fetchRecommentData();
+  }
+  // 新增
+  showAddModal() {
+    this.resetForm();
+    this.isShowAddRecommentModel = true
   }
   // 重置查询表单
   resetForm(): void {
@@ -335,7 +419,7 @@ export class RecommentListComponent implements OnInit {
         this.fetchRecommentLeaveOfficeData();
       } else {
         this.nzMessageService.create('error', res.msg);
-      } 
+      }
     });
   }
 }

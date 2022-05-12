@@ -128,7 +128,7 @@ export class PositionListComponent implements OnInit {
           console.log('修改结果：' + res.data)
           this.fetchPositionData();
           this.positionAddForm.reset({ gender: '0' });
-          this.nzMessageService.create('success', '新增用户成功');
+          this.nzMessageService.create('success', '新增职位成功');
         } else {
           this.nzMessageService.create('error', res.msg);
         }

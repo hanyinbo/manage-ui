@@ -5,6 +5,7 @@ export interface Recomment{
     gender: number;
     intentionCompany: string;
     companyId: bigint;
+    position: string;
     agreeInterviewTime: Date;
     interviewTime: Date;
     inductionTime: Date;
@@ -12,7 +13,20 @@ export interface Recomment{
     status: number;
     recommentName: string;
     recommentId: bigint;
+    recruitId: bigint;
     remark: string;
+    createTime: Date;
+    creator: string;
+    updateTime: Date;
+    updator: string;
+}
+
+export interface RecuitPosition{
+    id: bigint;
+    positionName: string;
+    recruitId: bigint;
+    companyId: bigint;
+    remark:string;
     createTime: Date;
     creator: string;
     updateTime: Date;

@@ -481,7 +481,7 @@
                 [nzErrorTip]="interviewTimeErrorTpl">
                 <nz-date-picker formControlName="interviewTime" nzFormat="yyyy-MM-dd hh:mm:ss"></nz-date-picker>
                 <ng-template #interviewTimeErrorTpl let-control>
-                    <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
+                    <ng-container *ngIf="control.hasError('required')">面试不能为空!</ng-container>
                 </ng-template>
             </nz-form-control>
         </nz-form-item>

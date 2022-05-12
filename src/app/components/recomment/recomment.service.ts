@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { URL } from '../../config';
 import { Result } from '../../system/result/result';
-import { Recomment } from './recomment-type';
+import { Recomment ,RecuitPosition } from './recomment-type';
 
 
 const headers = new HttpHeaders()
@@ -31,6 +31,10 @@ export class RecommentService {
   // 修改报备
   updateRecomment(param: Recomment) {
     return this.httpClient.put<Result<Boolean>>(`${URL}/mini/updateRecomment`, param);
+  }
+  // 新增报备
+  addRecomment(param:Recomment){
+     return this.httpClient.post<Result<Boolean>>(`${URL}/mini/addRecomment`,param);
   }
   // 分页获取全部报备信息
   getRecommentOfPage(body: any) {
@@ -63,5 +67,9 @@ export class RecommentService {
   // 变更离职状态
   changeLeaveOfficeStatus(body: Array<bigint>){
     return this.httpClient.put<Result<Boolean>>(`${URL}/mini/changeLeaveOfficeStatus`, body);
+  }
+  // 根据公司ID获取招聘岗位
+  getRecruitPositionByCompanyId(companyId:bigint){
+    return this.httpClient.get<Result<RecuitPosition[]>>(`${URL}/mini/getRecruitPositionByCompanyId/${companyId}`)
   }
 }
