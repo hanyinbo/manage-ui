@@ -85,7 +85,7 @@
 
     <nz-table #allDataTable [nzData]="listOfData" [nzBordered]=true [nzPageSize]=5
       (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
-      [nzScroll]="{ x: '800px', y: '230px' }">
+      [nzScroll]="{ x: '1380px', y: '230px' }">
       <thead>
         <tr>
           <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
@@ -98,6 +98,7 @@
           <th nzWidth="100px">客户状态</th>
           <th nzWidth="120px">推荐人</th>
           <th nzWidth="180px">备注</th>
+          <th nzWidth="160px">创建时间</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -117,6 +118,7 @@
           </td>
           <td>{{ data.recommentName }}</td>
           <td nzEllipsis>{{ data.remark }}</td>
+          <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
           <td>
             <a (click)="showInfoModal(data.id)">详情</a>
             <nz-divider nzType="vertical"></nz-divider>
@@ -227,7 +229,7 @@
           <td>{{ data.telephone }}</td>
           <td>{{ data.gender==0 ? '男':'女' }}</td>
           <td nzEllipsis>{{ data.intentionCompany }}</td>
-          <td nzEllipsis>{{data.agreeInterviewTime | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+          <td nzEllipsis>{{data.agreeInterviewTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>
             <p *ngIf="data.status==0">待面试</p>
             <p *ngIf="data.status==1">已面试</p>
@@ -346,7 +348,7 @@
           <td>{{ data.telephone }}</td>
           <td>{{ data.gender==0 ? '男':'女' }}</td>
           <td nzEllipsis>{{ data.intentionCompany }}</td>
-          <td nzEllipsis>{{data.interviewTime | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+          <td nzEllipsis>{{data.interviewTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>
             <p *ngIf="data.status==0">待面试</p>
             <p *ngIf="data.status==1">已面试</p>
@@ -465,7 +467,7 @@
           <td>{{ data.telephone }}</td>
           <td>{{ data.gender==0 ? '男':'女' }}</td>
           <td nzEllipsis>{{ data.intentionCompany }}</td>
-          <td nzEllipsis>{{data.inductionTime | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+          <td nzEllipsis>{{data.inductionTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>
             <p *ngIf="data.status==0">待面试</p>
             <p *ngIf="data.status==1">已面试</p>
@@ -581,7 +583,7 @@
           <td>{{ data.telephone }}</td>
           <td>{{ data.gender==0 ? '男':'女' }}</td>
           <td nzEllipsis>{{ data.intentionCompany }}</td>
-          <td nzEllipsis>{{data.leaveOfficeTime | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+          <td nzEllipsis>{{data.leaveOfficeTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>
             <p *ngIf="data.status==0">待面试</p>
             <p *ngIf="data.status==1">已面试</p>

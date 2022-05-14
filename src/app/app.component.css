@@ -10,7 +10,9 @@
 tr:nth-child(2n){
     background:#fafafa;
 }
-
+::ng-deep .ant-table{
+    line-height: 1;
+}
 ::ng-deep  td{
     text-align: center;
 }

@@ -70,7 +70,7 @@
             <td>{{ data.cusName }}</td>
             <td>{{ data.gender==0 ? '男':'女' }}</td>
             <td>{{ data.telPhone }}</td>
-            <td>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+            <td>{{ data.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
             <td>
                 <a (click)="showInfoModal(data.id)">详情</a>
                 <nz-divider nzType="vertical"></nz-divider>

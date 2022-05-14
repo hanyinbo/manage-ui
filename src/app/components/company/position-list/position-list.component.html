@@ -37,7 +37,8 @@
 <button nz-button nzType="primary" class="add-button" (click)='showAddModal()'>新增</button>
 <!-- 职位列表 -->
 <nz-table #basicTable [nzData]="listOfData" [nzBordered]=true [nzPageSize]=5
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed"
+    [nzScroll]="{ x: '1340px', y: '230px' }">
     <thead>
         <tr>
             <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
@@ -55,7 +56,7 @@
             <td>{{ i+1 }}</td>
             <td>{{ data.positionName }}</td>
             <td>{{ data.positionCode}}</td>
-            <td>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+            <td>{{ data.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
             <td>
                 <a (click)="showInfoModal(data.id)">详情</a>
                 <nz-divider nzType="vertical"></nz-divider>
