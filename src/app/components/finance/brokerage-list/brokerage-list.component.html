@@ -353,7 +353,9 @@
         <nz-form-item>
             <nz-form-label [nzSpan]="6" nzRequired>佣金</nz-form-label>
             <nz-form-control [nzSpan]="12">
-                <input nz-input formControlName="brokerage" />
+                <!-- <input nz-input formControlName="brokerage" /> -->
+                <nz-input-number [nzMin]="0" formControlName="brokerage" >
+                </nz-input-number>
             </nz-form-control>
         </nz-form-item>
         <!-- 是否结佣 -->
@@ -442,7 +444,8 @@
             <nz-form-label [nzSpan]="6" nzRequired>佣金</nz-form-label>
             <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..."
                 [nzErrorTip]="brokerageErrorTpl">
-                <input nz-input formControlName="brokerage" />
+                <nz-input-number [nzMin]="0" formControlName="brokerage" >
+                </nz-input-number>
                 <ng-template #brokerageErrorTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">公司名称不能为空!</ng-container>
                 </ng-template>

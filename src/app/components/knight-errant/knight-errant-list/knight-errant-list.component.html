@@ -140,6 +140,7 @@
       <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <input nz-input formControlName="age" />
+        
       </nz-form-control>
     </nz-form-item>
     <!-- 手机号 -->
@@ -211,7 +212,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="6" nzRequired>年龄</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="ageErrorTpl">
-        <input nz-input formControlName="age" />
+        <nz-input-number [nzMin]="1" formControlName="age" >
+        </nz-input-number>
         <ng-template #ageErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
         </ng-template>

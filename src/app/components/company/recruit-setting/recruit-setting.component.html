@@ -137,7 +137,7 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>招聘岗位</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="positionErrorTpl">
-        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择招聘岗位"
+        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择岗位"
           formControlName="wxPositionList">
           <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName">
           </nz-option>
@@ -150,7 +150,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>佣金(元)</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="moneyErrorTpl">
-        <input nz-input formControlName="money" placeholder="请输入佣金" />
+        <nz-input-number [nzMin]="0" formControlName="money" >
+        </nz-input-number>
         <ng-template #moneyErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">佣金不能为空!</ng-container>
         </ng-template>
@@ -159,7 +160,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>招聘人数</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="numberErrorTpl">
-        <input nz-input formControlName="number" placeholder="请输入招聘人数" />
+        <nz-input-number [nzMin]="0" formControlName="number" >
+        </nz-input-number>
         <ng-template #numberErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">招聘人数不能为空!</ng-container>
         </ng-template>
@@ -248,7 +250,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="6" nzRequired>佣金(元)</nz-form-label>
       <nz-form-control [nzSpan]="12">
-        <input nz-input formControlName="money" />
+        <nz-input-number [nzMin]="0" formControlName="money" >
+        </nz-input-number>
       </nz-form-control>
     </nz-form-item>
     <!-- 人数 -->
@@ -295,7 +298,7 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>招聘岗位</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="positionErrorTpl">
-        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择招聘岗位"
+        <nz-select nz-select [nzMaxTagCount]="8" nzMode="multiple" nzAllowClear nzShowSearch nzPlaceHolder="请选择岗位"
           formControlName="wxPositionList">
           <nz-option *ngFor="let item of positionList" [nzLabel]="item.positionName" [nzValue]="item.positionName">
           </nz-option>
@@ -308,7 +311,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>佣金(元)</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="moneyErrorTpl">
-        <input nz-input formControlName="money" placeholder="请输入佣金" />
+        <nz-input-number [nzMin]="0" formControlName="money" >
+        </nz-input-number>
         <ng-template #moneyErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">佣金不能为空!</ng-container>
         </ng-template>
@@ -317,7 +321,8 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>招聘人数</nz-form-label>
       <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="numberErrorTpl">
-        <input nz-input formControlName="number" placeholder="请输入招聘人数" />
+        <nz-input-number [nzMin]="0" formControlName="number" >
+        </nz-input-number>
         <ng-template #numberErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">招聘人数不能为空!</ng-container>
         </ng-template>
