@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 import { NgZorroAntdModule } from '../../ng-zorro-antd.module';
 import { SwiperImgRoutingModule } from './swiper-img-routing.module';
@@ -12,6 +13,7 @@ import { CompanySwiperComponent } from './company-swiper/company-swiper.componen
   imports: [
     CommonModule,
     NgZorroAntdModule,
+    ReactiveFormsModule,
     SwiperImgRoutingModule
   ]
 })

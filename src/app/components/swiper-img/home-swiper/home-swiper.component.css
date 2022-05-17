@@ -2,7 +2,7 @@
     width: 60px;
     height: 60px; 
 }
-
+/* 
 ::ng-deep .ant-table-thead > tr > th {
     font-size: 15px;
     font-weight: bold;
@@ -10,4 +10,22 @@
 }
 ::ng-deep  td{
     text-align: center;
+} */
+::ng-deep .ant-upload{
+  margin-bottom: 10px;
+}
+::ng-deep .ant-btn{
+    background-color: rgb(62, 153, 238);
+    color: white;
+}
+ .ant-btn:hover, .ant-btn:focus {
+    color: #40a9ff;
+    border-color: #40a9ff;
+}
+.ant-btn:hover, .ant-btn:focus, .ant-btn:active {
+    text-decoration: none;
+    /* background: #fff; */
+}
+.upload-button{
+    border-radius: 3px;
 }

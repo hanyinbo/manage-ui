@@ -1,9 +1,10 @@
 export interface SwiperImg{
-    id: number;
+    id: bigint;
     imgName: string;
     imgUrl: string;
-    creatime: Date;
+    navigatorUrl: string;
+    createTime: Date;
     creator: string;
-    updatime: Date;
+    updateTime: Date;
     updator: string;
 }
