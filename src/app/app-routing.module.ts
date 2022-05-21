@@ -53,9 +53,7 @@ const routes: Routes = [
     //路由守卫
     canActivate: [AuthGuard]
   }
-
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

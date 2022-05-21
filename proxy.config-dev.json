@@ -1,6 +1,6 @@
  {
     "/mini": {
-      "target": "http://localhost:8080",
+      "target": "http://139.224.248.1:8080",
       "secure": false
     }
   }
