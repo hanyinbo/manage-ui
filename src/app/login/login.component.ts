@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         'password':password
       }
 
-      let api = `http://localhost:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
+      let api = `http://139.224.248.1:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
       console.log("api地址" + api);
       this.loginService.axiosLogin(api).then((res) => {
         var data = JSON.parse(JSON.stringify(res));
