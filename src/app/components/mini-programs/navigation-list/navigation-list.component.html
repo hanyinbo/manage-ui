@@ -1,34 +1,73 @@
-<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true 
-   (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
-    <thead>
-      <tr>
-        <th
-        nzWidth="50px"
-        [(nzChecked)]="checked"
-        [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="onAllChecked($event)"
-      ></th>
-       <th nzWidth="70px">序号</th>
-       <th>图片名称</th>
-       <th>图片</th>
-       <th>创建时间</th>
-       <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data ">
-        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-        <td>{{ data.id }}</td>
-        <td>{{ data.imgName}}</td>
-        <!-- <td nzEllipsis>{{ data.imgUrl }}</td> -->
-        <td nzEllipsis class="swiper-img-td"><img  class="swiper-img" src="{{data.imgUrl}}" /></td>
-        <!-- <td>{{ data.companyImgUrl }}</td> -->
-        <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
-        <td>
-          <a>删除</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a>修改</a>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+<nz-upload nzAction="http://localhost:8080/mini/uploadMiniNavImg" (nzChange)="handleChange($event)"
+  nzAccept="image/png,image/jpeg" nzShowUploadList=false>
+  <button nz-button class="upload-button">
+    <i nz-icon nzType="upload"></i>
+    上传
+  </button>
+</nz-upload>
+<nz-table #basicTable [nzData]="listOfData" [nzBordered]=true [nzPageSize]=3
+  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzWidth="50px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"></th>
+      <th nzWidth="70px">序号</th>
+      <th>图片名称</th>
+      <th nzWidth="130px">图片</th>
+      <th>导航地址</th>
+      <th nzWidth="160px">创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data ; let i = index ;">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td>{{ i+1 }}</td>
+      <td>{{ data.imgName}}</td>
+      <td nzEllipsis class="swiper-img-td"><img class="swiper-img" src="{{data.imgUrl}}" /></td>
+      <td>{{ data.navigatorUrl }}</td>
+      <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>
+        <a (click)="showEditModal(data.id)">修改</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-popconfirm nzPopconfirmTitle="是否确认删除?" nzPopconfirmPlacement="bottomRight"
+          (nzOnConfirm)="delConfirm(data.id)" (nzOnCancel)="delCancel()">删除</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<!--修改职位信息 -->
+<nz-modal [(nzVisible)]="isShowEditSwiperImgModel" nzTitle="编辑轮播图" (nzOnCancel)="handleEditSwiperImgCancel()"
+  (nzOnOk)="handleEditSwiperImgOk($event,navForm.value)">
+  <form nz-form [formGroup]="navForm">
+    <!-- 图片名称 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzRequired>图片名称</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="imgNameErrorTpl">
+        <input nz-input formControlName="imgName" readonly="readonly"/>
+        <ng-template #imgNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">昵称不能为空</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">图片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <img
+        nz-image
+        width="100px"
+        height="100px"
+        [nzSrc]="imgUrl"
+      />
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 职位编码 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">导航地址</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="navigatorUrl" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

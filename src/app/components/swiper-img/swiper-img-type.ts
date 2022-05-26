@@ -3,6 +3,7 @@ export interface SwiperImg{
     imgName: string;
     imgUrl: string;
     navigatorUrl: string;
+    imgType: string;
     createTime: Date;
     creator: string;
     updateTime: Date;

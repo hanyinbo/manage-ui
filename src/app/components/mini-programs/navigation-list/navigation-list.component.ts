@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
+
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { SwiperImgService } from '../../swiper-img/swiper-img.service';
+import { SwiperImg } from '../../swiper-img/swiper-img-type';
 import { MiniProgramsService } from '../mini-programs.service';
 import { NavigationImg } from '../mini-type';
 @Component({
@@ -9,21 +15,36 @@ import { NavigationImg } from '../mini-type';
 })
 export class NavigationListComponent implements OnInit {
 
-  constructor(private miniProgramsService: MiniProgramsService) { }
+
+  navForm: FormGroup;
+  imgUrl: string;
+
+
+  isShowEditSwiperImgModel = false;
+
+  editSwiperId: bigint;
+
+  constructor(private miniProgramsService: MiniProgramsService ,
+    private swiperImgService: SwiperImgService,
+     private msg: NzMessageService, private fb: FormBuilder) { 
+      this.navForm = this.fb.group({
+        id: [''],
+        imgName: ['',[Validators.required]],
+        imgUrl: [''],
+        navigatorUrl: ['']
+      });
+     }
 
   ngOnInit(): void {
-    this.miniProgramsService.getNavigationList().subscribe(res=>{
-        this.listOfData = res.data;
-    })
+    this.fetchSwiperImgData();
   }
-
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly NavigationImg[] = [];
-  listOfData: Array<NavigationImg>;
-  setOfCheckedId = new Set<number>();
+  listOfCurrentPageData: readonly SwiperImg[] = [];
+  listOfData: Array<SwiperImg>;
+  setOfCheckedId = new Set<bigint>();
 
-  updateCheckedSet(id: number, checked: boolean): void {
+  updateCheckedSet(id: bigint, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
     } else {
@@ -31,7 +52,7 @@ export class NavigationListComponent implements OnInit {
     }
   }
 
-  onItemChecked(id: number, checked: boolean): void {
+  onItemChecked(id: bigint, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
   }
@@ -41,7 +62,7 @@ export class NavigationListComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly NavigationImg[]): void {
+  onCurrentPageDataChange($event: readonly SwiperImg[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -51,4 +72,75 @@ export class NavigationListComponent implements OnInit {
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log("上传图片：" + info.file.name);
+    }
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} 上传成功`);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} 上传失败`);
+    }
+  }
+  fetchSwiperImgData(){
+    this.miniProgramsService.getNavImgList().subscribe(res => {
+    this.listOfData = res.data
+    });
+  }
+  // 取消删除
+  delCancel() {
+    this.msg.info('取消删除', { nzDuration: 1000 });
+  }
+  // 确认删除
+  delConfirm(id: bigint) {
+    this.miniProgramsService.deleteMiniNavImg(id).subscribe(res => {
+      if (res.code == 200) {
+        this.listOfData = this.listOfData.filter(img => img.id != id);
+        this.msg.create('success', '删除图片成功');
+      } else {
+        this.msg.create('error', res.msg);
+      }
+    });
+  }
+  // 点击修改按钮
+  showEditModal(id: bigint): void {
+    console.log('修改轮播图事件ID:' + id)
+    this.isShowEditSwiperImgModel = true;
+    this.editSwiperId = id;
+    this.miniProgramsService.getCarouselOrNavImgInfo(id).subscribe(res => {
+      if (res.code == 200) {
+        this.imgUrl=res.data.imgUrl;
+        console.log("图片："+this.imgUrl)
+        console.log('轮播图详情：' + JSON.stringify(res.data))
+        this.navForm.patchValue(res.data)
+      }
+    });
+  }
+  // 编辑取消
+  handleEditSwiperImgCancel() {
+    this.isShowEditSwiperImgModel = false;
+  }
+  // 编辑确认
+  handleEditSwiperImgOk(e: Event, value: FormGroup): void {
+    this.isShowEditSwiperImgModel = false;
+    const editPositionForm = this.navForm;
+    const { controls } = editPositionForm;
+
+    Object.keys(controls).forEach(key => {
+      controls[key].markAsDirty()
+      controls[key].updateValueAndValidity()
+    })
+    const param = { ...this.navForm.value, id: this.editSwiperId };
+    console.log('修改轮播图入参：' + JSON.stringify(param))
+    this.swiperImgService.updateCarouselOrNavUrl(param).subscribe(res => {
+      console.log('响应值：' + JSON.stringify(res))
+      if (res.code == 200) {
+        console.log('修改结果：' + res.data)
+        this.fetchSwiperImgData();
+        this.msg.create('success', '修改轮播图信息成功');
+      } else {
+        this.msg.create('error', res.msg);
+      }
+    })
+  }
 }

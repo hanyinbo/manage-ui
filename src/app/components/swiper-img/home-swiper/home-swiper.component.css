@@ -2,15 +2,7 @@
     width: 60px;
     height: 60px; 
 }
-/* 
-::ng-deep .ant-table-thead > tr > th {
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-}
-::ng-deep  td{
-    text-align: center;
-} */
+
 ::ng-deep .ant-upload{
   margin-bottom: 10px;
 }

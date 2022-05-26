@@ -1,8 +1,9 @@
 export interface NavigationImg{
-    id: number;
+    id: bigint;
     imgName: string;
     imgUrl: string;
-    navigationUrl: string;
+    navigatorUrl: string;
+    imgType: string;
     createTime: Date;
     creator: string;
     updateTime: Date;

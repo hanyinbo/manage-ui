@@ -77,7 +77,7 @@ export class HomeSwiperComponent implements OnInit {
     }
   }
   fetchSwiperImgData(){
-    this.swiperImgService.getSwiperImgList().subscribe(res => {
+    this.swiperImgService.getCarouselImgList().subscribe(res => {
     this.listOfData = res.data
     });
 
@@ -88,7 +88,7 @@ export class HomeSwiperComponent implements OnInit {
   }
   // 确认删除
   delConfirm(id: bigint) {
-    this.swiperImgService.deleteSwiperImg(id).subscribe(res => {
+    this.swiperImgService.deleteMiniCarouselImg(id).subscribe(res => {
       if (res.code == 200) {
         this.listOfData = this.listOfData.filter(img => img.id != id);
         this.msg.create('success', '删除图片成功');
@@ -102,7 +102,7 @@ export class HomeSwiperComponent implements OnInit {
     console.log('修改轮播图事件ID:' + id)
     this.isShowEditSwiperImgModel = true;
     this.editSwiperId = id;
-    this.swiperImgService.getSwiperImgInfo(id).subscribe(res => {
+    this.swiperImgService.getCarouselOrNavImgInfo(id).subscribe(res => {
       if (res.code == 200) {
         this.imgUrl=res.data.imgUrl;
         console.log("图片："+this.imgUrl)
@@ -127,7 +127,7 @@ export class HomeSwiperComponent implements OnInit {
     })
     const param = { ...this.swiperForm.value, id: this.editSwiperId };
     console.log('修改轮播图入参：' + JSON.stringify(param))
-    this.swiperImgService.updateSwiperImg(param).subscribe(res => {
+    this.swiperImgService.updateCarouselOrNavUrl(param).subscribe(res => {
       console.log('响应值：' + JSON.stringify(res))
       if (res.code == 200) {
         console.log('修改结果：' + res.data)
