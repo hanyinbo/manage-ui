@@ -1,5 +1,5 @@
 <nz-upload nzAction="http://localhost:8080/mini/uploadMiniNavImg" (nzChange)="handleChange($event)"
-  nzAccept="image/png,image/jpeg" nzShowUploadList=false>
+  nzAccept="image/png,image/jpeg" [nzShowUploadList]="false">
   <button nz-button class="upload-button">
     <i nz-icon nzType="upload"></i>
     上传
@@ -14,7 +14,9 @@
       <th nzWidth="70px">序号</th>
       <th>图片名称</th>
       <th nzWidth="130px">图片</th>
-      <th>导航地址</th>
+      <th nzWidth="230px">导航地址</th>
+      <th nzWidth="130px">导航名称</th>
+      <th nzWidth="90px">排序</th>
       <th nzWidth="160px">创建时间</th>
       <th>操作</th>
     </tr>
@@ -26,6 +28,8 @@
       <td>{{ data.imgName}}</td>
       <td nzEllipsis class="swiper-img-td"><img class="swiper-img" src="{{data.imgUrl}}" /></td>
       <td>{{ data.navigatorUrl }}</td>
+      <td>{{ data.navigatorName }}</td>
+      <td>{{ data.sort }}</td>
       <td nzEllipsis>{{ data.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
       <td>
         <a (click)="showEditModal(data.id)">修改</a>
@@ -62,11 +66,25 @@
       />
       </nz-form-control>
     </nz-form-item>
-    <!-- 职位编码 -->
+    <!-- 导航地址 -->
     <nz-form-item>
       <nz-form-label [nzSpan]="6">导航地址</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <input nz-input formControlName="navigatorUrl" />
+      </nz-form-control>
+    </nz-form-item>
+     <!-- 导航名称 -->
+     <nz-form-item>
+      <nz-form-label [nzSpan]="6">导航名称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="navigatorName" />
+      </nz-form-control>
+    </nz-form-item>
+     <!-- 排序 -->
+     <nz-form-item>
+      <nz-form-label [nzSpan]="6">排序</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="sort" />
       </nz-form-control>
     </nz-form-item>
   </form>

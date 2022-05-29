@@ -213,20 +213,18 @@ export class CustomListComponent implements OnInit {
     Object.keys(this.customAddForm.controls).forEach(key => {
       this.customAddForm.controls[key].markAsDirty()
       this.customAddForm.controls[key].updateValueAndValidity()
-    })
-    if (this.customAddForm.valid) {
+  })
+  if (this.customAddForm.valid) {
       this.isShowAddCustomModel = false;
       this.customService.addCustom(this.customAddForm.value).subscribe(res => {
-        console.log('响应值：' + JSON.stringify(res))
         if (res.code == 200) {
-          console.log('修改结果：' + res.data)
           this.fetchCustomList();
           this.customAddForm.reset({ gender: '0' });
           this.nzMessageService.create('success', '新增客户成功');
         } else {
           this.nzMessageService.create('error', res.msg);
         }
-      })
+      });
     }
   }
   // 刷新

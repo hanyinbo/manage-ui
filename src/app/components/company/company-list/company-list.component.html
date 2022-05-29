@@ -96,6 +96,7 @@
       </td>
     </tr>
   </tbody>
+
 </nz-table>
 <!-- 新增公司 -->
 <nz-modal [(nzVisible)]="isShowAddCompanyModel" nzTitle="新增公司" (nzOnCancel)="handleAddCompanyCancel()"
@@ -152,6 +153,37 @@
         <ng-template #introduceErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">公司简介不能为空</ng-container>
         </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <div class="clearfix">
+          <nz-upload
+          nzAction="http://localhost:8080/mini/uploadCompanyImg" 
+          (nzChange)="handleChange($event)"
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzBeforeUpload]="beforeUpload"
+          [nzShowButton]="fileList.length < 4"
+          [nzPreview]="handlePreview"
+        >
+          <div>
+            <i nz-icon nzType="plus"></i>
+            <div style="margin-top: 8px">上传</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisible"
+          [nzContent]="modalContent"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false"
+        >
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+        </div>
       </nz-form-control>
     </nz-form-item>
   </form>
@@ -213,6 +245,34 @@
         </ng-template>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <div class="clearfix">
+          <nz-upload
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzBeforeUpload]="beforeUpload"
+          [nzPreview]="handlePreview"
+        >
+          <div>
+            <i nz-icon nzType="plus"></i>
+            <div style="margin-top: 8px">Upload</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisible"
+          [nzContent]="modalContent"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false"
+        >
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
   </form>
 </nz-modal>
 <!-- 公司详情 -->
@@ -270,6 +330,34 @@
         <ng-template #introduceErrorTpl let-control>
           <ng-container *ngIf="control.hasError('required')">公司简介不能为空</ng-container>
         </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <div class="clearfix">
+          <nz-upload
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzBeforeUpload]="beforeUpload"
+          [nzPreview]="handlePreview"
+        >
+          <div>
+            <i nz-icon nzType="plus"></i>
+            <div style="margin-top: 8px">上传</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisible"
+          [nzContent]="modalContent"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false"
+        >
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+        </div>
       </nz-form-control>
     </nz-form-item>
   </form>

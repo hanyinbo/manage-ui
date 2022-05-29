@@ -26,6 +26,7 @@ export interface Company{
   address: string;
   industry: string;
   region: string;
+  companyImgIdList: Array<bigint>;
   delFlag: number;
   createTime: Date;
   creator: string;
@@ -71,4 +72,19 @@ export interface RecruitInfoDTO{
   welfare: string;
   jobRequire: string;
   createTime: Date;
+}
+
+export interface CompanyImg{
+  id: bigint;
+  uid: string;
+  name: string;
+  url: string;
+  status: string;
+  createTime: Date;
+}
+export interface UploadImg{
+  uid: string;
+  name: string;
+  url: string;
+  status: any;
 }

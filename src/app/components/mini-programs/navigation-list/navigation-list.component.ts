@@ -4,10 +4,9 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { SwiperImgService } from '../../swiper-img/swiper-img.service';
-import { SwiperImg } from '../../swiper-img/swiper-img-type';
-import { MiniProgramsService } from '../mini-programs.service';
 import { NavigationImg } from '../mini-type';
+import { MiniProgramsService } from '../mini-programs.service';
+
 @Component({
   selector: 'app-navigation-list',
   templateUrl: './navigation-list.component.html',
@@ -19,19 +18,21 @@ export class NavigationListComponent implements OnInit {
   navForm: FormGroup;
   imgUrl: string;
 
-
+  
   isShowEditSwiperImgModel = false;
 
   editSwiperId: bigint;
 
+
   constructor(private miniProgramsService: MiniProgramsService ,
-    private swiperImgService: SwiperImgService,
      private msg: NzMessageService, private fb: FormBuilder) { 
       this.navForm = this.fb.group({
         id: [''],
         imgName: ['',[Validators.required]],
         imgUrl: [''],
-        navigatorUrl: ['']
+        navigatorUrl: [''],
+        navigatorName: [''],
+        sort:[''],
       });
      }
 
@@ -40,8 +41,8 @@ export class NavigationListComponent implements OnInit {
   }
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly SwiperImg[] = [];
-  listOfData: Array<SwiperImg>;
+  listOfCurrentPageData: readonly NavigationImg[] = [];
+  listOfData: Array<NavigationImg>;
   setOfCheckedId = new Set<bigint>();
 
   updateCheckedSet(id: bigint, checked: boolean): void {
@@ -62,7 +63,7 @@ export class NavigationListComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly SwiperImg[]): void {
+  onCurrentPageDataChange($event: readonly NavigationImg[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -74,7 +75,7 @@ export class NavigationListComponent implements OnInit {
 
   handleChange(info: NzUploadChangeParam): void {
     if (info.file.status !== 'uploading') {
-      console.log("上传图片：" + info.file.name);
+        this.fetchSwiperImgData();
     }
     if (info.file.status === 'done') {
       this.msg.success(`${info.file.name} 上传成功`);
@@ -129,10 +130,10 @@ export class NavigationListComponent implements OnInit {
     Object.keys(controls).forEach(key => {
       controls[key].markAsDirty()
       controls[key].updateValueAndValidity()
-    })
+    });
     const param = { ...this.navForm.value, id: this.editSwiperId };
     console.log('修改轮播图入参：' + JSON.stringify(param))
-    this.swiperImgService.updateCarouselOrNavUrl(param).subscribe(res => {
+    this.miniProgramsService.updateCarouselOrNavUrl(param).subscribe(res => {
       console.log('响应值：' + JSON.stringify(res))
       if (res.code == 200) {
         console.log('修改结果：' + res.data)
@@ -143,4 +144,10 @@ export class NavigationListComponent implements OnInit {
       }
     })
   }
+
+    // 重置查询表单
+    resetForm(): void {
+      this.navForm.reset();
+    }
+  
 }

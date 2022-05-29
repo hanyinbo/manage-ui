@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
+import { NzUploadFile, NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { URL } from '../../config';
 import { Result } from '../../system/result/result';
-import { Recruit, Company, Position,RecruitDTO,RecruitInfoDTO } from './company-type';
+import { Recruit, Company, Position,RecruitDTO,RecruitInfoDTO ,CompanyImg,UploadImg} from './company-type';
 
 const params = new HttpParams()
 
@@ -66,6 +67,10 @@ export class CompanyService {
   // 分页获取公司
   getPageOfCompany(body: any) {
     return this.http.get<Result<Company[]>>(`${URL}/mini/getPageOfCompany`, { params: body, headers: headers })
+  }
+  // 获取公司图片
+  getCompanyImgList(id: bigint){
+    return this.http.get<Result<NzUploadFile[]>>(`${URL}/mini/getCompanyImgList/${id}`)
   }
   // 获取职位信息
   getPositionInfo(id: bigint) {
