@@ -6,7 +6,7 @@ import { Observable, Observer } from 'rxjs';
 
 import { NzUploadFile, NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { CompanyService } from '../company.service';
-import { Recruit, Company, CompanyImg ,UploadImg} from '../company-type';
+import { Recruit, Company, CompanyImg, UploadImg } from '../company-type';
 
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
@@ -33,6 +33,7 @@ export class CompanyListComponent implements OnInit {
   companyImgIds = new Set<bigint>();
   companyImgList: Array<UploadImg>;
 
+  companyEditIdList: Array<bigint>;
   companyForm: FormGroup;
 
   companyAddForm: FormGroup;
@@ -96,33 +97,7 @@ export class CompanyListComponent implements OnInit {
 
   fileList: NzUploadFile[] = [];
   uploadFile: NzUploadFile;
-  // fileList: NzUploadFile[] = [
-  //   {
-  //     uid: '-1',
-  //     name: 'image.png',
-  //     status: 'done',
-  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-  //   },
-  //   {
-  //     uid: '-2',
-  //     name: 'image.png',
-  //     status: 'done',
-  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-  //   },
-  //   {
-  //     uid: '-3',
-  //     name: 'image.png',
-  //     status: 'done',
-  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-  //   },
-  //   {
-  //     uid: '-4',
-  //     name: 'image.png',
-  //     status: 'done',
-  //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-  //   },
 
-  // ];
   previewImage: string | undefined = '';
   previewVisible = false;
 
@@ -147,7 +122,6 @@ export class CompanyListComponent implements OnInit {
 
   onCurrentPageDataChange($event: readonly Company[]): void {
     this.listOfCurrentPageData = $event;
-    console.log("改变页码：" + JSON.stringify(this.listOfCurrentPageData))
     this.refreshCheckedStatus();
   }
 
@@ -162,7 +136,6 @@ export class CompanyListComponent implements OnInit {
   // 获取公司列表
   fetchCompanyList() {
     this.companyService.getCompanyList().subscribe(res => {
-      console.log(res.data)
       this.listOfData = res.data;
     });
   }
@@ -170,43 +143,52 @@ export class CompanyListComponent implements OnInit {
   fetchCompanyImgList(id: bigint) {
     this.companyService.getCompanyImgList(id).subscribe(res => {
       if (res.code == 200) {
-        this.fileList = res.data;
+        if(res.data==null){
+          this.fileList=[];
+        }else{
+          this.fileList = res.data;
+        }  
       }
     })
   }
   // 点击修改按钮
   showEditModal(id: bigint): void {
-    console.log('修改公司按钮时间ID:' + id)
     this.isShowEditCompanyModel = true;
     this.editCompanyId = id;
+
+    this.companyImgIds= new Set<bigint>();
+
     this.companyService.getCompanyInfo(id).subscribe(res => {
       if (res.code == 200) {
-        console.log('公司信息：' + JSON.stringify(res.data))
-        this.companyForm.patchValue(res.data)
+        this.companyForm.patchValue(res.data);
+        this.companyEditIdList = res.data.companyImgIdList;
       }
     });
     this.fetchCompanyImgList(id);
-    }
+  }
   // 点击详情按钮
   showInfoModal(id: bigint): void {
     this.isShowInfoCompanyModel = true;
     this.companyService.getCompanyInfo(id).subscribe(res => {
       if (res.code == 200) {
         console.log('公司信息：' + JSON.stringify(res.data))
-        this.companyForm.patchValue(res.data)
+        this.companyForm.patchValue(res.data);
       }
     });
     this.fetchCompanyImgList(id);
+    // if(this.fileList == null){
+    //   console.log('图片为空');
+    // }
   }
   // 点击新增按钮
   showAddModal(): void {
     this.isShowAddCompanyModel = true;
     this.resetAddForm();
     this.fileList = [];
+    this.companyImgIds= new Set<bigint>();
   }
   // 点击编辑公司确认按钮
   handleEditCompanyOk(e: Event, value: FormGroup): void {
-    console.log('Button ok clicked!');
     this.isShowEditCompanyModel = false;
     const editCompanyForm = this.companyForm;
     const { controls } = editCompanyForm;
@@ -214,13 +196,13 @@ export class CompanyListComponent implements OnInit {
     Object.keys(controls).forEach(key => {
       controls[key].markAsDirty()
       controls[key].updateValueAndValidity()
-    })
-    const param = { ...this.companyAddForm.value, id: this.editCompanyId };
-    console.log('修改公司入参：' + JSON.stringify(param))
+    });
+    this.companyImgIds.forEach(id => {
+      this.companyEditIdList.push(id);
+    });
+    const param = { ...this.companyAddForm.value, id: this.editCompanyId, companyImgIdList: this.companyEditIdList };
     this.companyService.updateCompany(param).subscribe(res => {
-      console.log('响应值：' + JSON.stringify(res))
       if (res.code == 200) {
-        console.log('修改结果：' + res.data);
         this.fetchCompanyList();
         this.nzMessageService.create('success', '修改公司成功');
       } else {
@@ -258,6 +240,8 @@ export class CompanyListComponent implements OnInit {
           this.nzMessageService.create('error', res.msg)
         }
       })
+    }else{
+      this.nzMessageService.create('error', '公司图片不能为空');
     }
   }
   // 点击新增公司取消按钮
@@ -287,11 +271,10 @@ export class CompanyListComponent implements OnInit {
   }
   //列表追踪
   trackByCompanyId(index: number, company: Company) {
-    console.log('表追踪：' + company.id);
     return company.id;
   }
 
-
+  // 查询
   search() {
     for (const i in this.companySearchForm.controls) {
       this.companySearchForm.controls[i].markAsDirty();
@@ -317,10 +300,11 @@ export class CompanyListComponent implements OnInit {
   resetForm(): void {
     this.companySearchForm.reset();
   }
-
+  // 重置新增表单
   resetAddForm(): void {
     this.companyAddForm.reset();
   }
+  // 上传文件前校验
   beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
       this.resetForm();
@@ -349,14 +333,13 @@ export class CompanyListComponent implements OnInit {
     this.previewVisible = true;
   };
 
-
+  // 上传图片后的回调
   handleChange(info: NzUploadChangeParam): void {
     if (info.file.status === 'done') {
       if (info.file.response.code == 200) {
-        console.log('id:' + info.file.response.data);
         this.companyImg = info.file.response.data;
         console.log('公司图片对象：' + JSON.stringify(this.companyImg));
-        // this.companyImgIds.add(this.companyImg.id);
+        this.companyImgIds.add(this.companyImg.id);
         console.log('上传图片的ID:' + this.companyImgIds);
         this.nzMessageService.success(`${info.file.name} 上传成功`);
       } else {

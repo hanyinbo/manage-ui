@@ -159,30 +159,20 @@
       <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <div class="clearfix">
-          <nz-upload
-          nzAction="http://localhost:8080/mini/uploadCompanyImg" 
-          (nzChange)="handleChange($event)"
-          nzListType="picture-card"
-          [(nzFileList)]="fileList"
-          [nzBeforeUpload]="beforeUpload"
-          [nzShowButton]="fileList.length < 4"
-          [nzPreview]="handlePreview"
-        >
-          <div>
-            <i nz-icon nzType="plus"></i>
-            <div style="margin-top: 8px">上传</div>
-          </div>
-        </nz-upload>
-        <nz-modal
-          [nzVisible]="previewVisible"
-          [nzContent]="modalContent"
-          [nzFooter]="null"
-          (nzOnCancel)="previewVisible = false"
-        >
-          <ng-template #modalContent>
-            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-          </ng-template>
-        </nz-modal>
+          <nz-upload nzAction="http://localhost:8080/mini/uploadCompanyImg" (nzChange)="handleChange($event)"
+            nzListType="picture-card" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload"
+            [nzShowButton]="fileList.length < 4" [nzPreview]="handlePreview">
+            <div>
+              <i nz-icon nzType="plus"></i>
+              <div style="margin-top: 8px">上传</div>
+            </div>
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+            (nzOnCancel)="previewVisible = false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+            </ng-template>
+          </nz-modal>
         </div>
       </nz-form-control>
     </nz-form-item>
@@ -249,27 +239,19 @@
       <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <div class="clearfix">
-          <nz-upload
-          nzListType="picture-card"
-          [(nzFileList)]="fileList"
-          [nzBeforeUpload]="beforeUpload"
-          [nzPreview]="handlePreview"
-        >
-          <div>
-            <i nz-icon nzType="plus"></i>
-            <div style="margin-top: 8px">Upload</div>
-          </div>
-        </nz-upload>
-        <nz-modal
-          [nzVisible]="previewVisible"
-          [nzContent]="modalContent"
-          [nzFooter]="null"
-          (nzOnCancel)="previewVisible = false"
-        >
-          <ng-template #modalContent>
-            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-          </ng-template>
-        </nz-modal>
+          <nz-upload nzListType="picture-card" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload"
+            [nzPreview]="handlePreview">
+            <div>
+              <i nz-icon nzType="plus"></i>
+              <div style="margin-top: 8px">Upload</div>
+            </div>
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+            (nzOnCancel)="previewVisible = false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+            </ng-template>
+          </nz-modal>
         </div>
       </nz-form-control>
     </nz-form-item>
@@ -336,27 +318,15 @@
       <nz-form-label [nzSpan]="6">公司图片</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <div class="clearfix">
-          <nz-upload
-          nzListType="picture-card"
-          [(nzFileList)]="fileList"
-          [nzBeforeUpload]="beforeUpload"
-          [nzPreview]="handlePreview"
-        >
-          <div>
-            <i nz-icon nzType="plus"></i>
-            <div style="margin-top: 8px">上传</div>
-          </div>
-        </nz-upload>
-        <nz-modal
-          [nzVisible]="previewVisible"
-          [nzContent]="modalContent"
-          [nzFooter]="null"
-          (nzOnCancel)="previewVisible = false"
-        >
-          <ng-template #modalContent>
-            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-          </ng-template>
-        </nz-modal>
+          <nz-upload nzListType="picture-card" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload"
+            [nzShowButton]="fileList.length < fileList.length " [nzPreview]="handlePreview">
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+            (nzOnCancel)="previewVisible = false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+            </ng-template>
+          </nz-modal>
         </div>
       </nz-form-control>
     </nz-form-item>

@@ -58,7 +58,7 @@ export class CompanyService {
   }
   // 获取公司信息
   getCompanyInfo(id: bigint) {
-    return this.http.get<Result<Company[]>>(`${URL}/mini/getCompanyInfo/${id}`)
+    return this.http.get<Result<Company>>(`${URL}/mini/getCompanyInfo/${id}`)
   }
   // 修改公司信息
   updateCompany(param: Company) {

@@ -1,3 +1,7 @@
+::ng-deep .ant-layout-header{
+    height: 56px;
+}
+
 /* 鼠标滑动td的样式 */
 ::ng-deep .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
     background: #e2e5e7;
