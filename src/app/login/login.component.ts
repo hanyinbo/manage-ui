@@ -29,24 +29,22 @@ export class LoginComponent implements OnInit {
       remember: [true]
     });
   }
+  // 提交登录
   submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-
     if (this.validateForm.status === 'VALID') {
       let { userName, password } = this.validateForm.value;
       //密码加密
       let encPassword = this.encryptByEnAES(password);
       const body={
         'username':userName,
-        'password':password
+        'password':encPassword
       }
 
-      let api = `http://139.224.248.1:8080/auth/login?username=` + `${userName}` + `&password=` + `${encPassword}`;
-      console.log("api地址" + api);
-      this.loginService.axiosLogin(api).then((res) => {
+      this.loginService.doLogin(body).subscribe((res) => {
         var data = JSON.parse(JSON.stringify(res));
         console.log("获取返回code的值：" + JSON.stringify(data.data.token))
         if (data.code == 200) {
@@ -54,14 +52,10 @@ export class LoginComponent implements OnInit {
           //路由到首页
           this.message.success(data.msg);
           this.router.navigateByUrl('index');
-         
         } else {
           this.message.warning(data.msg);
         }
-      }).catch((e) => {
-        console.log("发生异常")
       })
-
      }
   }
 

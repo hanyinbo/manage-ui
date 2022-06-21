@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { LoggerService} from '../system/log/logger.service';
+import { LoggerService } from '../system/log/logger.service';
 import axios from 'axios';
-import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, retry, tap, delay } from 'rxjs/operators';
 import { HttpErrorHandler } from '../system/error/http-error-handler.service';
-import { Result } from '../system/result/result';
-import {Upload } from './upload';
+
+import { R } from './login';
+import { URL } from '../config';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -34,20 +34,21 @@ export class LoginService {
       console.log(response.code)
     })
   }
+
+  // 登录接口
   doLogin(body: any): Observable<any> {
     const produceName = "submitForm";
-    const url ='/auth/login';
-  
-    this.logger.debugRequest(JSON.stringify('service层的请求Body:'+body),produceName);
-    this.logger.info(JSON.stringify('service层的请求Body:'+body),produceName);
+   
 
-      
-      return this.http.post<Result<Upload>>(url, httpOptions)
+    this.logger.debugRequest(JSON.stringify('service层的请求Body:' + body), produceName);
+    this.logger.info(JSON.stringify('service层的请求Body:' + body), produceName);
+
+    return this.http.post<R>(`${URL}/login`,body, httpOptions)
       .pipe(
         retry(1),
         tap(data => this.logger.debugResponse(JSON.stringify(data), produceName)),
         catchError(this.httpError.handleError(this.logger.title + '.' + produceName))
-      );  
+      );
   }
   //封装了一个post请求 
   //  public ajaxPost(url:String, json:Object) {
@@ -75,5 +76,5 @@ export class LoginService {
   //        })
   //       })
   //   }
-   
+
 }

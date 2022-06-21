@@ -1,4 +1,10 @@
 export interface Login {
-    userName: string;
+    username: string;
     password: string;
+}
+
+export interface R {
+    code: number;
+    msg: string;
+    data: object;
 }
