@@ -76,5 +76,8 @@ export class LoginService {
   //        })
   //       })
   //   }
+  getCaptchaCode() {
+    return this.http.get(`${URL}/captcha`)
+  }
 
 }

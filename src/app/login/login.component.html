@@ -1,40 +1,64 @@
-<div class="login-weaper">    
+<div class="login-weaper">
   <nz-card class="login-card">
-      <div class="login-left">
-        <div class="login-logo">
-          <img src="../../assets/static/img/bg/logo.jpg">
+    <div class="login-left">
+      <div class="login-logo">
+        <img src="../../assets/static/img/bg/logo.jpg">
       </div>
-        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-          <nz-form-item>
-            <nz-form-control nzErrorTip="请输入用户名!">
-              <nz-input-group nzPrefixIcon="user">
-                <input type="text" nz-input formControlName="userName" placeholder="请输入用户名" />
+      <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="请输入用户名!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="userName" placeholder="请输入用户名" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="请输入密码!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="请输入密码" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-control nzErrorTip="请输入验证码!" class="captcha-form">
+              <nz-input-group nzPrefixIcon="code">
+                <input  class="captcha-input" type="text" nz-input formControlName="code" placeholder="请输入验证码" />
               </nz-input-group>
+              <div class="captcha">
+                <p>验证码</p>
+              </div>
             </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control nzErrorTip="请输入密码!">
-              <nz-input-group nzPrefixIcon="lock">
-                <input type="password" nz-input formControlName="password" placeholder="请输入密码" />
-              </nz-input-group>
-            </nz-form-control>
-          </nz-form-item>
-          <div nz-row class="login-form-margin">
-            <div nz-col [nzSpan]="12">
-              <label nz-checkbox formControlName="remember">
-                <span>记住密码</span>
-              </label>
+          </nz-form-item> -->
+        <nz-form-item>
+          <nz-form-control nzErrorTip="请输入验证码!">
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="14">
+              <input nz-input formControlName="captcha"  placeholder="点击图片更换验证码"id="captcha" />
             </div>
-            <div nz-col [nzSpan]="12">
-              <a class="login-form-forgot">忘记密码</a>
+            <div nz-col [nzSpan]="8" class="captcha-col">
+              <!-- <button nz-button (click)="getCaptcha()">Get captcha</button> -->
+              <!-- <p>{{captchaCode}}</p> -->
+              <img src="http://localhost:8080/captcha">
             </div>
           </div>
-          <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" >立即登录</button>
-          <!-- Or <a> register now! </a> -->
-        </form>
-      </div>
-      <div class="login-right">
-        <img src="../../assets/static/img/bg/meixi-left.jpg" class="login-image">
-      </div>
-   </nz-card>
+        </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">
+              <span>记住密码</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot">忘记密码</a>
+          </div>
+        </div>
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">立即登录</button>
+        <!-- Or <a> register now! </a> -->
+      </form>
+    </div>
+    <div class="login-right">
+      <img src="../../assets/static/img/bg/meixi-left.jpg" class="login-image">
+    </div>
+  </nz-card>
 </div>

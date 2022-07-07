@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   validateForm!: FormGroup;
-
+  captchaCode:Object;
   public result: Result;
   constructor(private fb: FormBuilder,
     private message: NzMessageService,
@@ -26,8 +26,18 @@ export class LoginComponent implements OnInit {
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
+      code: [null,[Validators.required]],
       remember: [true]
     });
+
+    this.getCaptcha();
+  }
+
+  getCaptcha(){
+    this.loginService.getCaptchaCode().subscribe(res=>{
+      this.captchaCode=res;
+      console.log("获取code:"+res);
+    })
   }
   // 提交登录
   submitForm() {

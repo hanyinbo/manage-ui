@@ -19,7 +19,7 @@
 }
 /*设置登录card样式*/
 .login-card{
-    width: 640px;
+    width: 700px;
     height:440px;
     left:62%;
     top: 56%;
@@ -31,7 +31,7 @@
   height: 100px;
   position: relative;
   margin-top: 15px;
-  margin-left: 110px;
+  margin-left: 150px;
   /* box-shadow: 0 7px 25px rgba(158, 26, 26, 0.08); */
   /* border-radius: 3px; */
 }
@@ -43,8 +43,8 @@
   }
   /*设置登录表单样式*/
 .login-form{
-  margin: 25px 25px 50px 30px;
-  max-width: 260px;
+  margin: 25px 80px 50px 30px;
+  width: 300px;
 }
 
 /*设置忘记密码样式*/
@@ -63,7 +63,6 @@
 .login-right{
   width: 50%;
   float: right;
-
 }
 
 /*设置左边登录img样式*/
@@ -72,7 +71,11 @@
  height: 100%;
  border-top-right-radius: 20px;
  border-bottom-right-radius: 20px;
+ margin-left: 50px;
 }
  .ant-input{
   margin-bottom: 1px;
-}
+ }
+ .captcha-col{
+   margin-left: 10px;
+ }
