@@ -88,5 +88,8 @@
 }
 
 .captcha-col {
-  margin-left: 10px;
+  margin-left: 12px;
+}
+.captcha-row{
+ display: flex;
 }

@@ -31,17 +31,19 @@
           </nz-form-item> -->
         <nz-form-item>
           <nz-form-control nzErrorTip="请输入验证码!">
-          <div nz-row [nzGutter]="5">
-            <div nz-col [nzSpan]="14" nzPrefixIcon="lock">
+          <div nz-row [nzGutter]="1">
+            <div nz-col [nzSpan]="14" nzPrefixIcon="lock" class="captcha-row">
               <nz-input-group nzPrefixIcon="safety">
               <input nz-input formControlName="captcha"  placeholder="验证码"id="captcha" />
+              
               </nz-input-group>
+              <div nz-col [nzSpan]="1" class="captcha-col">
+                <!-- <img src={{captchaUlr}}> -->
+                <!-- <p>{{captchaUlr}}</p> -->
+                <img src="http://localhost:8080/captcha">
+              </div>
             </div>
-            <div nz-col [nzSpan]="10" class="captcha-col">
-              <!-- <button nz-button (click)="getCaptcha()">Get captcha</button> -->
-              <!-- <p>{{captchaCode}}</p> -->
-              <img src={{captchaUlr}}>
-            </div>
+          
           </div>
         </nz-form-control>
         </nz-form-item>
