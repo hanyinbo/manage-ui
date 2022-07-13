@@ -1,81 +1,92 @@
 /*设置登录页背景图*/
-.login-weaper{
-    height: 100%;
-    background-image: url('../../assets/static/img/bg/meixi5.jpg');
-    width: 100%;
-    background-size: 100% 100%; 
-  
+.login-weaper {
+  height: 100%;
+  background-image: url('../../assets/static/img/bg/meixi5.jpg');
+  width: 100%;
+  background-size: 100% 100%;
+
 }
+
 /*修改card外边距*/
-::ng-deep .ant-card-body{ 
+::ng-deep .ant-card-body {
   padding: 0px;
 }
+
 /*设置card圆角弧度*/
-.ant-card{
+.ant-card {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
 /*设置登录card样式*/
-.login-card{
-    width: 700px;
-    height:440px;
-    left:62%;
-    top: 56%;
-    transform: translate(-50%,-50%);
-    border: 0px;
+.login-card {
+  width: 400px;
+  height: 440px;
+  left: 57%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  border: 0px;
 }
-.login-logo img{
+
+.login-logo img {
   width: 100px;
   height: 100px;
   position: relative;
   margin-top: 15px;
-  margin-left: 150px;
-  /* box-shadow: 0 7px 25px rgba(158, 26, 26, 0.08); */
-  /* border-radius: 3px; */
+  margin-left: 110px;
 }
+
 /*设置左边card样式*/
 .login-left {
-    width: 50%;
-    height: 100%;
-    float: left;
-  }
-  /*设置登录表单样式*/
-.login-form{
-  margin: 25px 80px 50px 30px;
-  width: 300px;
+  width: 60%;
+  height: 100%;
+  float: left;
+}
+
+/*设置登录表单样式*/
+.login-form {
+  margin: 25px 30px 50px 30px;
+  width: 350px;
+}
+
+::ng-deep .ant-input-affix-wrapper {
+  width: 70%;
 }
 
 /*设置忘记密码样式*/
 .login-form-forgot {
-    float: right;
-    color: #f33636;
-    padding-bottom: 20px;
-  }
+  float: left;
+  color: #f33636;
+  padding-bottom: 20px;
+}
+
 /*设置登录按钮样式*/
 .login-form-button {
-    width: 100%;
-    color: rgb(250, 250, 245);
-    border: 2px;
-  }
+  width: 70%;
+  color: rgb(250, 250, 245);
+  border: 2px;
+}
+
 /*设置右边登录card样式*/
-.login-right{
-  width: 50%;
+.login-right {
+  width: 20%;
   float: right;
 }
 
 /*设置左边登录img样式*/
-.login-image{
- position: absolute;
- height: 100%;
- border-top-right-radius: 20px;
- border-bottom-right-radius: 20px;
- margin-left: 50px;
+.login-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
- .ant-input{
+.ant-input {
   margin-bottom: 1px;
- }
- .captcha-col{
-   margin-left: 10px;
- }
+}
+
+.captcha-col {
+  margin-left: 10px;
+}

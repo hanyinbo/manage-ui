@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  captchaUlr: 'http://localhost:8080/captcha';
   validateForm!: FormGroup;
   captchaCode:Object;
   public result: Result;
@@ -26,11 +27,11 @@ export class LoginComponent implements OnInit {
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      code: [null,[Validators.required]],
+      captcha: [null,[Validators.required]],
       remember: [true]
     });
 
-    this.getCaptcha();
+    // this.getCaptcha();
   }
 
   getCaptcha(){
@@ -41,17 +42,20 @@ export class LoginComponent implements OnInit {
   }
   // 提交登录
   submitForm() {
+    console.log('登录');
+    debugger
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
     if (this.validateForm.status === 'VALID') {
-      let { userName, password } = this.validateForm.value;
+      let { userName, password ,captcha} = this.validateForm.value;
       //密码加密
       let encPassword = this.encryptByEnAES(password);
       const body={
         'username':userName,
-        'password':encPassword
+        'password':encPassword,
+        'code': captcha
       }
 
       this.loginService.doLogin(body).subscribe((res) => {

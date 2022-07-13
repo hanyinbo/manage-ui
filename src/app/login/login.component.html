@@ -8,14 +8,14 @@
         <nz-form-item>
           <nz-form-control nzErrorTip="请输入用户名!">
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="userName" placeholder="请输入用户名" />
+              <input type="text" nz-input formControlName="userName" placeholder="用户名" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-control nzErrorTip="请输入密码!">
             <nz-input-group nzPrefixIcon="lock">
-              <input type="password" nz-input formControlName="password" placeholder="请输入密码" />
+              <input type="password" nz-input formControlName="password" placeholder="密码" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -31,14 +31,16 @@
           </nz-form-item> -->
         <nz-form-item>
           <nz-form-control nzErrorTip="请输入验证码!">
-          <div nz-row [nzGutter]="10">
-            <div nz-col [nzSpan]="14">
-              <input nz-input formControlName="captcha"  placeholder="点击图片更换验证码"id="captcha" />
+          <div nz-row [nzGutter]="5">
+            <div nz-col [nzSpan]="14" nzPrefixIcon="lock">
+              <nz-input-group nzPrefixIcon="safety">
+              <input nz-input formControlName="captcha"  placeholder="验证码"id="captcha" />
+              </nz-input-group>
             </div>
-            <div nz-col [nzSpan]="8" class="captcha-col">
+            <div nz-col [nzSpan]="10" class="captcha-col">
               <!-- <button nz-button (click)="getCaptcha()">Get captcha</button> -->
               <!-- <p>{{captchaCode}}</p> -->
-              <img src="http://localhost:8080/captcha">
+              <img src={{captchaUlr}}>
             </div>
           </div>
         </nz-form-control>
