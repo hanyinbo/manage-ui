@@ -1,4 +1,4 @@
-.layout-wrapper{
+.layout-wrapper {
   height: 100%;
 }
 
@@ -9,29 +9,31 @@
   background-color: #fff;
 }
 
-.header-wrapper{
+.header-wrapper {
   position: relative;
   width: 200px;
   display: flex;
 }
+
 .header-logo {
   width: 100%;
   background-color: #001529;
   overflow: hidden;
   line-height: 50px;
 }
-.header-content{
+
+.header-content {
   left: 200px;
-  position: absolute!important;
+  position: absolute !important;
   height: 54px;
+  width: 1300px;
 }
-.avatar{
-  right: 100px;
-  width: 100px;
-  /* position: absolute!important; */
-  /* right: 0;
-  top: 0; */
+
+.avatar {
+  float: right;
+  margin-right: 100px;
 }
+
 /* .header-content .logout{
   display: flex;
   top: 0px;
