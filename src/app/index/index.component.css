@@ -1,4 +1,89 @@
-.home-wrapper{
+.layout-wrapper{
+  height: 100%;
+}
+
+::ng-deep .ant-layout-header {
+  height: 54px;
+  padding: 0px;
+  line-height: 54px;
+  background-color: #fff;
+}
+
+.header-wrapper{
+  position: relative;
+  width: 200px;
+  display: flex;
+}
+.header-logo {
+  width: 100%;
+  background-color: #001529;
+  overflow: hidden;
+  line-height: 50px;
+}
+.header-content{
+  left: 200px;
+  position: absolute!important;
+  height: 54px;
+}
+.avatar{
+  right: 100px;
+  width: 100px;
+  /* position: absolute!important; */
+  /* right: 0;
+  top: 0; */
+}
+/* .header-content .logout{
+  display: flex;
+  top: 0px;
+
+  height: 54px;
+
+
+} */
+
+
+.inner-content {
+  margin-top: 20px;
+  background: #fff;
+  min-height: 360px;
+}
+
+/* .header-content .logout{
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  height: 40px;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  min-height: 360px;
+} */
+
+/* .layout {
+  min-height: 100vh;
+} */
+/* 
+nz-sider {
+  overflow: hidden;
+  height: 100%;
+  position: fixed;
+  left: 0;
+}
+
+nz-footer {
+  text-align: center;
+} */
+/* .header-content{
+  background-color: rgb(225, 65, 65);
+} */
+/* :host ::ng-deep .logo img{
+  width: 100%;
+  height: 100%;
+} */
+
+/* .home-wrapper{
     height: 100%;
 }
 .trigger {
@@ -16,12 +101,22 @@
   .logo {
     height: 64px;
     background: rgba(255, 255, 255,0);
+    display: block;
+  }
+
+  .layout {
+    min-height: 100vh;
+  }
+
+  nz-sider {
+    overflow: auto;
+    height: 100%;
+    position: fixed;
+    left: 0;
   }
   :host ::ng-deep .logo img{
       width: 100%;
       height: 100%;
-     
-      /* background-image: image; */
   }
   .home-wrapper .logout{
     position: absolute;
@@ -51,4 +146,4 @@
 
   nz-footer {
     text-align: center;
-  }
+  } */

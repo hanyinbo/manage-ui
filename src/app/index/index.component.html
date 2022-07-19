@@ -1,13 +1,26 @@
-<nz-layout class="home-wrapper">
-    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-      <div class="logo">
-         <img src="../../../assets/static/logo/logo.png" alt="后台管理系统"/>
+<nz-layout class="layout-wrapper">
+  <nz-header>
+    <div class="header-wrapper">
+      <div class="header-logo">
+        <img src="../../../assets/static/logo/logo.png" alt="后台管理系统" />
       </div>
-      <ul nz-menu nzTheme="dark" nzMode="inline">
-        <li nz-submenu nzTitle="侍卫管理" nzIcon="user" nzOpen>
+      <div class="header-content">
+        <div class="avatar">
+        <nz-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+        <a href="#" class="logout" nz-popconfirm nzPopconfirmTitle="是否确定退出?" (nzOnConfirm)="logout()"
+          nzPopconfirmPlacement="bottom"> <i nz-icon nzType="logout" nzTheme="outline"></i>&nbsp;退出</a>
+      </div>
+    </div>
+    </div>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <div>
+        <ul nz-menu nzTheme="dark" nzMode="inline">
+          <li nz-submenu nzTitle="侍卫管理" nzIcon="user" nzOpen>
             <ul>
-                <li nz-menu-item routerLink='/index/knight/list'>侍卫名单</li>
-                <!-- <li nz-menu-item routerLink='/index/knight/settings'>侍卫法则</li> -->
+              <li nz-menu-item routerLink='/index/knight/list'>侍卫名单</li>
+              <!-- <li nz-menu-item routerLink='/index/knight/settings'>侍卫法则</li> -->
             </ul>
           </li>
           <li nz-submenu nzTitle="公司管理" nzIcon="bank">
@@ -20,8 +33,6 @@
           <li nz-submenu nzTitle="报备管理" nzIcon="highlight">
             <ul>
               <li nz-menu-item routerLink='/index/recomment/list'>报备列表</li>
-              <!-- <li nz-menu-item>Option 12</li>
-              <li nz-menu-item>Option 13</li> -->
             </ul>
           </li>
           <li nz-submenu nzTitle="财务管理" nzIcon="message">
@@ -32,13 +43,13 @@
           <li nz-submenu nzTitle="轮播图管理" nzIcon="file-image">
             <ul>
               <li nz-menu-item routerLink='/index/swiper/homeSwiper'>首页轮播图</li>
-              <li nz-menu-item routerLink='/index/swiper/companySwiper'>公司轮播图</li> 
+              <li nz-menu-item routerLink='/index/swiper/companySwiper'>公司轮播图</li>
             </ul>
           </li>
           <li nz-submenu nzTitle="资讯管理" nzIcon="message">
             <ul>
               <li nz-menu-item>资讯列表</li>
-              <li nz-menu-item>公司轮播图</li> 
+              <li nz-menu-item>公司轮播图</li>
             </ul>
           </li>
           <li nz-submenu nzTitle="客户管理" nzIcon="team">
@@ -53,37 +64,13 @@
               <!-- <li nz-menu-item>公司轮播图</li>  -->
             </ul>
           </li>
-      </ul>
-
+        </ul>
+      </div>
     </nz-sider>
-    <nz-layout>
-      <nz-header >
-        <!-- <i
-          class="trigger"
-          nz-icon
-          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-          (click)="isCollapsed = !isCollapsed"
-        ></i> -->
-        <div nz-row nzJustify="end">
-          <div nz-col nzSpan="4">
-            <nz-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar> 
-          
-            <a href="#" class="logout" nz-popconfirm
-            nzPopconfirmTitle="是否确定退出?"
-            (nzOnConfirm)="logout()" nzPopconfirmPlacement="bottom" > <i nz-icon nzType="logout" nzTheme="outline"></i>&nbsp;退出</a>
-          </div>
-        </div>
-    
-      </nz-header>
-      <nz-content>
-        <nz-breadcrumb> 
-          <!-- <nz-breadcrumb-item>User</nz-breadcrumb-item>
-          <nz-breadcrumb-item>Bill</nz-breadcrumb-item> -->
-        </nz-breadcrumb>
-        <div class="inner-content">
-          <router-outlet></router-outlet>
-        </div>
-      </nz-content>
-      <nz-footer>吉维恩 ©2022 备案</nz-footer>
-    </nz-layout>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
   </nz-layout>
+</nz-layout>

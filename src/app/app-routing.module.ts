@@ -50,6 +50,9 @@ const routes: Routes = [
         loadChildren: './components/finance/finance.module#FinanceModule'
       }
     ],
+    data: {
+      breadcrumb: '首页'
+    },
     //路由守卫
     canActivate: [AuthGuard]
   }
