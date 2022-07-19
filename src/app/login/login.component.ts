@@ -13,7 +13,12 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  captchaUlr: 'http://localhost:8080/captcha';
+  captchaUlr: 'http://localhost:8080';
+
+  images = [
+    {url: 'http://localhost:8080/captcha'}
+  ];
+  img = this.images[0];
   validateForm!: FormGroup;
   captchaCode:Object;
   public result: Result;
@@ -36,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   getCaptcha(){
     this.loginService.getCaptchaCode().subscribe(res=>{
-      this.captchaCode=res;
+      // this.captchaCode=res;
       console.log("获取code:"+res);
     })
   }
@@ -58,7 +63,6 @@ export class LoginComponent implements OnInit {
 
       this.loginService.doLogin(body).subscribe((res) => {
         var data = JSON.parse(JSON.stringify(res));
-        console.log("获取返回code的值：" + JSON.stringify(data.data.token))
         if (data.code == 200) {
           localStorage.setItem('itcast-token',data.data.token)
           //路由到首页
