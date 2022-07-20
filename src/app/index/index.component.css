@@ -37,8 +37,31 @@
   margin-left: 10px;
 }
 
+
 .inner-content {
-  margin-top: 20px;
+  margin: 20px 20px 20px 20px;
   background: #fff;
   min-height: 360px;
+}
+/* 
+nz-sider {
+  overflow: hidden;
+  height: 100%;
+  position: fixed;
+  left: 0;
+} */
+
+nz-sider{
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+.inner-menu{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: -17px;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
