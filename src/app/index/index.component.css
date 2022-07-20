@@ -43,19 +43,13 @@
   background: #fff;
   min-height: 360px;
 }
-/* 
-nz-sider {
-  overflow: hidden;
-  height: 100%;
-  position: fixed;
-  left: 0;
-} */
 
 nz-sider{
   overflow: hidden;
   height: 100%;
   position: relative;
 }
+
 .inner-menu{
   position: absolute;
   left: 0;
