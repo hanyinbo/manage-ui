@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'navigationList',
     component: NavigationListComponent,
     data: {
-      breadcrumb: '导航列表'
+      breadcrumb: '导航设置'
     },
   },
 ];

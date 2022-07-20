@@ -8,14 +8,14 @@ const routes: Routes = [
     path: 'homeSwiper',
     component: HomeSwiperComponent,
     data: {
-      breadcrumb: '轮播图列表'
+      breadcrumb: '轮播图设置'
     },
   },
   {
     path: 'companySwiper',
     component: CompanySwiperComponent,
     data: {
-      breadcrumb: '公司导航图'
+      breadcrumb: '公司导航图设置'
     },
   }
 ];

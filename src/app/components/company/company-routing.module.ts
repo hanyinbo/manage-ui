@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'list',
     component: CompanyListComponent,
     data: {
-      breadcrumb: '公司列表'
+      breadcrumb: '公司设置'
     },
   },
   {

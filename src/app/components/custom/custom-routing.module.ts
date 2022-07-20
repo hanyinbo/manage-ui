@@ -7,7 +7,7 @@ const routes: Routes = [
     path: 'custom-list',
     component: CustomListComponent,
     data: {
-      breadcrumb: '客户列表'
+      breadcrumb: '客户设置'
     },
   }
 ];

@@ -7,7 +7,7 @@ const routes: Routes = [
     path: 'list',
     component: RecommentListComponent,
     data: {
-      breadcrumb: '报备列表'
+      breadcrumb: '报备设置'
     },
   }
 ];
