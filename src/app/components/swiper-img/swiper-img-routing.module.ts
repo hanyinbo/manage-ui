@@ -6,11 +6,17 @@ import { CompanySwiperComponent } from './company-swiper/company-swiper.componen
 const routes: Routes = [
   {
     path: 'homeSwiper',
-    component: HomeSwiperComponent
+    component: HomeSwiperComponent,
+    data: {
+      breadcrumb: '轮播图列表'
+    },
   },
   {
     path: 'companySwiper',
-    component: CompanySwiperComponent
+    component: CompanySwiperComponent,
+    data: {
+      breadcrumb: '公司导航图'
+    },
   }
 ];
 

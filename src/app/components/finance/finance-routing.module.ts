@@ -5,7 +5,10 @@ import { BrokerageListComponent } from './brokerage-list/brokerage-list.componen
 const routes: Routes = [
   {
     path: 'brokerage-list',
-    component: BrokerageListComponent
+    component: BrokerageListComponent,
+    data: {
+      breadcrumb: '佣金管理'
+    },
   }
 ];
 

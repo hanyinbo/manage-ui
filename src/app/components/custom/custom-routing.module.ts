@@ -5,7 +5,10 @@ import { CustomListComponent } from './custom-list/custom-list.component';
 const routes: Routes = [
   {
     path: 'custom-list',
-    component: CustomListComponent
+    component: CustomListComponent,
+    data: {
+      breadcrumb: '客户列表'
+    },
   }
 ];
 

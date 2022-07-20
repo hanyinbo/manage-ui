@@ -20,6 +20,9 @@ const routes: Routes = [
   {
     path: 'index',
     component: IndexComponent,
+    data: {
+      breadcrumb: '首页'
+    },
     children: [
       {
         path: 'knight',
@@ -27,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'company',
-        loadChildren: './components/company/company.module#CompanyModule',
+        loadChildren: './components/company/company.module#CompanyModule'
       },
       {
         path: 'swiper',
@@ -50,9 +53,6 @@ const routes: Routes = [
         loadChildren: './components/finance/finance.module#FinanceModule'
       }
     ],
-    data: {
-      breadcrumb: '首页'
-    },
     //路由守卫
     canActivate: [AuthGuard]
   }

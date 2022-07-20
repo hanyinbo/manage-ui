@@ -7,11 +7,17 @@ import { KnightErrantSettingsComponent } from './knight-errant-settings/knight-e
 const routes: Routes = [
   {
     path: 'list',
-    component: KnightErrantListComponent
+    component: KnightErrantListComponent,
+    data: {
+      breadcrumb: '侍卫名单'
+    },
   },
   {
     path: 'settings',
-    component: KnightErrantSettingsComponent
+    component: KnightErrantSettingsComponent,
+    data: {
+      breadcrumb: '名单设置'
+    },
   }
 ];
 

@@ -7,15 +7,24 @@ import { RecruitSettingComponent} from './recruit-setting/recruit-setting.compon
 const routes: Routes = [
   {
     path: 'list',
-    component: CompanyListComponent
+    component: CompanyListComponent,
+    data: {
+      breadcrumb: '公司列表'
+    },
   },
   {
     path: 'recruit-setting',
-    component: RecruitSettingComponent
+    component: RecruitSettingComponent,
+    data: {
+      breadcrumb: '招聘设置'
+    },
   },
   {
     path: 'position-list',
-    component: PositionListComponent
+    component: PositionListComponent,
+    data: {
+      breadcrumb: '职位设置'
+    },
   }
 
 ];

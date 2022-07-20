@@ -6,7 +6,10 @@ import { NavigationListComponent } from './navigation-list/navigation-list.compo
 const routes: Routes = [
   {
     path: 'navigationList',
-    component: NavigationListComponent
+    component: NavigationListComponent,
+    data: {
+      breadcrumb: '导航列表'
+    },
   },
 ];
 

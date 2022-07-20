@@ -1,20 +1,21 @@
+/* 整体布局容器 */
 .layout-wrapper {
   height: 100%;
 }
-
+/* 顶部布局 */
 ::ng-deep .ant-layout-header {
   height: 54px;
   padding: 0px;
   line-height: 54px;
   background-color: #fff;
 }
-
+/* 顶部容器 */
 .header-wrapper {
   position: relative;
   width: 100%;
   display: flex;
 }
-
+/* logo  顶部左边 */
 .header-logo {
   width: 200px;
   background-color: #001529;
@@ -22,35 +23,34 @@
   line-height: 50px;
   float: left;
 }
-
+/* 顶部右边 */
 .header-content {
   right: 100px;
   position: absolute !important;
   height: 100%;
   float: right;
 }
-
+/* 头像 */
 .avatar {
   margin-top: 2px;
 }
+/* 头像 退出 */
 .avatar .logout {
   margin-left: 10px;
 }
-
-
+/* 内容 */
 .inner-content {
   margin: 20px 20px 20px 20px;
   background: #fff;
   min-height: 360px;
   border-radius: 5px;
 }
-
+/* 菜单导航可滑动可隐藏滚动条 */
 nz-sider{
   overflow: hidden;
   height: 100%;
   position: relative;
 }
-
 .inner-menu{
   position: absolute;
   left: 0;
@@ -60,7 +60,12 @@ nz-sider{
   overflow-x: hidden;
   overflow-y: scroll;
 }
-
+/* 底部布局 */
 nz-footer {
   text-align: center;
+}
+/* 面包屑 */
+.header-breadcrumb{
+  margin-top: 15px;
+  margin-left: 20px;
 }

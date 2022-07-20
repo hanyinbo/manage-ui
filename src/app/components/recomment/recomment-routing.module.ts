@@ -5,7 +5,10 @@ import { RecommentListComponent } from '../recomment/recomment-list/recomment-li
 const routes: Routes = [
   {
     path: 'list',
-    component: RecommentListComponent
+    component: RecommentListComponent,
+    data: {
+      breadcrumb: '报备列表'
+    },
   }
 ];
 
