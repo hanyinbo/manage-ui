@@ -42,14 +42,16 @@ tr:nth-child(2n){
     width: 236px;
 }
 ::ng-deep .form-wrapper{
-   width: 100%;
+   width: 98%;
    height: 120px;
+   margin-left: 20px;
+   margin-right: 10px;
 }
 /* 查询表单 */
 ::ng-deep .ant-advanced-search-form {
     display: inline;
-    padding: 2px;
-    border-radius: 3px;
+    padding: 10px;
+    /* border-radius: 3px; */
 }
 /* 标签项 */
 ::ng-deep .ant-tabs-tab{
