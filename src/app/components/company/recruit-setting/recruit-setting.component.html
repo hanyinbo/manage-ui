@@ -1,3 +1,4 @@
+
 <div class="form-wrapper">
   <form nz-form [formGroup]="recruitSearchForm" [nzLayout]="'inline'" class="ant-advanced-search-form">
     <div nz-row [nzGutter]="24" class="row-control">
@@ -117,6 +118,7 @@
     </tr>
   </tbody>
 </nz-table>
+
 <!-- 新增招聘信息 -->
 <nz-modal [(nzVisible)]="isShowAddRecruitModel" nzTitle="新增招聘" (nzOnCancel)="handleAddRecruitCancel()"
   (nzOnOk)="handleAddRecruitOk($event,recruitForm.value)">
