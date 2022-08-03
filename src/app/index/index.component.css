@@ -17,7 +17,7 @@
 }
 /* logo  顶部左边 */
 .header-logo {
-  width: 200px;
+  width: 220px;
   background-color: #001529;
   overflow: hidden;
   line-height: 50px;
@@ -50,6 +50,7 @@ nz-sider{
   overflow: hidden;
   height: 100%;
   position: relative;
+ 
 }
 .inner-menu{
   position: absolute;
@@ -66,6 +67,6 @@ nz-footer {
 }
 /* 面包屑 */
 .header-breadcrumb{
-  margin-top: 10px;
+  margin-top: 12px;
   margin-left: 20px;
 }
