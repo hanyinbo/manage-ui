@@ -13,64 +13,26 @@
       </div>
     </div>
   </nz-header>
-  <nz-layout>
+  <nz-layout class="context">
     <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" style="min-width: 220px;">
       <div class="inner-menu">
-        <ul nz-menu nzTheme="dark" nzMode="inline">
-          <li nz-submenu nzTitle="侍卫管理" nzIcon="user" nzOpen>
-            <ul>
-              <li nz-menu-item routerLink='/index/knight/list'>侍卫名单</li>
-              <!-- <li nz-menu-item routerLink='/index/knight/settings'>侍卫法则</li> -->
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="公司管理" nzIcon="bank">
-            <ul>
-              <li nz-menu-item routerLink='/index/company/list'>公司设置</li>
-              <li nz-menu-item routerLink='/index/company/position-list'>职位设置</li>
-              <li nz-menu-item routerLink='/index/company/recruit-setting'>招聘设置</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="报备管理" nzIcon="highlight">
-            <ul>
-              <li nz-menu-item routerLink='/index/recomment/list'>报备设置</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="财务管理" nzIcon="message">
-            <ul>
-              <li nz-menu-item routerLink='/index/finance/brokerage-list'>佣金设置</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="轮播图管理" nzIcon="file-image">
-            <ul>
-              <li nz-menu-item routerLink='/index/swiper/homeSwiper'>首页轮播图</li>
-              <li nz-menu-item routerLink='/index/swiper/companySwiper'>公司轮播图</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="资讯管理" nzIcon="message">
-            <ul>
-              <li nz-menu-item>资讯设置</li>
-              <li nz-menu-item>公司轮播图</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="客户管理" nzIcon="team">
-            <ul>
-              <li nz-menu-item routerLink='/index/custom/custom-list'>客户设置</li>
-              <!-- <li nz-menu-item>公司轮播图</li>  -->
-            </ul>
-          </li>
-          <li nz-submenu nzTitle="小程序管理" nzIcon="team">
-            <ul>
-              <li nz-menu-item routerLink='/index/mini/navigationList'>导航图设置</li>
-              <!-- <li nz-menu-item>公司轮播图</li>  -->
-            </ul>
+       <ul nz-menu nzTheme="dark" nzMode="inline" *ngFor="let menu of menuList" >
+          <li nz-submenu nzTitle={{menu.name}} 
+          nzIcon={{menu.icon}} 
+          nzOpen={{menu.open}}
+          [nzPaddingLeft]="menu.level * 24">
+            <ng-container *ngIf="menu.children">
+              <ul *ngFor="let menuItem of menu.children">
+                <li nz-menu-item routerLink={{menuItem.path}} [nzPaddingLeft]="menuItem.level * 24">{{menuItem.name}}</li>
+              </ul>
+            </ng-container>
           </li>
         </ul>
       </div>
     </nz-sider>
     <nz-layout>
-      <nz-content>
-        <nz-breadcrumb class="header-breadcrumb"  [nzAutoGenerate]="true">
-      
+      <nz-content >
+        <nz-breadcrumb class="header-breadcrumb" [nzAutoGenerate]="true">
         </nz-breadcrumb>
         <div class="inner-content">
           <router-outlet></router-outlet>

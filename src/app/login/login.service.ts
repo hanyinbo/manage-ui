@@ -23,17 +23,17 @@ export class LoginService {
     private logger: LoggerService
   ) {
   }
-  axiosLogin(api: string) {
-    return new Promise((resolve, reject) => {
-      axios.get(api).then((res) => {
-        resolve(res.data);
-      }, (err) => {
-        resolve(err.response.data)
-      })
-    }).catch((response) => {
-      console.log(response.code)
-    })
-  }
+  // axiosLogin(api: string) {
+  //   return new Promise((resolve, reject) => {
+  //     axios.get(api).then((res) => {
+  //       resolve(res.data);
+  //     }, (err) => {
+  //       resolve(err.response.data)
+  //     })
+  //   }).catch((response) => {
+  //     console.log(response.code)
+  //   })
+  // }
 
   // 登录接口
   doLogin(body: any): Observable<any> {
@@ -43,7 +43,7 @@ export class LoginService {
     this.logger.debugRequest(JSON.stringify('service层的请求Body:' + body), produceName);
     this.logger.info(JSON.stringify('service层的请求Body:' + body), produceName);
 
-    return this.http.post<R>(`${URL}/login`,body, httpOptions)
+    return this.http.post<R>(`${URL}/doLogin`,body, httpOptions)
       .pipe(
         retry(1),
         tap(data => this.logger.debugResponse(JSON.stringify(data), produceName)),
