@@ -21,7 +21,7 @@
           nzIcon={{menu.icon}} 
           nzOpen={{menu.open}}
           [nzPaddingLeft]="menu.level * 24"
-          nzSelected={{menu.selected}}>
+          >
             <ng-container *ngIf="menu.hasChildren">
               <ul *ngFor="let menuItem of menu.children">
                 <li nz-menu-item routerLink={{menuItem.path}} [nzPaddingLeft]="menuItem.level * 24">{{menuItem.name}}</li>
