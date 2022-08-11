@@ -1,0 +1,7 @@
+::ng-deep .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
+    padding: 13px 13px;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0em;
+}

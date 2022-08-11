@@ -1,87 +1,101 @@
-::ng-deep .ant-layout-header{
+::ng-deep .ant-layout-header {
     height: 56px;
 }
 
 /* 鼠标滑动td的样式 */
-::ng-deep .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+::ng-deep .ant-table-tbody>tr:hover:not(.ant-table-expanded-row)>td {
     background: #e2e5e7;
 }
-::ng-deep .ant-table-tbody > tr.ant-table-row-selected td{
+
+::ng-deep .ant-table-tbody>tr.ant-table-row-selected td {
     background-color: #6eb2d1;
 }
 
 /* 偶数列样式 */
-tr:nth-child(2n){
-    background:#fafafa;
+tr:nth-child(2n) {
+    background: #fafafa;
 }
-::ng-deep .ant-table{
+
+::ng-deep .ant-table {
     line-height: 0.2;
     height: auto;
 }
-::ng-deep  td{
-    text-align: center;
 
+::ng-deep td {
+    text-align: center;
 }
 
 /* 表头 */
-::ng-deep .ant-table-thead > tr > th {
+::ng-deep .ant-table-thead>tr>th {
     font-size: 15px;
     font-weight: bold;
     text-align: center;
 }
+
 /* 查询按钮 */
 ::ng-deep button.ant-btn {
     margin-top: 10px;
     margin-left: 10px;
 }
+
 /* 刷新 新增按钮样式 */
-::ng-deep .reflesh-button{
+::ng-deep .reflesh-button {
     margin-left: 8px;
     margin-bottom: 10px;
 }
+
 /* 数字选择框 */
-::ng-deep .ant-input-number{
+::ng-deep .ant-input-number {
     width: 236px;
 }
+
 /* 查询表单容器 */
-::ng-deep .form-wrapper{
+::ng-deep .form-wrapper {
     width: 98%;
     height: 105px;
     margin-left: 20px;
     margin-right: 10px;
-  }
-  
+}
+
 /* 查询表单 */
 ::ng-deep .ant-advanced-search-form {
     display: inline;
     padding: 5px;
     /* border-radius: 3px; */
 }
+
 /* ::ng-deep .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
     padding: 4px 10px;
 } */
-::ng-deep .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type), .ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type), .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type), .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type){
-    margin-right: 8px;
+::ng-deep .ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom>div>.ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+    margin-right: 6px;
 }
+
 /* 标签项 */
-::ng-deep .ant-tabs-tab{
-    margin: 10px 10px 0 0;
-    padding: 15px 0;
-    font-size: 16px;
+::ng-deep .ant-tabs-tab {
+    margin: 5px 5px 0 0;
+    padding: 10px 0;
+    font-size: 14px;
 }
+
 /* 搜索区域 */
 ::ng-deep .search-area {
     text-align: right;
 }
-::ng-deep .search-form-item{
-    margin-bottom: 15px;
-  } 
 
-p{
-    margin: auto;
+::ng-deep .search-form-item {
+    margin-bottom: 15px;
 }
 
 /* 表单输入框 */
-::ng-deep .ant-input{
+::ng-deep .ant-input {
     margin-bottom: 10px;
+}
+
+/* 页签与表单的间距 */
+::ng-deep .ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav {
+    margin: 0 0 6px 0;
 }

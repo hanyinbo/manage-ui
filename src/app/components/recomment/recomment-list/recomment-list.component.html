@@ -110,7 +110,7 @@
           <td>{{ data.telephone }}</td>
           <td>{{ data.gender==0 ? '男':'女' }}</td>
           <td nzEllipsis>{{ data.intentionCompany }}</td>
-          <td>
+          <td class="cus_td">
             <p *ngIf="data.status==0">待面试</p>
             <p *ngIf="data.status==1">已面试</p>
             <p *ngIf="data.status==2">已入职</p>

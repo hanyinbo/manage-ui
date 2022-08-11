@@ -24,7 +24,9 @@
           >
             <ng-container *ngIf="menu.hasChildren">
               <ul *ngFor="let menuItem of menu.children">
-                <li nz-menu-item routerLink={{menuItem.path}} [nzPaddingLeft]="menuItem.level * 24">{{menuItem.name}}</li>
+                <li nz-menu-item routerLink={{menuItem.path}}
+                 [nzPaddingLeft]="menuItem.level * 24"
+                 nzSelected={{menuItem.selected}}>{{menuItem.name}}</li>
               </ul>
             </ng-container>
           </li>

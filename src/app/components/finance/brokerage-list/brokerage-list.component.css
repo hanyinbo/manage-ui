@@ -1,15 +1,8 @@
-
-  /* 刷新 新增按钮样式 */
-/* .reflesh-button{
-    margin-right: 5px;
-    margin-bottom: 10px;
-} */
-/*   
-.collapse {
-  margin-left: 5px;
-  font-size: 12px;
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
+  padding: 13px 13px;
 }
 
-.search-area {
-  text-align: right;
-}*/
+p {
+  margin-top: 0;
+  margin-bottom: 0em;
+}

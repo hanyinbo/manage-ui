@@ -64,7 +64,7 @@ nz-sider{
 /* 底部布局 */
 nz-footer {
   text-align: center;
-  height: 50px;
+  height: 40px;
 }
 ::ng-deep .ant-layout-footer {
    background-color: #fff;
@@ -72,6 +72,7 @@ nz-footer {
 }
 /* 面包屑 */
 .header-breadcrumb{
-  margin-top: 12px;
+  margin-top: 13px;
   margin-left: 20px;
+  font-size: 13px;
 }
